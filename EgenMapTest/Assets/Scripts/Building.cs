@@ -28,7 +28,8 @@ public class Building : MonoBehaviour
         landuseKind = string.IsNullOrEmpty(_kind) ? "default" : _kind; //If building foesn't have a kind, give it default material
         vertices = _buildingCorners;
         GetComponent<MeshFilter>().mesh = CreateMesh(_buildingCorners, _settings); //Creates a mesh for the building
-        GetComponent<MeshRenderer>().material = Resources.Load<Material>(landuseKind); //Gives building material depending on type of building
+        string path = (WorldMap.colorPalet.ToString() + "/" + landuseKind).ToLower();
+        GetComponent<MeshRenderer>().material = Resources.Load<Material>(path); //Gives building material depending on type of building
 
         //print(landuseKind);
     }
@@ -102,7 +103,7 @@ public class Building : MonoBehaviour
     [Serializable]
     public class Settings
     {
-        public int maxHeight = 4;
-        public int minHeight = 2;
+        public int maxHeight = 0;
+        public int minHeight = 0;
     }
 }

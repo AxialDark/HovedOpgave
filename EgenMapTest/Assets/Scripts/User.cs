@@ -37,8 +37,11 @@ public class User : MonoBehaviour {
         gameObject.transform.SetParent(_parent);
         gameObject.transform.position = (vector - _centerInMerc).ToVector3xz();
         gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0, 255);
-        gameObject.transform.localScale = new Vector3(50, 50, 50);
-        Camera.main.transform.SetParent(gameObject.transform);
+        gameObject.transform.localScale = new Vector3(20, 20, 20);
+        Camera.main.transform.SetParent(gameObject.transform, true);
+        Vector3 camPos = Vector3.zero;
+        camPos.y = Camera.main.transform.localPosition.y;
+        Camera.main.transform.localPosition = camPos;
         centerInMerc = _centerInMerc;
         lastLatLong = _initLatLong;
     }

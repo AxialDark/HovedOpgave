@@ -5,7 +5,7 @@ public class CameraMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.touchCount == 1)
+	    if (Input.touchCount == 1 && Application.platform == RuntimePlatform.Android)
         {
             Touch touch1 = Input.GetTouch(0);
 

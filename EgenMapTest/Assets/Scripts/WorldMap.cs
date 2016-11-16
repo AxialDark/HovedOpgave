@@ -7,10 +7,12 @@ public class WorldMap : MonoBehaviour
 
     [SerializeField]
     private Settings settings;
+    public static MapColorPalet colorPalet;
 
     private RoadFactory roadFac;
     private BuildingFactory buildFac;
     private TileManager tileMan;
+
 
     /// <summary>
     /// Use this for initialization
@@ -23,6 +25,8 @@ public class WorldMap : MonoBehaviour
 
 #if UNITY_EDITOR
         tileMan.Initialize(buildFac, roadFac, settings);
+        if (settings.mapColorPalet != colorPalet)
+            colorPalet = settings.mapColorPalet;
 #endif
 #if UNITY_ANDROID
         StartCoroutine(Init());
@@ -92,5 +96,7 @@ public class WorldMap : MonoBehaviour
         public int range = 3;
         [SerializeField]
         public bool loadImages = false;
+        [SerializeField]
+        public MapColorPalet mapColorPalet;
     }
 }
