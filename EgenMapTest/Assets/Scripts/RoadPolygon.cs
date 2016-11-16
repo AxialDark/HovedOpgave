@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Helpers;
 
+/// <summary>
+/// Enumeration that descripes the type of road
+/// </summary>
 public enum RoadType
 {
     PATH,
@@ -12,10 +15,20 @@ public enum RoadType
     HIGHWAY
 }
 
+/// <summary>
+/// Creates a road by combining a lot of small objects
+/// Road is made based on data from mapzen
+/// </summary>
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 internal class RoadPolygon : MonoBehaviour
 {
+    /// <summary>
+    /// The ID for the road
+    /// </summary>
     public string ID { get; set; }
+    /// <summary>
+    /// The type of road
+    /// </summary>
     public RoadType Type { get; set; }
     private List<Vector3> verts;
 
