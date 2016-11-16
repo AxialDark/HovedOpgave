@@ -51,13 +51,8 @@ public class TileManager : MonoBehaviour
         range = _settings.range;
         loadImages = _settings.loadImages;
 
-        //Makes red dot
-        GameObject gm = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        gm.transform.position = new Vector3(0, 50, 0);
-        gm.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0, 255);
-        gm.transform.localScale = new Vector3(50, 50, 50);
-        print("X: " + centerTMS.x + " Y: " + centerTMS.y + "\nX: " + centerInMercator.x + " Y: " + centerInMercator.y);
-        //End Makes red dot
+        //Init the User Marker
+        User.Instance.Initialize(new Vector2(_settings.latitude, _settings.longtitude), centerInMercator, mapParent);
 
         LoadTiles(centerTMS, centerInMercator);
     }

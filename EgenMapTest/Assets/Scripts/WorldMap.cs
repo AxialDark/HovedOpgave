@@ -21,8 +21,12 @@ public class WorldMap : MonoBehaviour
         buildFac = GetComponentInChildren<BuildingFactory>();
         tileMan = GetComponent<TileManager>();
 
+#if UNITY_EDITOR
         tileMan.Initialize(buildFac, roadFac, settings);
-        //StartCoroutine(Init());
+#endif
+#if UNITY_ANDROID
+        StartCoroutine(Init());
+#endif
     }
 
     /// <summary>
