@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using Assets.Helpers;
 using System.Linq;
 
+/// <summary>
+/// Used for creating a building and places it upon the map
+/// Building is made based on mapzen data
+/// </summary>
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Building : MonoBehaviour
 {
@@ -13,6 +17,12 @@ public class Building : MonoBehaviour
     public string landuseKind;
     public string name;
 
+    /// <summary>
+    /// Initializes the building
+    /// </summary>
+    /// <param name="_buildingCorners">Corners of the building from mapzen data</param>
+    /// <param name="_kind">What kind of building is it, from mapzen data</param>
+    /// <param name="_settings">The settings for the building</param>
     public void Initialize(List<Vector3> _buildingCorners, string _kind, Settings _settings)
     {
         landuseKind = string.IsNullOrEmpty(_kind) ? "default" : _kind; //If building foesn't have a kind, give it default material
@@ -23,6 +33,12 @@ public class Building : MonoBehaviour
         //print(landuseKind);
     }
 
+    /// <summary>
+    /// Creates a mesh based on data from mapzen
+    /// </summary>
+    /// <param name="_verts">All the vertices for the mesh</param>
+    /// <param name="_settings">The building settings</param>
+    /// <returns>A unity mesh</returns>
     private static Mesh CreateMesh(List<Vector3> _verts, Settings _settings)
     {
         int height = UnityEngine.Random.Range(_settings.minHeight, _settings.maxHeight); //Gets a random building height
@@ -80,7 +96,9 @@ public class Building : MonoBehaviour
         return mesh;
     }
 
-
+    /// <summary>
+    /// Settings for a building
+    /// </summary>
     [Serializable]
     public class Settings
     {

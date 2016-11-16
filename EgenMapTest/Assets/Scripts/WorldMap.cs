@@ -12,7 +12,9 @@ public class WorldMap : MonoBehaviour
     private BuildingFactory buildFac;
     private TileManager tileMan;
 
-    // Use this for initialization
+    /// <summary>
+    /// Use this for initialization
+    /// </summary>
     void Start()
     {
         roadFac = GetComponentInChildren<RoadFactory>();
@@ -23,6 +25,10 @@ public class WorldMap : MonoBehaviour
         //StartCoroutine(Init());
     }
 
+    /// <summary>
+    /// Coroutines used on devices with GPS to initialize the map
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Init()
     {
         // First, check if user has location service enabled
@@ -66,6 +72,9 @@ public class WorldMap : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Settings for the map
+    /// </summary>
     [Serializable]
     public class Settings
     {

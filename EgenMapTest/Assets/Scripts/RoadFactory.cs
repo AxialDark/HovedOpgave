@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using Assets.Helpers;
 
+/// <summary>
+/// Used for initializing construction for a road
+/// Based on data from mapzen
+/// </summary>
 public class RoadFactory : MonoBehaviour
 {
     /// <summary>

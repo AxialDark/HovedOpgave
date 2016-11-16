@@ -4,17 +4,34 @@ using System.Collections.Generic;
 using Assets.Helpers;
 using System.Linq;
 
+/// <summary>
+/// Used for initialing contruction for a building
+/// Keeps track of all buildings created
+/// </summary>
 public class BuildingFactory : MonoBehaviour {
 
     [SerializeField]
     private Building.Settings settings;
+
+    /// <summary>
+    /// Dictionary for keeping track of all buildings
+    /// </summary>
     private Dictionary<Vector3, Building> Buildings { get; set; } //Apparently this is not good to use (Building center as key)
 
+    /// <summary>
+    /// Unity start method
+    /// </summary>
     private void Start()
     {
         Buildings = new Dictionary<Vector3, Building>();
     }
 
+    /// <summary>
+    /// Creates a building on the tile, based on data from mapzen
+    /// </summary>
+    /// <param name="_tileMercPos">The center of the tile the building is on</param>
+    /// <param name="_geo">Data about the building from mapzen</param>
+    /// <param name="_parent">The buildings parent</param>
     public void CreateBuilding(Vector2 _tileMercPos, JSONObject _geo, Transform _parent = null)
     {
         _parent = _parent ?? transform; //If _parent is null, transform becomes parent
