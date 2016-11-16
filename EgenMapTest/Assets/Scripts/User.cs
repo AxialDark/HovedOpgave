@@ -69,6 +69,10 @@ public class User : MonoBehaviour {
     private static User CreateUserObject()
     {
         User gm = GameObject.CreatePrimitive(PrimitiveType.Sphere).AddComponent<User>();
+
+#if UNITY_EDITOR
+        gm.gameObject.AddComponent<DebugMovement>();
+#endif
         return gm;
     }
 
