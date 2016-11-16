@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using Assets.Helpers;
 using UniRx;
 
+/// <summary>
+/// Super class
+/// Manages all tiles.
+/// </summary>
 public class TileManager : MonoBehaviour
 { //Is gonna be a superclass later
 
@@ -23,6 +27,13 @@ public class TileManager : MonoBehaviour
     protected Vector2 centerTMS; //TMS (Tile Map Service)
     protected Vector2 centerInMercator; //This is distance (meter) in mercator
 
+
+    /// <summary>
+    /// Initialize fields
+    /// </summary>
+    /// <param name="_buildFac">BuildingFactory class to build building on tiles</param>
+    /// <param name="_roadFac">RoadFactory class to build roads on tiles</param>
+    /// <param name="_settings">The settings from the WorldMap class</param>
     public virtual void Initialize(BuildingFactory _buildFac, RoadFactory _roadFac, WorldMap.Settings _settings)
     {
         Vector2 vector = GM.LatLonToMeters(_settings.latitude, _settings.longtitude); //Converts latitude and longtitude to xy cordinates in meters
@@ -51,6 +62,11 @@ public class TileManager : MonoBehaviour
         LoadTiles(centerTMS, centerInMercator);
     }
 
+    /// <summary>
+    /// Loads tiles in range of center tile
+    /// </summary>
+    /// <param name="_tileTMS">The center tile in world space</param>
+    /// <param name="_centerInMercator">The center in x/y meters</param>
     protected void LoadTiles(Vector2 _tileTMS, Vector2 _centerInMercator)
     {
         for (int i = -range; i <= range; i++)
@@ -66,7 +82,7 @@ public class TileManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Creates a tile
     /// </summary>
     /// <param name="_tileTMS">The new Tiles vector location</param>
     /// <param name="_centerInMercator">The center in x/y meters</param>
@@ -91,6 +107,11 @@ public class TileManager : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// Loads tile based on mapzen API data
+    /// </summary>
+    /// <param name="_tileTMS">The new Tiles vector location</param>
+    /// <param name="_tile">The tile that needs to be loaded</param>
     private void LoadTile(Vector2 _tileTMS, Tile _tile)
     {
         string url = string.Format(mapzenURL, mapzenLayer, zoom, _tileTMS.x, _tileTMS.y, mapzenFormat, mapzenKey); //Formats the mapzen url with parameters

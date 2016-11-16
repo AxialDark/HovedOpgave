@@ -4,6 +4,10 @@ using Assets.Helpers;
 using UniRx;
 using System.Linq;
 
+/// <summary>
+/// Keeps track of the tile's own "behavior"; where to build roads and buildings on that tile
+/// A map is made up of several tiles
+/// </summary>
 public class Tile : MonoBehaviour
 {
 
@@ -16,6 +20,13 @@ public class Tile : MonoBehaviour
     private BuildingFactory buildFac;
     private Settings settings;
 
+    /// <summary>
+    /// Initialize the Tile by setting all the key field variables
+    /// </summary>
+    /// <param name="_buildFac">A BuildingFactory to build the building on the tile</param>
+    /// <param name="_roadFac">A RoadFactory to build the roads on the tile</param>
+    /// <param name="_settings">The tiles own settings</param>
+    /// <returns></returns>
     public Tile Initialize(BuildingFactory _buildFac, RoadFactory _roadFac, Settings _settings)
     {
         roadFac = _roadFac;
@@ -26,11 +37,20 @@ public class Tile : MonoBehaviour
         return this;
     }
 
+    /// <summary>
+    /// Deprecated: See ConstructAsync()
+    /// </summary>
+    /// <param name="_text">The return string from a ObservableWWW.Get() call</param>
     public void ConstructTile(string _text)
     {
         ConstructAsync(_text);
     }
 
+    /// <summary>
+    /// Creates the Tile in world based on string parameter. 
+    /// Starts two coroutines to build the roads and buildings respectively
+    /// </summary>
+    /// <param name="_text">The return string from a ObservableWWW.Get() call</param>
     private void ConstructAsync(string _text)
     {
         string url;
@@ -69,6 +89,12 @@ public class Tile : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Starts the creation of all buildings on this tile
+    /// </summary>
+    /// <param name="_mapData">JSON data of all the buildings on this tile</param>
+    /// <param name="_tileMercPos">The tile's center position</param>
+    /// <returns></returns>
     private IEnumerator CreateBuildings(JSONObject _mapData, Vector2 _tileMercPos)
     {
         foreach (JSONObject geo in _mapData["features"].list.Where(x => x["geometry"]["type"].str == "Polygon"))
@@ -78,6 +104,12 @@ public class Tile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts creation of all roads on this tile.
+    /// </summary>
+    /// <param name="_mapData">JSON data on all roads on this tile</param>
+    /// <param name="_tileMercPos">The tile's center position</param>
+    /// <returns></returns>
     private IEnumerator CreateRoads(JSONObject _mapData, Vector2 _tileMercPos)
     {
         for (int index = 0; index < _mapData["features"].list.Count; index++) //Runs through all of the roads in the _mapData JSONObject
@@ -88,11 +120,26 @@ public class Tile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// The tile's settings
+    /// </summary>
     public class Settings
     {
+        /// <summary>
+        /// The level of zoom of the data
+        /// </summary>
         public int Zoom { get; set; }
+        /// <summary>
+        /// The tile's position in the mapzen API
+        /// </summary>
         public Vector2 TileTMS { get; set; }
+        /// <summary>
+        /// The center of this tile
+        /// </summary>
         public Vector3 TileCenter { get; set; }
+        /// <summary>
+        /// Should images be used on the map or not
+        /// </summary>
         public bool LoadImages { get; set; }
     }
 }
