@@ -3,6 +3,8 @@ using System.Collections;
 
 public enum MapColorPalet
 {
-    TEST,
-    TEST2
+    OceanBlue,
+    LushGreen,
+    Melancholy,
+    Dark
 }
