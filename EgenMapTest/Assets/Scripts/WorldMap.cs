@@ -13,7 +13,6 @@ public class WorldMap : MonoBehaviour
     private BuildingFactory buildFac;
     private TileManager tileMan;
 
-
     /// <summary>
     /// Use this for initialization
     /// </summary>
@@ -27,6 +26,8 @@ public class WorldMap : MonoBehaviour
         tileMan.Initialize(buildFac, roadFac, settings);
         if (settings.mapColorPalet != colorPalet)
             colorPalet = settings.mapColorPalet;
+
+        new GameObject("DebugRouting").AddComponent<DebugRouting>().Initialize(settings);
 #endif
 #if UNITY_ANDROID
         StartCoroutine(Init());
@@ -86,10 +87,12 @@ public class WorldMap : MonoBehaviour
     [Serializable]
     public class Settings
     {
+
+        //56.407051, 10.876623
         [SerializeField]
-        public float latitude = 56.410394f;
+        public float latitude = 56.407051f;//56.410394f;
         [SerializeField]
-        public float longtitude = 10.886543f;
+        public float longtitude = 10.876623f;//10.886543f;
         [SerializeField]
         public int detailLevel = 16;
         [SerializeField]
