@@ -2,6 +2,10 @@
 using System.Collections;
 using System;
 
+/// <summary>
+/// Class the handles the overall map
+/// Uses other managers to create and handle aspects of the map
+/// </summary>
 public class WorldMap : MonoBehaviour
 {
 

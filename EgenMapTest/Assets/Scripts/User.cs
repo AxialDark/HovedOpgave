@@ -2,6 +2,9 @@
 using Assets.Helpers;
 using System.Collections;
 
+/// <summary>
+/// Singleton class of the user in game
+/// </summary>
 public class User : MonoBehaviour {
 
     private static User instance;
@@ -22,6 +25,16 @@ public class User : MonoBehaviour {
                 instance = CreateUserObject();
             }
             return instance;
+        }
+    }
+    /// <summary>
+    /// Most recently recieved latitide/longitude corrdanates of the device
+    /// </summary>
+    public Vector2 LastLatLong
+    {
+        get
+        {
+            return lastLatLong;
         }
     }
 
@@ -55,14 +68,14 @@ public class User : MonoBehaviour {
 
         SmoothMovement();
 
-        LocationInfo info = Input.location.lastData;
-        if (new Vector2(info.latitude, info.longitude) == lastLatLong) return;
+        LocationInfo info = Input.location.lastData; //Collects GPS data from device
+        if (new Vector2(info.latitude, info.longitude) == LastLatLong) return; //return if the same as last update
 
-        Vector2 currentLatLong = new Vector2(info.latitude, info.longitude);
+        Vector2 currentLatLong = new Vector2(info.latitude, info.longitude); //Create vector using the new data
 
-        Vector2 vector = GM.LatLonToMeters(currentLatLong);
-        newPosition = (vector - centerInMerc).ToVector3xz();
-        lastLatLong = currentLatLong;
+        Vector2 vector = GM.LatLonToMeters(currentLatLong); //Convert LatLong to mercator coordinates
+        newPosition = (vector - centerInMerc).ToVector3xz(); //Creates new position relative to the center of the tile
+        lastLatLong = currentLatLong; //Updates last LatLong
     }
 
     /// <summary>
@@ -72,6 +85,9 @@ public class User : MonoBehaviour {
     private static User CreateUserObject()
     {
         User gm = GameObject.CreatePrimitive(PrimitiveType.Sphere).AddComponent<User>();
+        gm.gameObject.AddComponent<Collider>();
+        gm.gameObject.AddComponent<Rigidbody>();
+        gm.gameObject.GetComponent<Rigidbody>().useGravity = false;
 
 #if UNITY_EDITOR
         gm.gameObject.AddComponent<DebugMovement>();
@@ -87,5 +103,19 @@ public class User : MonoBehaviour {
         if (newPosition == null) return;
 
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, newPosition, speed * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Unity Method
+    /// Detects collisions with triggers at run time
+    /// </summary>
+    /// <param name="other">The detected trigger collider</param>
+    private void OnTriggerEnter(Collider other)
+    {
+        print("Collision");
+        if(other.gameObject == RouteManager.Points[1])
+        {
+            RouteManager.UpdateRouteForUser();
+        }
     }
 }
