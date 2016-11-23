@@ -2,11 +2,16 @@
 using System.Collections;
 using System;
 
+/// <summary>
+/// Class the handles the overall map
+/// Uses other managers to create and handle aspects of the map
+/// </summary>
 public class WorldMap : MonoBehaviour
 {
 
     [SerializeField]
     private Settings settings;
+    public static MapColorPalet colorPalet;
 
     private RoadFactory roadFac;
     private BuildingFactory buildFac;
@@ -23,6 +28,10 @@ public class WorldMap : MonoBehaviour
 
 #if UNITY_EDITOR
         tileMan.Initialize(buildFac, roadFac, settings);
+        if (settings.mapColorPalet != colorPalet)
+            colorPalet = settings.mapColorPalet;
+
+        new GameObject("DebugRouting").AddComponent<DebugRouting>().Initialize(settings);
 #endif
 #if UNITY_ANDROID
         StartCoroutine(Init());
@@ -82,15 +91,19 @@ public class WorldMap : MonoBehaviour
     [Serializable]
     public class Settings
     {
+
+        //56.407051, 10.876623
         [SerializeField]
-        public float latitude = 56.410394f;
+        public float latitude = 56.407051f;//56.410394f;
         [SerializeField]
-        public float longtitude = 10.886543f;
+        public float longtitude = 10.876623f;//10.886543f;
         [SerializeField]
         public int detailLevel = 16;
         [SerializeField]
         public int range = 3;
         [SerializeField]
         public bool loadImages = false;
+        [SerializeField]
+        public MapColorPalet mapColorPalet;
     }
 }

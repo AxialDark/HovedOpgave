@@ -47,8 +47,8 @@ internal class RoadPolygon : MonoBehaviour
 
         for (int index = 1; index < verts.Count; index++) //Runs through all vertices for the road
         {
-            GameObject roadPlane = Instantiate(Resources.Load<GameObject>("RoadQuad")); //Create a road
-            roadPlane.GetComponentInChildren<MeshRenderer>().material = Resources.Load<Material>("Road"); //Changes material to road material
+            GameObject roadPlane = Instantiate(Resources.Load<GameObject>(WorldMap.colorPalet + "/RoadQuad")); //Create a road
+            roadPlane.GetComponentInChildren<MeshRenderer>().material = Resources.Load<Material>(WorldMap.colorPalet + "/Road"); //Changes material to road material
             roadPlane.transform.position = (_tile + verts[index] + _tile + verts[index - 1]) / 2; //Places the road
             roadPlane.transform.SetParent(transform, true); //Set's the parent (it looks nice in the inspektor)
             Vector3 scale = roadPlane.transform.localScale; //Grab the scale of the road

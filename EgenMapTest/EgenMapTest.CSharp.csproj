@@ -70,17 +70,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CameraMove.cs" />
+    <Compile Include="Assets\DebugMovement.cs" />
+    <Compile Include="Assets\DebugRouting.cs" />
     <Compile Include="Assets\Helpers\Extensions.cs" />
     <Compile Include="Assets\Helpers\GeoConverter.cs" />
     <Compile Include="Assets\Helpers\JSON.cs" />
     <Compile Include="Assets\Helpers\Tris.cs" />
+    <Compile Include="Assets\Scripts\APIData.cs" />
+    <Compile Include="Assets\Scripts\APIDataExtractor.cs" />
     <Compile Include="Assets\Scripts\Building.cs" />
     <Compile Include="Assets\Scripts\BuildingFactory.cs" />
+    <Compile Include="Assets\Scripts\DynamicTileManager.cs" />
+    <Compile Include="Assets\Scripts\MapColorPalet.cs" />
     <Compile Include="Assets\Scripts\RoadFactory.cs" />
     <Compile Include="Assets\Scripts\RoadPolygon.cs" />
+    <Compile Include="Assets\Scripts\Routeting\Route.cs" />
+    <Compile Include="Assets\Scripts\Routeting\RouteManager.cs" />
     <Compile Include="Assets\Scripts\Test.cs" />
     <Compile Include="Assets\Scripts\Tile.cs" />
     <Compile Include="Assets\Scripts\TileManager.cs" />
+    <Compile Include="Assets\Scripts\User.cs" />
     <Compile Include="Assets\Scripts\WorldMap.cs" />
   </ItemGroup>
   <ItemGroup>

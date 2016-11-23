@@ -70,7 +70,7 @@ public class Tile : MonoBehaviour
             gameObject.localPosition = Vector3.zero; //Resets the local position
             gameObject.localPosition -= new Vector3(0, 1, 0); //Moves the plane down 1 on the y axis
             Renderer rend = gameObject.GetComponent<Renderer>(); //Get's the rendere from the gameobject
-            rend.material = Resources.Load<Material>("Ground"); //Set's the planes material to Ground
+            rend.material = Resources.Load<Material>(WorldMap.colorPalet + "/Ground"); //Set's the planes material to Ground
             rend.material.mainTexture = new Texture2D(512, 512, TextureFormat.DXT5, false); //Creates a new texture for the material
             //rend.material.color = new Color(.1f, .1f, .1f, 1f); //Gives it a new color
 
