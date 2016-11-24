@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Script from Google Vr, with minor alterations, allows us to get camerafeed, and apply it to a plane.
+/// </summary>
 public class WorldView : MonoBehaviour {
 
     private WebCamTexture view = null;
