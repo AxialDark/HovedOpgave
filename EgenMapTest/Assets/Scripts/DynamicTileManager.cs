@@ -58,13 +58,17 @@ public class DynamicTileManager : TileManager {
     private void Centralize(Vector2 _tileDif)
     {
         //Routing
-        foreach (GameObject routes in RouteManager.Routes)
+        foreach (GameObject routes in RouteManager.RoutePlanes)
         {
             routes.transform.position -= new Vector3(_tileDif.x * tileSize.x, 0, _tileDif.y * tileSize.y);
         }
         foreach (GameObject points in RouteManager.Points)
         {
             points.transform.position -= new Vector3(_tileDif.x * tileSize.x, 0, _tileDif.y * tileSize.y);
+        }
+        foreach (GameLocation gameLocations in RouteManager.Gamelocations)
+        {
+            gameLocations.gameObject.transform.position -= new Vector3(_tileDif.x * tileSize.x, 0, _tileDif.y * tileSize.y);
         }
         //End Routing
 

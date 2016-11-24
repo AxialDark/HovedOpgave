@@ -76,11 +76,13 @@
     <Compile Include="Assets\Helpers\GeoConverter.cs" />
     <Compile Include="Assets\Helpers\JSON.cs" />
     <Compile Include="Assets\Helpers\Tris.cs" />
-    <Compile Include="Assets\Scripts\APIData.cs" />
-    <Compile Include="Assets\Scripts\APIDataExtractor.cs" />
+    <Compile Include="Assets\Scripts\APIData Classes\APIData.cs" />
+    <Compile Include="Assets\Scripts\APIData Classes\APIDataExtractor.cs" />
     <Compile Include="Assets\Scripts\Building.cs" />
     <Compile Include="Assets\Scripts\BuildingFactory.cs" />
     <Compile Include="Assets\Scripts\DynamicTileManager.cs" />
+    <Compile Include="Assets\Scripts\GameLocation.cs" />
+    <Compile Include="Assets\Scripts\GameType.cs" />
     <Compile Include="Assets\Scripts\MapColorPalet.cs" />
     <Compile Include="Assets\Scripts\RoadFactory.cs" />
     <Compile Include="Assets\Scripts\RoadPolygon.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Assets\Scripts\TileManager.cs" />
     <Compile Include="Assets\Scripts\User.cs" />
     <Compile Include="Assets\Scripts\WorldMap.cs" />
+    <Compile Include="Assets\UIController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
