@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// This is a Script made following a online tutorial; link: https://www.youtube.com/watch?v=wavvtztVK3c&index=11&list=FLHFTwh0AzY5XKPTt5P6dUWw
+/// It is not used in the project, but the code is used in another script, which is used in the project.
+/// </summary>
 public class BallTempScript : MonoBehaviour {
 
     [SerializeField]
