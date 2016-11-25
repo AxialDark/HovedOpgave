@@ -8,8 +8,10 @@ public class WorldView : MonoBehaviour {
 
     private WebCamTexture view = null;
 
-	// Use this for initialization
-	void Start () 
+	/// <summary>
+    /// Unity method, runs in the beginning
+    /// </summary>
+	private void Start () 
     {
         view = new WebCamTexture();
 
@@ -18,7 +20,10 @@ public class WorldView : MonoBehaviour {
         view.Play();
 	}
 
-    void Update()
+    /// <summary>
+    /// Unity method, runs once every frame
+    /// </summary>
+    private void Update()
     {
         Camera cam = Camera.main;
 

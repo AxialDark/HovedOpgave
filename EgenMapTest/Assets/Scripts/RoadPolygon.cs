@@ -58,5 +58,4 @@ internal class RoadPolygon : MonoBehaviour
             roadPlane.transform.LookAt(_tile + verts[index - 1]); //Rotate the road
         }
     }
-
 }

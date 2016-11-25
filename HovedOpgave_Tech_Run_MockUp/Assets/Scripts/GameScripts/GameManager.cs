@@ -24,27 +24,27 @@ public class GameManager : MonoBehaviour
 
     #region Serialized Fields
     [SerializeField]
-    Text pointText;
+    private Text pointText;
 
     [SerializeField]
-    GameObject[] pointerArrow; // 0 = right ; 1 = left
+    private GameObject[] pointerArrows; // 0 = right ; 1 = left
 
     [SerializeField]
-    GameObject goal;
+    private GameObject goal;
     #endregion
 
     #region Fields
-    private int points = 0;
-    private int ConsecutiveGoals;
+    private int point = 0;
+    private int ConsecutiveGoalCount;
     private GameType gameType;
     private Ball ball;
 
     private const int THROW_TRIES_TOTAL = 6;
     private int throwTriesCurrent;
 
-    float directionNumber;
+    private float directionNumber;
 
-    Renderer goalRenderer;
+    private Renderer goalRenderer;
     #endregion
 
     /// <summary>
@@ -60,9 +60,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void Initialize()
     {
-        pointText.text = "Points: " + points;
-        pointerArrow[0].SetActive(false);
-        pointerArrow[1].SetActive(false);
+        pointText.text = "Points: " + point;
+        pointerArrows[0].SetActive(false);
+        pointerArrows[1].SetActive(false);
 
         throwTriesCurrent = THROW_TRIES_TOTAL;
 
@@ -81,19 +81,19 @@ public class GameManager : MonoBehaviour
         {
             if (directionNumber == 1f) // If the goal is closer to the right.
             {
-                pointerArrow[0].SetActive(true);
-                pointerArrow[1].SetActive(false);
+                pointerArrows[0].SetActive(true);
+                pointerArrows[1].SetActive(false);
             }
             else if (directionNumber == -1f) // If the goal is closer to the left.
             {
-                pointerArrow[0].SetActive(false);
-                pointerArrow[1].SetActive(true);
+                pointerArrows[0].SetActive(false);
+                pointerArrows[1].SetActive(true);
             }
         }
         else if (goalRenderer.isVisible) // If the goal is visible on the screen.
         {
-            pointerArrow[0].SetActive(false);
-            pointerArrow[1].SetActive(false);
+            pointerArrows[0].SetActive(false);
+            pointerArrows[1].SetActive(false);
         }
 
         if(throwTriesCurrent <= 0)
@@ -107,8 +107,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CalculateGoalPoints()
     {
-        points += (10 + (ConsecutiveGoals * 10));
-        pointText.text = "Points: " + points;
+        point += (10 + (ConsecutiveGoalCount * 10));
+        pointText.text = "Points: " + point;
     }
 
     /// <summary>
