@@ -29,13 +29,10 @@ public class RouteManager : MonoBehaviour
     /// List of points making out the route based on Via Points given to Open Street Map API
     /// </summary>
     public static List<GameObject> Points { get { return points; } }
-    public static List<GameLocation> Gamelocations
-    {
-        get
-        {
-            return gamelocations;
-        }
-    }
+    /// <summary>
+    /// List of game location objects based on point locations and the routes estimated lengh
+    /// </summary>
+    public static List<GameLocation> Gamelocations { get { return gamelocations; } }
 
     /// <summary>
     /// Unity build-in update method
@@ -51,9 +48,8 @@ public class RouteManager : MonoBehaviour
         //but it's empty, it means the route is completed by a user
         if (route != null && routeinUse && routePlanes.Count == 0)
         {
-            routeinUse = false;
             EndRoute(); //Makes sure the routes and points are cleaned up
-            UIController.Instance.pnlEndRoute.gameObject.SetActive(true);
+            routeinUse = false;
             route = null;
         }
     }
@@ -66,7 +62,7 @@ public class RouteManager : MonoBehaviour
     /// <param name="_settings">WorldMap settings</param>
     public void InitiateRouteGeneration(Vector2 _myLatLong, List<Vector2> _via, WorldMap.Settings _settings)
     {
-        if (!routeinUse)
+        if (!routeinUse) //Makes the generation of a route impossible if one is already in use.
         {
             print("Initiating Generation");
             if (mapParent == null)
@@ -74,8 +70,8 @@ public class RouteManager : MonoBehaviour
                 mapParent = GameObject.Find("Map").transform;
             }
 
-            //route = new Route().Initialize(_myLatLong, _via, _settings.detailLevel); //Make the route
-            route = new GameObject().AddComponent<Route>().Initialize(_myLatLong, _via, _settings.detailLevel);
+            route = new Route().Initialize(_myLatLong, _via, _settings.detailLevel); //Make the route
+            //route = new GameObject().AddComponent<Route>().Initialize(_myLatLong, _via, _settings.detailLevel);
 
             StartCoroutine(RouteToMap()); //Starts generating the route in scene based on data from the Route class
         }
@@ -127,6 +123,11 @@ public class RouteManager : MonoBehaviour
             point.GetComponent<Collider>().isTrigger = true;
             points.Add(point);
 
+            //If it's the last run-through of the for-loop, add another sphere.
+            //This is done because we start with i = 1, but the condition is still set as i < list.Count.
+            //We can't change it to i <= list.Count, as we use both i-1 and i+1 within this loop, and that would create an exception
+            //This means that we have to add the following code to finish the route properly. 
+            //Else we have a routePlane connecting to only 1 point, making the route impossible to complete
             if (i == route.RouteInMercCoords.Count - 1)
             {
                 //Create point gameobject
@@ -143,7 +144,7 @@ public class RouteManager : MonoBehaviour
 
         print("Route Done: Route Distance: " + route.Distance + " meters - Route Time: " + route.EstimatedTime);
         CreateGameLocations();
-        routeinUse = true;
+        routeinUse = true; //Route is now created and in use
     }
 
     /// <summary>
@@ -151,19 +152,22 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     public static void EndRoute()
     {
-        //Clears the route from game
+        //Clears the routePlanes from game
         foreach (GameObject route in routePlanes)
         {
             Destroy(route);
         }
-
+        //Clears points from the game
         foreach (GameObject point in points)
         {
             Destroy(point);
         }
 
+        //Clears the lists
         points.Clear();
         routePlanes.Clear();
+
+        UIController.Instance.pnlEndRoute.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -171,15 +175,15 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     public static void UpdateRouteForUser()
     {
-        if (routePlanes.Count > 0 && points.Count > 0)
+        if (routePlanes.Count > 0 && points.Count > 0) //Makes sure outofindex exceptions wont occur
         {
             Destroy(points[0].gameObject);
             points.RemoveAt(0);
             Destroy(routePlanes[0].gameObject);
             routePlanes.RemoveAt(0);
 
-            if (routePlanes.Count > 0)
-                routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight");
+            if (routePlanes.Count > 0) //Makes sure outofindex exceptions wont occur
+                routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Makes the next routePlane highlighted
         }
     }
 
@@ -188,16 +192,17 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     private void CreateGameLocations()
     {
-        int numberOfLocations = Mathf.FloorToInt(route.Distance / 1000);
+        int numberOfLocations = Mathf.FloorToInt(route.Distance / 1000); //Calculates the numbers of locations needed (1 per whole kilometer)
         print("Number of game locations: " + numberOfLocations);
-        int indexIncrements = route.RouteInMercCoords.Count / (numberOfLocations + 1);
+        int indexIncrements = route.RouteInMercCoords.Count / (numberOfLocations + 1); //Calculates the increment needed for the location to be spread out fairly evenly
 
+        //Creates all game locations
         for (int i = 1; i <= numberOfLocations; i++)
         {
             GameLocation gameLocation = GameObject.CreatePrimitive(PrimitiveType.Sphere).AddComponent<GameLocation>().Initialize();
             gameLocation.gameObject.name = "Game Location " + i;
             gameLocation.gameObject.transform.SetParent(mapParent);
-            gameLocation.gameObject.transform.position = points[(i - 1) + (indexIncrements * i)].transform.position;
+            gameLocation.gameObject.transform.position = points[(i - 1) + (indexIncrements * i)].transform.position; //It's position is based on a point's position
             gameLocation.gameObject.transform.localScale = new Vector3(14, 14, 14);
             gameLocation.gameObject.GetComponent<Renderer>().material.color = Color.blue;
             gameLocation.gameObject.GetComponent<Collider>().isTrigger = true;
