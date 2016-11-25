@@ -12,12 +12,6 @@ public class DebugRouting : MonoBehaviour {
     {
         settings = _settings;
         debuglatLongs = new List<Vector2>();
-
-        //Add via points
-        //debuglatLongs.Add(new Vector2(56.407210f, 10.878358f));
-        debuglatLongs.Add(new Vector2(56.408539f, 10.877934f));
-        debuglatLongs.Add(new Vector2(56.408435f, 10.875961f));
-
         randomOffset = Random.Range(0.00010f, 0.00050f);
     }
 	
@@ -26,6 +20,10 @@ public class DebugRouting : MonoBehaviour {
 	    if (Input.GetKeyDown(KeyCode.H))
         {
             print("Hardcode Routing...");
+            //Add via points
+            //debuglatLongs.Add(new Vector2(56.407210f, 10.878358f));
+            debuglatLongs.Add(new Vector2(56.408539f, 10.877934f));
+            debuglatLongs.Add(new Vector2(56.408435f, 10.875961f));
             GameObject.Find("RouteManager").GetComponent<RouteManager>().InitiateRouteGeneration(new Vector2(settings.latitude, settings.longtitude), debuglatLongs, settings);
         }
         else if (Input.GetKeyDown(KeyCode.R))
@@ -35,6 +33,10 @@ public class DebugRouting : MonoBehaviour {
             debuglatLongs.Add(new Vector2(settings.latitude + 0.0077f, settings.longtitude));
             debuglatLongs.Add(new Vector2(settings.latitude + 0.0027f, settings.longtitude + 0.0031f));
             GameObject.Find("RouteManager").GetComponent<RouteManager>().InitiateRouteGeneration(new Vector2(settings.latitude, settings.longtitude), debuglatLongs, settings);
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            RouteManager.EndRoute();
         }
 	}
 

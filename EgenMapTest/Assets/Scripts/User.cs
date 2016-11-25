@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Assets.Helpers;
 using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// Singleton class of the user in game
@@ -85,7 +86,6 @@ public class User : MonoBehaviour {
     private static User CreateUserObject()
     {
         User gm = GameObject.CreatePrimitive(PrimitiveType.Sphere).AddComponent<User>();
-        gm.gameObject.AddComponent<Collider>();
         gm.gameObject.AddComponent<Rigidbody>();
         gm.gameObject.GetComponent<Rigidbody>().useGravity = false;
 
@@ -111,11 +111,17 @@ public class User : MonoBehaviour {
     /// </summary>
     /// <param name="other">The detected trigger collider</param>
     private void OnTriggerEnter(Collider other)
-    {
-        print("Collision");
-        if(other.gameObject == RouteManager.Points[1])
+    {        
+        if(RouteManager.Points.Count - 1 > 0 && other.gameObject == RouteManager.Points[1]) //If list contains 2 or more points, update it when colliding
         {
             RouteManager.UpdateRouteForUser();
+            print("Collision with RoutePoint");
+        }
+
+        if(other.gameObject.GetComponent<GameLocation>()) //Colliding with a game location
+        {
+            print("Collision with GameLocation");
+            UIController.Instance.btnStartGame.gameObject.SetActive(true); //Show button to switch to game scene
         }
     }
 }

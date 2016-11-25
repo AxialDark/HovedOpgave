@@ -8,23 +8,31 @@ using Assets.Helpers;
 /// This includes getting data from the Route class and uses to
 /// creates object in the scene visualizing the route to the user
 /// </summary>
-public class RouteManager : MonoBehaviour {
+public class RouteManager : MonoBehaviour
+{
 
     private Route route;
+    private bool routeinUse = false;
     private Transform mapParent;
 
-    private static List<GameObject> routes = new List<GameObject>();
+    private static List<GameObject> routePlanes = new List<GameObject>();
     private static List<GameObject> points = new List<GameObject>();
     public List<GameObject> debugPointList = new List<GameObject>();
+    public List<GameObject> debugRoutePlaneList = new List<GameObject>();
+    private static List<GameLocation> gamelocations = new List<GameLocation>();
 
     /// <summary>
     /// List of game objects generated, in between points, making out the entire route
     /// </summary>
-    public static List<GameObject> Routes { get { return routes; } }
+    public static List<GameObject> RoutePlanes { get { return routePlanes; } }
     /// <summary>
     /// List of points making out the route based on Via Points given to Open Street Map API
     /// </summary>
     public static List<GameObject> Points { get { return points; } }
+    /// <summary>
+    /// List of game location objects based on point locations and the routes estimated lengh
+    /// </summary>
+    public static List<GameLocation> Gamelocations { get { return gamelocations; } }
 
     /// <summary>
     /// Unity build-in update method
@@ -33,7 +41,17 @@ public class RouteManager : MonoBehaviour {
     {
 #if UNITY_EDITOR
         debugPointList = points;
+        debugRoutePlaneList = routePlanes;
 #endif
+
+        //If a route exists and it's current in use
+        //but it's empty, it means the route is completed by a user
+        if (route != null && routeinUse && routePlanes.Count == 0)
+        {
+            EndRoute(); //Makes sure the routes and points are cleaned up
+            routeinUse = false;
+            route = null;
+        }
     }
 
     /// <summary>
@@ -44,15 +62,19 @@ public class RouteManager : MonoBehaviour {
     /// <param name="_settings">WorldMap settings</param>
     public void InitiateRouteGeneration(Vector2 _myLatLong, List<Vector2> _via, WorldMap.Settings _settings)
     {
-        print("Initiating Generation");
-        if (mapParent == null)
+        if (!routeinUse) //Makes the generation of a route impossible if one is already in use.
         {
-            mapParent = GameObject.Find("Map").transform;
+            print("Initiating Generation");
+            if (mapParent == null)
+            {
+                mapParent = GameObject.Find("Map").transform;
+            }
+
+            route = new Route().Initialize(_myLatLong, _via, _settings.detailLevel); //Make the route
+            //route = new GameObject().AddComponent<Route>().Initialize(_myLatLong, _via, _settings.detailLevel);
+
+            StartCoroutine(RouteToMap()); //Starts generating the route in scene based on data from the Route class
         }
-
-        route = new Route().Initialize(_myLatLong, _via, _settings.detailLevel); //Make the route
-
-        StartCoroutine(RouteToMap()); //Starts generating the route in scene based on data from the Route class
     }
 
     /// <summary>
@@ -77,48 +99,75 @@ public class RouteManager : MonoBehaviour {
 
             float distance = Vector2.Distance(route.RouteInMercCoords[i - 1], route.RouteInMercCoords[i]); //Calculates distance between current point and the next
 
-            Vector2 diff = new Vector2(route.RouteInMercCoords[i].x - route.RouteInMercCoords[i - 1].x, 
+            Vector2 diff = new Vector2(route.RouteInMercCoords[i].x - route.RouteInMercCoords[i - 1].x,
                 route.RouteInMercCoords[i].y - route.RouteInMercCoords[i - 1].y); //Gets the vector in between the current point vector and the distination point vector
 
-            Vector3 middlePoint = new Vector3((diff.x / 2) + route.RouteInMercCoords[i - 1].x, 
+            Vector3 middlePoint = new Vector3((diff.x / 2) + route.RouteInMercCoords[i - 1].x,
                 0.5f, (diff.y / 2) + route.RouteInMercCoords[i - 1].y);//Gets the point exactly between the current point and the distination point
 
             //Creates route object
             routePlane.transform.SetParent(mapParent);
             routePlane.transform.position = middlePoint;
-            routePlane.name = "Route between: " + i + " - " + (i + 1);            
+            routePlane.name = "Route between: " + i + " - " + (i + 1);
             routePlane.transform.localScale = new Vector3(0.25f, 0, distance / 10);
             routePlane.GetComponent<Renderer>().material = Resources.Load<Material>("DebugRoute");
             routePlane.transform.LookAt(new Vector3(route.RouteInMercCoords[i].x, 0.5f, route.RouteInMercCoords[i].y));
-            routes.Add(routePlane);
+            routePlanes.Add(routePlane);
 
             //Create point gameobject
             GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             point.name = "Route point " + i;
             point.transform.SetParent(mapParent);
             point.transform.position = new Vector3(route.RouteInMercCoords[i - 1].x, 10, route.RouteInMercCoords[i - 1].y);
-            point.transform.localScale = new Vector3(10, 10, 10);
-            point.AddComponent<Collider>();
+            point.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
             point.GetComponent<Collider>().isTrigger = true;
             points.Add(point);
-        }
-        routes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Shows the first route is highlighted
 
-        print("Distance: " + route.Distance);
+            //If it's the last run-through of the for-loop, add another sphere.
+            //This is done because we start with i = 1, but the condition is still set as i < list.Count.
+            //We can't change it to i <= list.Count, as we use both i-1 and i+1 within this loop, and that would create an exception
+            //This means that we have to add the following code to finish the route properly. 
+            //Else we have a routePlane connecting to only 1 point, making the route impossible to complete
+            if (i == route.RouteInMercCoords.Count - 1)
+            {
+                //Create point gameobject
+                GameObject point2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                point2.name = "Route point " + (i + 1);
+                point2.transform.SetParent(mapParent);
+                point2.transform.position = new Vector3(route.RouteInMercCoords[i].x, 10, route.RouteInMercCoords[i].y);
+                point2.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
+                point2.GetComponent<Collider>().isTrigger = true;
+                points.Add(point2);
+            }
+        }
+        routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Shows the first route as highlighted
+
+        print("Route Done: Route Distance: " + route.Distance + " meters - Route Time: " + route.EstimatedTime);
+        CreateGameLocations();
+        routeinUse = true; //Route is now created and in use
     }
 
     /// <summary>
     /// Handles the completion of a route
     /// </summary>
-    private void EndRoute()
+    public static void EndRoute()
     {
-        //Clears the route from game
-        foreach (GameObject routeOrPoint in routes)
+        //Clears the routePlanes from game
+        foreach (GameObject route in routePlanes)
         {
-            Destroy(routeOrPoint);
+            Destroy(route);
+        }
+        //Clears points from the game
+        foreach (GameObject point in points)
+        {
+            Destroy(point);
         }
 
-        routes.Clear();
+        //Clears the lists
+        points.Clear();
+        routePlanes.Clear();
+
+        UIController.Instance.pnlEndRoute.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -126,10 +175,38 @@ public class RouteManager : MonoBehaviour {
     /// </summary>
     public static void UpdateRouteForUser()
     {
-        points[0].gameObject.SetActive(false);
-        points.RemoveAt(0);
-        routes[0].gameObject.SetActive(false);
-        routes.RemoveAt(0);
-        routes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight");
+        if (routePlanes.Count > 0 && points.Count > 0) //Makes sure outofindex exceptions wont occur
+        {
+            Destroy(points[0].gameObject);
+            points.RemoveAt(0);
+            Destroy(routePlanes[0].gameObject);
+            routePlanes.RemoveAt(0);
+
+            if (routePlanes.Count > 0) //Makes sure outofindex exceptions wont occur
+                routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Makes the next routePlane highlighted
+        }
+    }
+
+    /// <summary>
+    /// Creates Game Locations based in the distance of the route
+    /// </summary>
+    private void CreateGameLocations()
+    {
+        int numberOfLocations = Mathf.FloorToInt(route.Distance / 1000); //Calculates the numbers of locations needed (1 per whole kilometer)
+        print("Number of game locations: " + numberOfLocations);
+        int indexIncrements = route.RouteInMercCoords.Count / (numberOfLocations + 1); //Calculates the increment needed for the location to be spread out fairly evenly
+
+        //Creates all game locations
+        for (int i = 1; i <= numberOfLocations; i++)
+        {
+            GameLocation gameLocation = GameObject.CreatePrimitive(PrimitiveType.Sphere).AddComponent<GameLocation>().Initialize();
+            gameLocation.gameObject.name = "Game Location " + i;
+            gameLocation.gameObject.transform.SetParent(mapParent);
+            gameLocation.gameObject.transform.position = points[(i - 1) + (indexIncrements * i)].transform.position; //It's position is based on a point's position
+            gameLocation.gameObject.transform.localScale = new Vector3(14, 14, 14);
+            gameLocation.gameObject.GetComponent<Renderer>().material.color = Color.blue;
+            gameLocation.gameObject.GetComponent<Collider>().isTrigger = true;
+            gamelocations.Add(gameLocation);
+        }
     }
 }

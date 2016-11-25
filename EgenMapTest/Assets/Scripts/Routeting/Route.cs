@@ -15,7 +15,7 @@ using System.Linq;
 /// 
 /// TODO: Error Handle when a via point is ignored.
 /// </summary>
-public class Route : MonoBehaviour {
+public class Route {
 
     private readonly string distanceFormat = "M";
     private readonly string apiUrl = "http://openls.geog.uni-heidelberg.de/route?api_key=ee0b8233adff52ce9fd6afc2a2859a28&start={0}&end={1}&via={2}&lang={3}&distunit={4}&routepref={5}&weighting={6}&avoidAreas=&useTMC=false&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&instructions=false";
@@ -23,7 +23,7 @@ public class Route : MonoBehaviour {
     private readonly string routingLanguage = "en";
     private readonly string routeWeight = "Recommended";
 
-    private int distance;
+    private float distance;
     private List<Vector2> viaLatLongs;
     private List<Vector2> routeLatLongs;
     private List<Vector2> routeInMercCoords = new List<Vector2>();
@@ -42,12 +42,19 @@ public class Route : MonoBehaviour {
     /// <summary>
     /// The distance, in meters, of the whole route
     /// </summary>
-    public int Distance { get { return distance; } }
+    public float Distance { get { return distance; } }
     /// <summary>
     /// The estimated time it takes to complete the route
     /// </summary>
     public TimeSpan EstimatedTime { get { return estimatedTime; } }
 
+    public List<Vector2> ViaLatLongs
+    {
+        get
+        {
+            return viaLatLongs;
+        }
+    }
 
     private static char[] numberArray = new char[]
         {
@@ -78,7 +85,7 @@ public class Route : MonoBehaviour {
     /// </summary>
     /// <param name="_startPos">The position of the user</param>
     /// <param name="_via">List of via points API uses to generate route</param>
-    public void LoadAPIData(Vector2 _startPos, List<Vector2> _via)
+    private void LoadAPIData(Vector2 _startPos, List<Vector2> _via)
     {
         string startEnd = _startPos.y + "," + _startPos.x;
 
@@ -139,7 +146,7 @@ public class Route : MonoBehaviour {
         //}
         #endregion
         APIDataExtractor extract = new APIDataExtractor(_text); //Instances an extractor and gives it the API data
-        routeLatLongs = new List<Vector2>(extract.Data.RouteLatLongs); //Instances new routeLatLongs list with data from extractor with no reference.
+        routeLatLongs = new List<Vector2>(extract.Data.RouteLatLongs);//Instances new routeLatLongs list with data from extractor with no reference.
 
         //Find the tile the player stands in
         Vector2 vector = GM.LatLonToMeters(routeLatLongs[0].x, routeLatLongs[0].y);
@@ -155,8 +162,11 @@ public class Route : MonoBehaviour {
             routeInMercCoords.Add((vector - centerInMercator)); //In mercator coordinates
         }
 
+        distance = extract.Data.DistanceOfRoute;
+        estimatedTime = new TimeSpan(0,0,extract.Data.TotalTimeInSeconds);
+
         dataLoaded = true;
-        print("Route data loaded");
+        Debug.Log("Route data loaded");
     }
 
     //private void ConvertAPIData(Vector2 _startPos)
