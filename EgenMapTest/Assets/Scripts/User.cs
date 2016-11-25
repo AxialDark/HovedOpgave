@@ -28,6 +28,7 @@ public class User : MonoBehaviour {
             return instance;
         }
     }
+
     /// <summary>
     /// Most recently recieved latitide/longitude corrdanates of the device
     /// </summary>
@@ -63,7 +64,7 @@ public class User : MonoBehaviour {
     /// <summary>
     /// Unity build-in update method
     /// </summary>
-    void Update()
+    private void Update()
     {
         if (Application.platform == RuntimePlatform.WindowsEditor) return;
 
@@ -110,7 +111,7 @@ public class User : MonoBehaviour {
     /// Detects collisions with triggers at run time
     /// </summary>
     /// <param name="other">The detected trigger collider</param>
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider _other)
     {        
         if(RouteManager.Points.Count - 1 > 0 && other.gameObject == RouteManager.Points[1]) //If list contains 2 or more points, update it when colliding
         {

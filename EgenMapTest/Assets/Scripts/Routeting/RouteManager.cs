@@ -12,7 +12,7 @@ public class RouteManager : MonoBehaviour
 {
 
     private Route route;
-    private bool routeinUse = false;
+    private bool routeInUse = false;
     private Transform mapParent;
 
     private static List<GameObject> routePlanes = new List<GameObject>();

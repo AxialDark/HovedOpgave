@@ -48,19 +48,6 @@ public class Route {
     /// </summary>
     public TimeSpan EstimatedTime { get { return estimatedTime; } }
 
-    public List<Vector2> ViaLatLongs
-    {
-        get
-        {
-            return viaLatLongs;
-        }
-    }
-
-    private static char[] numberArray = new char[]
-        {
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
-        };
-
     /// <summary>
     /// Initializes a route
     /// </summary>
@@ -168,41 +155,4 @@ public class Route {
         dataLoaded = true;
         Debug.Log("Route data loaded");
     }
-
-    //private void ConvertAPIData(Vector2 _startPos)
-    //{
-    //    //Start pos
-    //    routeLatLongs.Add(_startPos); //Add start position as first in list
-
-    //    for (int i = 0; i < viaLatLongs.Count; i++) //Add all latitudes and longtitudes to list
-    //    {
-    //        routeLatLongs.Add(viaLatLongs[i]);
-    //    }
-
-    //    //Route end pos
-    //    routeLatLongs.Add(_startPos); //Add start position as last in list 
-
-    //    //Find the tile the player stands in
-    //    Vector2 vector = GM.LatLonToMeters(_startPos.x, _startPos.y);
-    //    Vector2 tile = GM.MetersToTile(vector, zoom);
-
-    //    Vector2 centerInMercator = GM.TileBounds(tile, zoom).center; //Finds the center of the tile
-
-    //    //Finds the position reletive to the tile the player stands on
-    //    for (int i = 0; i < routeLatLongs.Count; i++)
-    //    {
-    //        vector = GM.LatLonToMeters(routeLatLongs[i].x, routeLatLongs[i].y);
-
-    //        routeInMercCoords.Add((vector - centerInMercator)); //In mercator coordinates
-    //    }
-
-    //    for (int i = 1; i < routeInMercCoords.Count; i++)
-    //    {
-    //        float diffx = Mathf.Abs(routeInMercCoords[i - 1].x - routeInMercCoords[i].x);
-    //        float diffy = Mathf.Abs(routeInMercCoords[i - 1].y - routeInMercCoords[i].y);
-    //        distance += (int)Mathf.Round(Mathf.Sqrt(Mathf.Pow(diffx, 2) + Mathf.Pow(diffy, 2)));
-    //    }
-
-    //    dataLoaded = true;
-    //}
 }

@@ -29,7 +29,7 @@ public class UIController : MonoBehaviour {
     /// Loads new scene
     /// </summary>
     /// <param name="sceneName">Name of scene</param>
-    public void LoadScene(string sceneName)
+    public void LoadScene(string _sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
