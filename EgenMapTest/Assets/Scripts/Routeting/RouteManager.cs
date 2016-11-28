@@ -46,10 +46,10 @@ public class RouteManager : MonoBehaviour
 
         //If a route exists and it's current in use
         //but it's empty, it means the route is completed by a user
-        if (route != null && routeinUse && routePlanes.Count == 0)
+        if (route != null && routeInUse && routePlanes.Count == 0)
         {
             EndRoute(); //Makes sure the routes and points are cleaned up
-            routeinUse = false;
+            routeInUse = false;
             route = null;
         }
     }
@@ -62,7 +62,7 @@ public class RouteManager : MonoBehaviour
     /// <param name="_settings">WorldMap settings</param>
     public void InitiateRouteGeneration(Vector2 _myLatLong, List<Vector2> _via, WorldMap.Settings _settings)
     {
-        if (!routeinUse) //Makes the generation of a route impossible if one is already in use.
+        if (!routeInUse) //Makes the generation of a route impossible if one is already in use.
         {
             print("Initiating Generation");
             if (mapParent == null)
@@ -144,7 +144,7 @@ public class RouteManager : MonoBehaviour
 
         print("Route Done: Route Distance: " + route.Distance + " meters - Route Time: " + route.EstimatedTime);
         CreateGameLocations();
-        routeinUse = true; //Route is now created and in use
+        routeInUse = true; //Route is now created and in use
     }
 
     /// <summary>

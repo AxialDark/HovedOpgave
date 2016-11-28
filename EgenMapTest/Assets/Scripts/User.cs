@@ -113,13 +113,13 @@ public class User : MonoBehaviour {
     /// <param name="other">The detected trigger collider</param>
     private void OnTriggerEnter(Collider _other)
     {        
-        if(RouteManager.Points.Count - 1 > 0 && other.gameObject == RouteManager.Points[1]) //If list contains 2 or more points, update it when colliding
+        if(RouteManager.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Points[1]) //If list contains 2 or more points, update it when colliding
         {
             RouteManager.UpdateRouteForUser();
             print("Collision with RoutePoint");
         }
 
-        if(other.gameObject.GetComponent<GameLocation>()) //Colliding with a game location
+        if(_other.gameObject.GetComponent<GameLocation>()) //Colliding with a game location
         {
             print("Collision with GameLocation");
             UIController.Instance.btnStartGame.gameObject.SetActive(true); //Show button to switch to game scene
