@@ -92,6 +92,10 @@ public class DynamicTileManager : TileManager {
         {
             gameLocations.gameObject.transform.position -= new Vector3(_tileDif.x * tileSize.x, 0, _tileDif.y * tileSize.y);
         }
+        foreach (GameObject via in RouteManager.debugViaPoints)
+        {
+            via.gameObject.transform.position -= new Vector3(_tileDif.x * tileSize.x, 0, _tileDif.y * tileSize.y);
+        }
         //End Routing
 
         foreach (Tile tile in tiles.Values)
