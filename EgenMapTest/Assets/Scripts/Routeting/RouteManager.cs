@@ -152,7 +152,7 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     public static void EndRoute()
     {
-        //Clears the routePlanes from game
+        //Clears the routePlanes from the game
         foreach (GameObject route in routePlanes)
         {
             Destroy(route);
@@ -162,10 +162,16 @@ public class RouteManager : MonoBehaviour
         {
             Destroy(point);
         }
+        //Clears game locations from the game
+        foreach (GameLocation loc in gamelocations)
+        {
+            Destroy(loc.gameObject);
+        }
 
         //Clears the lists
         points.Clear();
         routePlanes.Clear();
+        gamelocations.Clear();
 
         UIController.Instance.pnlEndRoute.gameObject.SetActive(true);
     }

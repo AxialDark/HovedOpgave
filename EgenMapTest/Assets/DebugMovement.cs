@@ -5,7 +5,7 @@ public class DebugMovement : MonoBehaviour
 {
 
     [SerializeField]
-    private float speed = 50;
+    private float speed = 200;
 
 
     // Update is called once per frame

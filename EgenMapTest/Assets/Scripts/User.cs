@@ -48,15 +48,17 @@ public class User : MonoBehaviour {
     /// <param name="_parent">The parent transform</param>
     public void Initialize(Vector2 _initLatLong, Vector2 _centerInMerc, Transform _parent)
     {
+        Camera cam = GameObject.FindGameObjectWithTag("SecondCamera").GetComponent<Camera>();
+
         Vector2 vector = GM.LatLonToMeters(_initLatLong);
         gameObject.transform.SetParent(_parent);
         gameObject.transform.position = (vector - _centerInMerc).ToVector3xz();
         gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0, 255);
         gameObject.transform.localScale = new Vector3(20, 20, 20);
-        Camera.main.transform.SetParent(gameObject.transform, true);
+        cam.transform.SetParent(gameObject.transform, true);
         Vector3 camPos = Vector3.zero;
-        camPos.y = Camera.main.transform.localPosition.y;
-        Camera.main.transform.localPosition = camPos;
+        camPos.y = cam.transform.localPosition.y;
+        cam.transform.localPosition = camPos;
         centerInMerc = _centerInMerc;
         lastLatLong = _initLatLong;
     }
@@ -107,11 +109,11 @@ public class User : MonoBehaviour {
     }
 
     /// <summary>
-    /// Unity Method
+    /// Unity method
     /// Detects collisions with triggers at run time
     /// </summary>
     /// <param name="other">The detected trigger collider</param>
-    private void OnTriggerEnter(Collider _other)
+    private void OnTriggerStay(Collider _other)
     {        
         if(RouteManager.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Points[1]) //If list contains 2 or more points, update it when colliding
         {
@@ -119,10 +121,22 @@ public class User : MonoBehaviour {
             print("Collision with RoutePoint");
         }
 
-        if(_other.gameObject.GetComponent<GameLocation>()) //Colliding with a game location
+        if (_other.gameObject.GetComponent<GameLocation>())
         {
-            print("Collision with GameLocation");
-            UIController.Instance.btnStartGame.gameObject.SetActive(true); //Show button to switch to game scene
+            UIController.Instance.btnStartGame.gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Unity method
+    /// Detects when a tho colliders exit each other
+    /// </summary>
+    /// <param name="_other">The detected trigger collider</param>
+    private void OnTriggerExit(Collider _other)
+    {
+        if (_other.gameObject.GetComponent<GameLocation>())
+        {
+            UIController.Instance.btnStartGame.gameObject.SetActive(false); 
         }
     }
 }
