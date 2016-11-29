@@ -33,7 +33,7 @@ public class DebugRouting : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
-            RandomRoute();
+            //RandomRoute();
         }
         else if (Input.GetKeyDown(KeyCode.L))
         {
@@ -53,13 +53,13 @@ public class DebugRouting : MonoBehaviour
         return 0f;
     }
 
-    private void RandomRouting(RouteLength _length)
+    public static void RandomRouting(RouteLength _length)
     {
         //FourPoints(_length);
         StarPoints(_length);
     }
 
-    private void FourPoints(RouteLength _length)
+    private static void FourPoints(RouteLength _length)
     {
         float rnd = (float)_length * 3 * 0.0015f;//Random.Range((float)length * 2 * 0.001f, (float)length * 4 * 0.001f);
 
@@ -90,7 +90,7 @@ public class DebugRouting : MonoBehaviour
         debuglatLongs.Add(viaPoint);
     }
 
-    private void StarPoints(RouteLength _length)
+    private static void StarPoints(RouteLength _length)
     {
         float bigRnd = (float)_length * 3f * 0.001f;
         float smallRnd = (float)_length * 1f * 0.0016f;
