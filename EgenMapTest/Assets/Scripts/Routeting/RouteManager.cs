@@ -52,6 +52,12 @@ public class RouteManager : MonoBehaviour
         {
             EndRoute(); //Makes sure the routes and points are cleaned up
             routeInUse = false;
+
+            #region POINTMANAGER CODE
+            print("Final points: " + PointManager.Instance.CalcEndScore((int)route.Distance)); //SHOULD BE CHANGED
+            PointManager.Instance.Reset();
+            #endregion
+
             route = null;
         }
     }
@@ -178,6 +184,10 @@ public class RouteManager : MonoBehaviour
 
 
         routeInUse = true; //Route is now created and in use
+
+        #region POINTMANAGER CODE
+        PointManager.Instance.StartRouteTimer();
+        #endregion
     }
 
     /// <summary>
@@ -185,7 +195,7 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     public static void EndRoute()
     {
-        //Clears the routePlanes from game
+        //Clears the routePlanes from the game
         foreach (GameObject route in routePlanes)
         {
             Destroy(route);
@@ -195,10 +205,16 @@ public class RouteManager : MonoBehaviour
         {
             Destroy(point);
         }
+        //Clears game locations from the game
+        foreach (GameLocation loc in gamelocations)
+        {
+            Destroy(loc.gameObject);
+        }
 
         //Clears the lists
         points.Clear();
         routePlanes.Clear();
+        gamelocations.Clear();
 
         UIController.Instance.pnlEndRoute.gameObject.SetActive(true);
     }

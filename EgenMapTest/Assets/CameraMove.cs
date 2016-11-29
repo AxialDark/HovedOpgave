@@ -3,6 +3,16 @@ using System.Collections;
 
 public class CameraMove : MonoBehaviour {
 	
+    /// <summary>
+    /// Unity method
+    /// Called when attached game object gets enabled
+    /// </summary>
+    void OnEnable()
+    {
+        if(GetComponent<GvrHead>()) { Destroy(gameObject.GetComponent<GvrHead>()); }
+        if (GetComponent<StereoController>()) { Destroy(gameObject.GetComponent<StereoController>()); }
+    }
+
 	// Update is called once per frame
 	void Update () {
 	    if (Input.touchCount == 1 && Application.platform == RuntimePlatform.Android)
