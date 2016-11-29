@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     #region Fields
     private int point = 0;
-    private int ConsecutiveGoalCount;
+    private int consecutiveGoalCount;
     private GameType gameType;
     private Ball ball;
 
@@ -107,8 +107,24 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void CalculateGoalPoints()
     {
-        point += (10 + (ConsecutiveGoalCount * 10));
+        point += (10 + (consecutiveGoalCount * 10));
         pointText.text = "Points: " + point;
+    }
+
+    /// <summary>
+    /// Increments the consecutiveGoalCount variable.
+    /// </summary>
+    public void AddConsecutiveGoal()
+    {
+        consecutiveGoalCount++;
+    }
+
+    /// <summary>
+    /// Resets the consecutiveGoalCount variable back to 0.
+    /// </summary>
+    public void ResetConsecutiveGoals()
+    {
+        consecutiveGoalCount = 0;
     }
 
     /// <summary>
@@ -129,6 +145,7 @@ public class GameManager : MonoBehaviour
         #endregion
 
         point = 0;
+        consecutiveGoalCount = 0;
 
         Scene thisScene = SceneManager.GetActiveScene();
         SceneManager.UnloadScene(thisScene);
