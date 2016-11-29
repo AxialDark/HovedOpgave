@@ -5,6 +5,9 @@ using UniRx;
 using System;
 using Assets.Helpers;
 
+/// <summary>
+/// Handles the Tiles of the map, and dynamicly updates the map
+/// </summary>
 public class DynamicTileManager : TileManager {
 
     private Vector2 tileSize;
@@ -15,6 +18,13 @@ public class DynamicTileManager : TileManager {
     [SerializeField]
     private int removeAfter;
 
+    /// <summary>
+    /// Override of super class method
+    /// Initializes the TileManager
+    /// </summary>
+    /// <param name="_buildFac">BuildingFactory class to build building on tiles</param>
+    /// <param name="_roadFac">RoadFactory class to build roads on tiles</param>
+    /// <param name="_settings">The settings from the WorldMap class</param>
     public override void Initialize(BuildingFactory _buildFac, RoadFactory _roadFac, WorldMap.Settings _settings)
     {
         base.Initialize(_buildFac, _roadFac, _settings);
@@ -26,6 +36,10 @@ public class DynamicTileManager : TileManager {
         Observable.Interval(TimeSpan.FromSeconds(2)).Subscribe(x => { UpdateTiles(); }); //Runs UpdateTiles every 2 seconds
     }
 
+    /// <summary>
+    /// Updates the map when player leaves the Tile middle tile
+    /// Is run once every 2 seconds
+    /// </summary>
     private void UpdateTiles()
     {
         if(!centerCollider.Contains(user.transform.position.ToVector2xz(), true))
@@ -38,6 +52,10 @@ public class DynamicTileManager : TileManager {
         }
     }
 
+    /// <summary>
+    /// Finds which way the player left the middle Tile
+    /// </summary>
+    /// <returns>Direction vector</returns>
     private Vector2 GetMovementVector()
     {
         Vector2 dif = user.transform.position.ToVector2xz();
@@ -55,6 +73,10 @@ public class DynamicTileManager : TileManager {
         return tileDif;
     }
 
+    /// <summary>
+    /// Moves the whole map so the player always is on the middle Tile
+    /// </summary>
+    /// <param name="_tileDif">The direction the player left central Tile</param>
     private void Centralize(Vector2 _tileDif)
     {
         //Routing
@@ -82,6 +104,10 @@ public class DynamicTileManager : TileManager {
         user.transform.position -= difInUnity;
     }
 
+    /// <summary>
+    /// Removes all Tiles out of player range
+    /// </summary>
+    /// <param name="_currentTMS">The central Tile</param>
     private void UnloadTiles(Vector2 _currentTMS)
     {
         List<Vector2> rem = new List<Vector2>();
