@@ -124,6 +124,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void EndGame()
     {
+        #region POINTMANAGER CODE
+        PointManager.Instance.AddPoints(point);
+        #endregion
+
+        point = 0;
+
         Scene thisScene = SceneManager.GetActiveScene();
         SceneManager.UnloadScene(thisScene);
     }

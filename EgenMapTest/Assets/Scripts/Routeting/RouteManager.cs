@@ -50,6 +50,12 @@ public class RouteManager : MonoBehaviour
         {
             EndRoute(); //Makes sure the routes and points are cleaned up
             routeInUse = false;
+
+            #region POINTMANAGER CODE
+            print("Final points: " + PointManager.Instance.CalcEndScore((int)route.Distance)); //SHOULD BE CHANGED
+            PointManager.Instance.Reset();
+            #endregion
+
             route = null;
         }
     }
@@ -145,6 +151,10 @@ public class RouteManager : MonoBehaviour
         print("Route Done: Route Distance: " + route.Distance + " meters - Route Time: " + route.EstimatedTime);
         CreateGameLocations();
         routeInUse = true; //Route is now created and in use
+
+        #region POINTMANAGER CODE
+        PointManager.Instance.StartRouteTimer();
+        #endregion
     }
 
     /// <summary>
