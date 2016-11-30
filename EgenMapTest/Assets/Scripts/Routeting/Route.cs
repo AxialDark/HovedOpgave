@@ -18,7 +18,7 @@ using System.Linq;
 public class Route {
 
     private readonly string distanceFormat = "M";
-    private readonly string apiUrl = "http://openls.geog.uni-heidelberg.de/route?api_key=ee0b8233adff52ce9fd6afc2a2859a28&start={0}&end={1}&via={2}&lang={3}&distunit={4}&routepref={5}&weighting={6}&avoidAreas=&useTMC=false&noMotorways=false&noTollways=false&noUnpavedroads=false&noSteps=false&noFerries=false&instructions=false";
+    private readonly string apiUrl = "http://openls.geog.uni-heidelberg.de/route?api_key=ee0b8233adff52ce9fd6afc2a2859a28&start={0}&end={1}&via={2}&lang={3}&distunit={4}&routepref={5}&weighting={6}&avoidAreas=&useTMC=false&noMotorways=true&noTollways=false&noUnpavedroads=&noSteps=&noFerries=true&instructions=false";
     private readonly string transportType = "Pedestrian";
     private readonly string routingLanguage = "en";
     private readonly string routeWeight = "Recommended";
@@ -47,6 +47,11 @@ public class Route {
     /// The estimated time it takes to complete the route
     /// </summary>
     public TimeSpan EstimatedTime { get { return estimatedTime; } }
+
+
+
+    public List<Vector2> ViaLatLongs { get { return viaLatLongs; } }
+    public List<Vector2> RouteLatLongs { get { return routeLatLongs; } }
 
     /// <summary>
     /// Initializes a route
@@ -132,6 +137,15 @@ public class Route {
         //    routeLatLongs.Add(new Vector2(float.Parse(longLat[1]), float.Parse(longLat[0])));
         //}
         #endregion
+
+        if (_text.Contains("Error"))
+        {
+            Debug.Log("Shit happende");
+
+            //TODO: Switch Direction and try again
+            //Or try again
+            return;
+        }
         APIDataExtractor extract = new APIDataExtractor(_text); //Instances an extractor and gives it the API data
         routeLatLongs = new List<Vector2>(extract.Data.RouteLatLongs);//Instances new routeLatLongs list with data from extractor with no reference.
 

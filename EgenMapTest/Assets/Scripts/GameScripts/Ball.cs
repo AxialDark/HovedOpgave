@@ -116,7 +116,7 @@ public class Ball : MonoBehaviour
         holding = false;
         thrown = true;
 
-        Invoke("Reset", 3.0f); // calls the Reset() method after 3 seconds.
+        //Invoke("Reset", 3.0f); // calls the Reset() method after 3 seconds.
     }
 
     /// <summary>
@@ -124,7 +124,7 @@ public class Ball : MonoBehaviour
     /// </summary>
     private void Reset()
     {
-        CancelInvoke();
+        //CancelInvoke();
 
         transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, Camera.main.nearClipPlane * 7.5f));
         newPosition = transform.position;
@@ -149,6 +149,12 @@ public class Ball : MonoBehaviour
         if (_collider.gameObject.tag == "Goal") // If the colliding object is the goal.
         {
             GameManager.Instance.CalculateGoalPoints();
+            GameManager.Instance.AddConsecutiveGoal();
+            Reset();
+        }
+        else if (_collider.gameObject.tag == "Floor") // If the colliding object is the floorplane.
+        {
+            GameManager.Instance.ResetConsecutiveGoals();
             Reset();
         }
     }

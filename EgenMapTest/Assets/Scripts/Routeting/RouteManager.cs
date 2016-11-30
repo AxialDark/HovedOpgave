@@ -21,6 +21,8 @@ public class RouteManager : MonoBehaviour
     public List<GameObject> debugRoutePlaneList = new List<GameObject>();
     private static List<GameLocation> gamelocations = new List<GameLocation>();
 
+    public static List<GameObject> debugViaPoints = new List<GameObject>();
+
     /// <summary>
     /// List of game objects generated, in between points, making out the entire route
     /// </summary>
@@ -50,6 +52,12 @@ public class RouteManager : MonoBehaviour
         {
             EndRoute(); //Makes sure the routes and points are cleaned up
             routeInUse = false;
+
+            #region POINTMANAGER CODE
+            print("Final points: " + PointManager.Instance.CalcEndScore((int)route.Distance)); //SHOULD BE CHANGED
+            PointManager.Instance.Reset();
+            #endregion
+
             route = null;
         }
     }
@@ -144,7 +152,42 @@ public class RouteManager : MonoBehaviour
 
         print("Route Done: Route Distance: " + route.Distance + " meters - Route Time: " + route.EstimatedTime);
         CreateGameLocations();
+
+
+
+        //DEBUG CODE TO SHOW VIA POINTS
+        //Find the tile the player stands in
+        Vector2 vector = GM.LatLonToMeters(route.RouteLatLongs[0].x, route.RouteLatLongs[0].y);
+        Vector2 tile = GM.MetersToTile(vector, 16);
+
+        Vector2 centerInMercator = GM.TileBounds(tile, 16).center; //Finds the center of the tile
+        int index = 1;
+        foreach (Vector2 latLong in route.ViaLatLongs)
+        {
+            GameObject viaPoint = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            viaPoint.name = "Via " + index;
+            viaPoint.transform.SetParent(mapParent);
+
+            vector = GM.LatLonToMeters(latLong.x, latLong.y);
+
+            viaPoint.transform.position = (vector - centerInMercator).ToVector3xz();
+            viaPoint.transform.localScale = new Vector3(7.5f, 50f, 7.5f);
+
+            viaPoint.GetComponent<Renderer>().material = Resources.Load<Material>("DebugViaPoints");
+            Destroy(viaPoint.GetComponent<BoxCollider>());
+
+            debugViaPoints.Add(viaPoint);
+            index++;
+        }
+        //END DEBUG EKSTRA
+
+
+
         routeInUse = true; //Route is now created and in use
+
+        #region POINTMANAGER CODE
+        PointManager.Instance.StartRouteTimer();
+        #endregion
     }
 
     /// <summary>

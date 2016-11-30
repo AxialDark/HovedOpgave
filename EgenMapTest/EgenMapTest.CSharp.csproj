@@ -138,6 +138,7 @@
     <Compile Include="Assets\Scripts\GameType.cs" />
     <Compile Include="Assets\Scripts\MapColorPalet.cs" />
     <Compile Include="Assets\Scripts\MenuScripts\MenuManager.cs" />
+    <Compile Include="Assets\Scripts\PointManager.cs" />
     <Compile Include="Assets\Scripts\RoadFactory.cs" />
     <Compile Include="Assets\Scripts\RoadPolygon.cs" />
     <Compile Include="Assets\Scripts\Routeting\Route.cs" />
