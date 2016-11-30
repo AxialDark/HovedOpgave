@@ -100,6 +100,6 @@ public class UIController : MonoBehaviour
     /// </summary>
     public void ClickEndRoute()
     {
-        RouteManager.EndRoute();
+        RouteManager.Instance.EndRoute();
     }
 }

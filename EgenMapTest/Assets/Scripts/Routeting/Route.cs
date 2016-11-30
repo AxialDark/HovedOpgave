@@ -30,6 +30,9 @@ public class Route {
     private bool dataLoaded;
     private TimeSpan estimatedTime;
     private int zoom = 16;
+    private Vector2 startPosition;
+
+    private RouteLength length;
 
     /// <summary>
     /// Whether the data is loaded from the API or not
@@ -49,8 +52,13 @@ public class Route {
     public TimeSpan EstimatedTime { get { return estimatedTime; } }
 
 
-
+    /// <summary>
+    /// Used for debug purposes
+    /// </summary>
     public List<Vector2> ViaLatLongs { get { return viaLatLongs; } }
+    /// <summary>
+    /// Used for debug purposes
+    /// </summary>
     public List<Vector2> RouteLatLongs { get { return routeLatLongs; } }
 
     /// <summary>
@@ -59,13 +67,17 @@ public class Route {
     /// <param name="_startPos">The position of the user</param>
     /// <param name="_via">List of via points API uses to generate route</param>
     /// <param name="_zoom">The detail level of the GPS</param>
+    /// <param name="_length">The desired length of the route</param>
     /// <returns>A complete route containing all needed information</returns>
-    public Route Initialize(Vector2 _startPos, List<Vector2> _via, int _zoom)
+    public Route Initialize(Vector2 _startPos, List<Vector2> _via, int _zoom, RouteLength _length)
     {
         viaLatLongs = _via;
         zoom = _zoom;
         dataLoaded = false;
         distance = 0;
+
+        length = _length;
+        startPosition = _startPos;
 
         LoadAPIData(_startPos, _via);
 
@@ -95,12 +107,18 @@ public class Route {
         string url = string.Format(apiUrl, startEnd, startEnd, viaFormatedString, routingLanguage, distanceFormat, transportType, routeWeight);
         ObservableWWW.Get(url) //Third party code, meant for making task threaded
             .Subscribe(
-            ConvertAPIData, //succes
-            exp => Debug.Log("Error fetching -> " + url)); //Error
+            ConvertAPIData, FailToGetRouteAPIData);//succes
+            //exp => Debug.Log("Error fetching -> " + url)); //Error
         
-        
-        
-        //ConvertAPIData(_startPos);
+    }
+
+    /// <summary>
+    /// Exeption Handling if failed to get data from api
+    /// </summary>
+    /// <param name="ex">The exeption</param>
+    private void FailToGetRouteAPIData(Exception ex)
+    {
+        Debug.Log("Error getting route - " + ex);
     }
 
     /// <summary>
@@ -138,15 +156,26 @@ public class Route {
         //}
         #endregion
 
-        if (_text.Contains("Error"))
+        if (_text.Contains("Error")) //If response contains errors
         {
             Debug.Log("Shit happende");
 
             //TODO: Switch Direction and try again
-            //Or try again
+            RouteManager.Instance.RecalculateViaPoints(startPosition, length);
+
             return;
         }
+
         APIDataExtractor extract = new APIDataExtractor(_text); //Instances an extractor and gives it the API data
+
+        if (extract.Data.DistanceOfRoute > 1000 * (int)length * 1.2f || extract.Data.DistanceOfRoute < 1000 * (int)length * 0.8f)
+        {
+            //It is too long or to short try again
+            RouteManager.Instance.RecalculateViaPoints(startPosition, length);
+            return;
+        }
+
+
         routeLatLongs = new List<Vector2>(extract.Data.RouteLatLongs);//Instances new routeLatLongs list with data from extractor with no reference.
 
         //Find the tile the player stands in
@@ -168,5 +197,17 @@ public class Route {
 
         dataLoaded = true;
         Debug.Log("Route data loaded");
+    }
+
+    /// <summary>
+    /// Tries to load data from route API again
+    /// </summary>
+    /// <param name="_startPos">The position of the player in the world</param>
+    /// <param name="_via">The via points for the route</param>
+    public void Retry(Vector2 _startPos, List<Vector2> _via)
+    {
+        viaLatLongs = _via;
+
+        LoadAPIData(_startPos, _via);
     }
 }
