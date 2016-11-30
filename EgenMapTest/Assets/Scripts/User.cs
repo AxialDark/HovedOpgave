@@ -115,9 +115,9 @@ public class User : MonoBehaviour {
     /// <param name="other">The detected trigger collider</param>
     private void OnTriggerStay(Collider _other)
     {        
-        if(RouteManager.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Points[1]) //If list contains 2 or more points, update it when colliding
+        if(RouteManager.Instance.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Instance.Points[1]) //If list contains 2 or more points, update it when colliding
         {
-            RouteManager.UpdateRouteForUser();
+            RouteManager.Instance.UpdateRouteForUser();
             print("Collision with RoutePoint");
         }
 
