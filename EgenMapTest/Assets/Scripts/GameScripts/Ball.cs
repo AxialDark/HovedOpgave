@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 /// <summary>
 /// The code in this script is made based on this: https://www.youtube.com/watch?v=wavvtztVK3c&index=11&list=FLHFTwh0AzY5XKPTt5P6dUWw
@@ -150,7 +151,7 @@ public class Ball : MonoBehaviour
         {
             GameManager.Instance.CalculateGoalPoints();
             GameManager.Instance.AddConsecutiveGoal();
-            Invoke("Reset", 1.0f);
+            Invoke("Reset", 0.5f);
         }
         else if (_collider.gameObject.tag == "Floor") // If the colliding object is the floorplane.
         {

@@ -27,6 +27,12 @@ public class GameManager : MonoBehaviour
     private GameObject[] pointerArrows; // 0 = right ; 1 = left
     [SerializeField]
     private GameObject goal;
+
+    [SerializeField]
+    Image throwGoalPanel;
+
+    [SerializeField]
+    Sprite[] throwMissSprites; // 0 = standard ; 1 = goal ; 2 = miss
     #endregion
 
     #region Fields
@@ -38,6 +44,9 @@ public class GameManager : MonoBehaviour
     private int throwTriesCurrent;
     private float directionNumber;
     private Renderer goalRenderer;
+
+    Image[] throwMissIcons;
+    int throwIndex;
     #endregion
 
     /// <summary>
@@ -60,6 +69,9 @@ public class GameManager : MonoBehaviour
         throwTriesCurrent = THROW_TRIES_TOTAL;
 
         goalRenderer = goal.GetComponent<Renderer>();
+
+        throwMissIcons = throwGoalPanel.GetComponentsInChildren<Image>();
+        throwIndex = 1;
     }
 
     /// <summary>
@@ -110,6 +122,9 @@ public class GameManager : MonoBehaviour
     public void AddConsecutiveGoal()
     {
         consecutiveGoalCount++;
+
+        if(throwIndex < 6)
+        ChangeThrowMissIcon(true);
     }
 
     /// <summary>
@@ -118,6 +133,9 @@ public class GameManager : MonoBehaviour
     public void ResetConsecutiveGoals()
     {
         consecutiveGoalCount = 0;
+
+        if(throwIndex < 6)
+        ChangeThrowMissIcon(false);
     }
 
     /// <summary>
@@ -136,6 +154,7 @@ public class GameManager : MonoBehaviour
         PointManager.Instance.AddPoints(point);
         point = 0;
         consecutiveGoalCount = 0;
+        throwIndex = 1;
 
         Scene thisScene = SceneManager.GetActiveScene();
         SceneManager.UnloadScene(thisScene);
@@ -166,5 +185,23 @@ public class GameManager : MonoBehaviour
         {
             return 0f; // In front
         }
+    }
+
+    /// <summary>
+    /// Changes the icons for the throws, based on wether or not a goal was scored.
+    /// </summary>
+    /// <param name="_isGoal">Was a goal scored?</param>
+    private void ChangeThrowMissIcon(bool _isGoal)
+    {
+        if (_isGoal) // If goal.
+        {
+            throwMissIcons[throwIndex].sprite = throwMissSprites[1];
+        }
+        else if (!_isGoal) // If miss.
+        {
+            throwMissIcons[throwIndex].sprite = throwMissSprites[2];
+        }
+
+        throwIndex++;
     }
 }
