@@ -9,12 +9,15 @@ using System;
 /// </summary>
 public class UIController : MonoBehaviour
 {
+    private WorldMap map = null;
 
     private static UIController instance;
     public Button btnStartGame;
     public Image pnlEndRoute;
+    public Image pnlInGameMenu;
     public Button btnDebugStartRoute;
     public Button btnDebugEndRoute;
+    private GameObject refMainScene;
 
     /// <summary>
     /// Unity Singleton
@@ -26,6 +29,32 @@ public class UIController : MonoBehaviour
             if (instance == null) instance = GameObject.Find("UIController").GetComponent<UIController>();
 
             return instance;
+        }
+    }
+
+    public GameObject RefMainScene
+    {
+        get
+        {
+            return refMainScene;
+        }
+
+        set
+        {
+            refMainScene = value;
+        }
+    }
+
+    public WorldMap Map
+    {
+        get
+        {
+            return map;
+        }
+
+        set
+        {
+            map = value;
         }
     }
 
@@ -61,25 +90,26 @@ public class UIController : MonoBehaviour
         _async = SceneManager.LoadSceneAsync(_sceneName, LoadSceneMode.Additive);
         _async.allowSceneActivation = false;
 
-        while (!_async.isDone)
+        while (!_async.isDone) //Keep in leep as long as scene isn't loaded
         {
             yield return null;
-            if (_async.progress >= 0.9f)
+            if (_async.progress >= 0.9f) //W´hen a scene is 90% loaded, it needs allowSceneActivation as true to load the remaining 10%
             {
                 _async.allowSceneActivation = true;
             }
         }
 
         Scene nextScene = SceneManager.GetSceneByName(_sceneName);
-        if (nextScene.IsValid())
+        if (nextScene.IsValid()) //Makes sure it's a valid scene
         {
-            if (nextScene.name == "GameScene")
+            if (nextScene.name == "GameScene") //Is it the game scene that is being loaded?
             {
-                GameObject.FindGameObjectWithTag("AllMainObjects").SetActive(false);
-                btnStartGame.gameObject.SetActive(false);
+                refMainScene = GameObject.FindGameObjectWithTag("AllMainObjects"); //Find the parent to all objects in main scene. Needed when unloading from game scene
+                refMainScene.SetActive(false); //Disable all objects in Main scene
+                btnStartGame.gameObject.SetActive(false); //Hide button
             }
-            Scene activeScene = SceneManager.GetActiveScene();
-            SceneManager.SetActiveScene(nextScene);
+            //Scene activeScene = SceneManager.GetActiveScene();
+            SceneManager.SetActiveScene(nextScene); //Activates the loaded scene
             print("Loaded next scene");
         }
     }
@@ -88,10 +118,26 @@ public class UIController : MonoBehaviour
     /// Button Click Method.
     /// Generates a route
     /// </summary>
-    public void ClickStartRoute()
+    public void ClickStartRoute(int _length)
     {
-        //DebugRouting.RandomRouting(RouteLength.MIDDLE);
-        //DebugRouting.RandomRoute();
+        if (Map == null) return;
+
+        RouteLength length = 0;
+        switch (_length)
+        {
+            case 2:
+                length = RouteLength.SHORT;
+                break;
+            case 5:
+                length = RouteLength.MIDDLE;
+                break;
+            case 10:
+                length = RouteLength.LONG;
+                break;
+        }
+
+        if (length == 0) return;
+        Map.BeginRouteGeneration(length);
     }
 
     /// <summary>

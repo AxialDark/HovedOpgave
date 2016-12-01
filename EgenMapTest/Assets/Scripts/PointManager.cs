@@ -71,7 +71,7 @@ public class PointManager : MonoBehaviour
     {
         int elapsedTimeInMinutes = (int)(timer.ElapsedMilliseconds / 60000);
 
-        routePoint = _routeLengthInMeters / elapsedTimeInMinutes;
+        if(elapsedTimeInMinutes >= 1) routePoint = _routeLengthInMeters / elapsedTimeInMinutes;
         totalPoint += routePoint;
 
         return totalPoint;
