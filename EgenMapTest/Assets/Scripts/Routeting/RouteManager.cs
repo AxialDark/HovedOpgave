@@ -503,4 +503,5 @@ public class RouteManager : MonoBehaviour
         else
             return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y * 0.5f) * distance;
     }
+
 }

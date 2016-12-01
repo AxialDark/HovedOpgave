@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// Class the handles the overall map
@@ -36,6 +37,8 @@ public class WorldMap : MonoBehaviour
 #if UNITY_ANDROID
         StartCoroutine(Init());
 #endif
+
+        UIController.Instance.Map = this;
     }
 
     /// <summary>
@@ -83,6 +86,12 @@ public class WorldMap : MonoBehaviour
             settings.longtitude = locData.longitude;
             tileMan.Initialize(buildFac, roadFac, settings);
         }
+    }
+
+    public void BeginRouteGeneration(RouteLength _routeLength)
+    {
+        List<Vector2> temp = null;
+        GameObject.Find("RouteManager").GetComponent<RouteManager>().InitiateRouteGeneration(new Vector2(settings.latitude, settings.longtitude), temp, settings, _routeLength);
     }
 
     /// <summary>

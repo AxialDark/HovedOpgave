@@ -5,10 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
     #region Singleton
     private static GameManager instance;
-
     public static GameManager Instance
     {
         get
@@ -25,10 +23,8 @@ public class GameManager : MonoBehaviour
     #region Serialized Fields
     [SerializeField]
     private Text pointText;
-
     [SerializeField]
     private GameObject[] pointerArrows; // 0 = right ; 1 = left
-
     [SerializeField]
     private GameObject goal;
     #endregion
@@ -38,12 +34,9 @@ public class GameManager : MonoBehaviour
     private int consecutiveGoalCount;
     private GameType gameType;
     private Ball ball;
-
     private const int THROW_TRIES_TOTAL = 6;
     private int throwTriesCurrent;
-
     private float directionNumber;
-
     private Renderer goalRenderer;
     #endregion
 
@@ -140,15 +133,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void EndGame()
     {
-        #region POINTMANAGER CODE
         PointManager.Instance.AddPoints(point);
-        #endregion
-
         point = 0;
         consecutiveGoalCount = 0;
 
         Scene thisScene = SceneManager.GetActiveScene();
         SceneManager.UnloadScene(thisScene);
+        UIController.Instance.RefMainScene.SetActive(true);
     }
 
     /// <summary>
