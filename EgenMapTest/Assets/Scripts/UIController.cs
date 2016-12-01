@@ -90,7 +90,7 @@ public class UIController : MonoBehaviour
     /// </summary>
     public void ClickStartRoute()
     {
-        DebugRouting.RandomRouting(RouteLength.MIDDLE);
+        //DebugRouting.RandomRouting(RouteLength.MIDDLE);
         //DebugRouting.RandomRoute();
     }
 
