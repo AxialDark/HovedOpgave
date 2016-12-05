@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Helpers;
 using UniRx;
+using System;
 
 /// <summary>
 /// Super class
@@ -113,6 +114,18 @@ public class TileManager : MonoBehaviour
         ObservableWWW.Get(url) //Third party code, meant for making task threaded
             .Subscribe(
             _tile.ConstructTile, //succes
-            exp => Debug.Log("Error fetching -> " + url)); //Error
+            FailToGetDataFromAPI); //Error
+    }
+
+    /// <summary>
+    /// Error handling method when can't get data from mapzen API
+    /// </summary>
+    /// <param name="ex"></param>
+    private void FailToGetDataFromAPI(Exception ex)
+    {
+        ErrorPanel.Instance.ShowError("Failed to load map",
+            "We were unable to load the map or part of the map.\nPlease check your internet connection and try again", ErrorType.COULD_NOT_LOAD_MAP);
+
+        Debug.Log("Error fetching -> " + ex);
     }
 }

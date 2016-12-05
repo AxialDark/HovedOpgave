@@ -148,4 +148,35 @@ public class UIController : MonoBehaviour
     {
         RouteManager.Instance.EndRoute();
     }
+
+
+    /// <summary>
+    /// The GameLocation that the player hit
+    /// </summary>
+    public GameLocation HitLocation { get; private set; }
+
+    /// <summary>
+    /// Set the GameLocation as the HitLocation if null and shows the Start Game button
+    /// </summary>
+    /// <param name="_loc">The GameLocation hit</param>
+    public void HitGameLocation(GameLocation _loc)
+    {
+        if (_loc == HitLocation)
+            btnStartGame.gameObject.SetActive(true);
+
+        if (HitLocation == null && _loc.ViaPoint == RouteManager.Instance.Points[1])
+        {
+            HitLocation = _loc;
+            print("Hit location");
+        }
+    }
+
+    /// <summary>
+    /// Runs when Start Game button is clicked
+    /// </summary>
+    public void OnStartGameClick()
+    {
+        HitLocation.gameObject.SetActive(false);
+        HitLocation = null;
+    }
 }

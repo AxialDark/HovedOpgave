@@ -75,6 +75,7 @@
     <Compile Include="Assets\CameraMove.cs" />
     <Compile Include="Assets\DebugMovement.cs" />
     <Compile Include="Assets\DebugRouting.cs" />
+    <Compile Include="Assets\ErrorPanel.cs" />
     <Compile Include="Assets\GoogleVR\DemoScenes\ControllerDemo\ControllerDebugInfo.cs" />
     <Compile Include="Assets\GoogleVR\DemoScenes\ControllerDemo\ControllerDemoManager.cs" />
     <Compile Include="Assets\GoogleVR\DemoScenes\HeadsetDemo\Teleport.cs" />
