@@ -50,7 +50,7 @@ internal class RoadPolygon : MonoBehaviour
             GameObject roadPlane = Instantiate(Resources.Load<GameObject>(WorldMap.colorPalet + "/RoadQuad")); //Create a road
             roadPlane.GetComponentInChildren<MeshRenderer>().material = Resources.Load<Material>(WorldMap.colorPalet + "/Road"); //Changes material to road material
             roadPlane.transform.position = (_tile + verts[index] + _tile + verts[index - 1]) / 2; //Places the road
-            roadPlane.transform.SetParent(transform, true); //Set's the parent (it looks nice in the inspektor)
+            roadPlane.transform.SetParent(transform, true); //Set's the parent (it looks nice in the inspector)
             Vector3 scale = roadPlane.transform.localScale; //Grab the scale of the road
             scale.z = Vector3.Distance(verts[index], verts[index - 1]) / 10; //Scale it on the z axis
             scale.x = ((float)(int)Type + 1) / 4; //Scale it on the x axis

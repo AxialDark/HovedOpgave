@@ -93,7 +93,7 @@ public class UIController : MonoBehaviour
         while (!_async.isDone) //Keep in leep as long as scene isn't loaded
         {
             yield return null;
-            if (_async.progress >= 0.9f) //W´hen a scene is 90% loaded, it needs allowSceneActivation as true to load the remaining 10%
+            if (_async.progress >= 0.9f) //When a scene is 90% loaded, it needs allowSceneActivation as true to load the remaining 10%
             {
                 _async.allowSceneActivation = true;
             }
@@ -106,7 +106,7 @@ public class UIController : MonoBehaviour
             {
                 refMainScene = GameObject.FindGameObjectWithTag("AllMainObjects"); //Find the parent to all objects in main scene. Needed when unloading from game scene
                 refMainScene.SetActive(false); //Disable all objects in Main scene
-                btnStartGame.gameObject.SetActive(false); //Hide button
+                btnStartGame.gameObject.SetActive(false); //Hide button                
             }
             //Scene activeScene = SceneManager.GetActiveScene();
             SceneManager.SetActiveScene(nextScene); //Activates the loaded scene

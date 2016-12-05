@@ -23,8 +23,6 @@ public class RouteManager : MonoBehaviour
 
     private List<GameObject> routePlanes = new List<GameObject>();
     private List<GameObject> points = new List<GameObject>();
-    public List<GameObject> debugPointList = new List<GameObject>();
-    public List<GameObject> debugRoutePlaneList = new List<GameObject>();
     private List<GameLocation> gamelocations = new List<GameLocation>();
     private List<Vector2> triedDirections = new List<Vector2>();
 
@@ -43,7 +41,6 @@ public class RouteManager : MonoBehaviour
             return instance;
         }
     }
-
 
     public List<GameObject> debugViaPoints = new List<GameObject>();
 
@@ -65,11 +62,6 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-#if UNITY_EDITOR
-        debugPointList = points;
-        debugRoutePlaneList = routePlanes;
-#endif
-
         //If a route exists and it's current in use
         //but it's empty, it means the route is completed by a user
         if (route != null && routeInUse && routePlanes.Count == 0)
@@ -77,11 +69,8 @@ public class RouteManager : MonoBehaviour
             EndRoute(); //Makes sure the routes and points are cleaned up
             routeInUse = false;
 
-            #region POINTMANAGER CODE
             print("Final points: " + PointManager.Instance.CalcEndScore((int)route.Distance)); //SHOULD BE CHANGED
             PointManager.Instance.Reset();
-            #endregion
-
             route = null;
         }
     }
@@ -181,8 +170,6 @@ public class RouteManager : MonoBehaviour
         print("Route Done: Route Distance: " + route.Distance + " meters - Route Time: " + route.EstimatedTime);
         CreateGameLocations();
 
-
-
         //DEBUG CODE TO SHOW VIA POINTS
         //Find the tile the player stands in
         Vector2 vector = GM.LatLonToMeters(route.RouteLatLongs[0].x, route.RouteLatLongs[0].y);
@@ -209,13 +196,9 @@ public class RouteManager : MonoBehaviour
         }
         //END DEBUG EKSTRA
 
-
-
         routeInUse = true; //Route is now created and in use
 
-        #region POINTMANAGER CODE
         PointManager.Instance.StartRouteTimer();
-        #endregion
     }
 
     /// <summary>
@@ -286,7 +269,7 @@ public class RouteManager : MonoBehaviour
             gamelocations.Add(gameLocation);
         }
     }
-    
+
     /// <summary>
     /// Starts the random routing process
     /// </summary>
@@ -498,10 +481,10 @@ public class RouteManager : MonoBehaviour
     /// <returns>Diagonal via point</returns>
     private Vector2 CalcDiagonalPlacement(Vector2 _middelPoint, Vector2 _direction, float distance)
     {
-        if (_direction.x == 0 || _direction.y == 0)
-            return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y) * distance;
-        else
-            return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y * 0.5f) * distance;
+        //if (_direction.x == 0 || _direction.y == 0)
+        //    return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y) * distance;
+        //else
+        return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y) * distance;
     }
 
 }

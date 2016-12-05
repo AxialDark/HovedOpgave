@@ -50,8 +50,6 @@ public class Route {
     /// The estimated time it takes to complete the route
     /// </summary>
     public TimeSpan EstimatedTime { get { return estimatedTime; } }
-
-
     /// <summary>
     /// Used for debug purposes
     /// </summary>
@@ -160,9 +158,7 @@ public class Route {
         {
             Debug.Log("Shit happende");
 
-            //TODO: Switch Direction and try again
             RouteManager.Instance.RecalculateViaPoints(startPosition, length);
-
             return;
         }
 
@@ -174,7 +170,6 @@ public class Route {
             RouteManager.Instance.RecalculateViaPoints(startPosition, length);
             return;
         }
-
 
         routeLatLongs = new List<Vector2>(extract.Data.RouteLatLongs);//Instances new routeLatLongs list with data from extractor with no reference.
 

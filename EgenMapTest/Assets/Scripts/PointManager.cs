@@ -36,12 +36,12 @@ public class PointManager : MonoBehaviour
     /// </summary>
 	private void Awake () 
     {
-        DontDestroyOnLoad(this);
-
         if (GameObject.FindObjectsOfType<PointManager>().Length > 1) //Makes sure that no doublicates of this class is created, because of DontDestroyOnLoad().
         {
             Destroy(gameObject);
         }
+
+        DontDestroyOnLoad(this);
 	}
 
     /// <summary>

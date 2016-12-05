@@ -106,7 +106,7 @@ public class Ball : MonoBehaviour
         float differenceY = (_mousePos.y - lastMouseY) / Screen.height * 100;
         speed = throwSpeed * differenceY;
 
-        float x = (_mousePos.x / Screen.width) - (lastMouseX / Screen.width);
+        float x = (_mousePos.x / Screen.width) - (lastMouseX  / Screen.width);
         x = Mathf.Abs(Input.mousePosition.x - lastMouseX) / Screen.width * 100 * x;
 
         Vector3 direction = new Vector3(x, 0f, 1f);

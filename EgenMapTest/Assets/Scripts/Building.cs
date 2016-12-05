@@ -25,7 +25,7 @@ public class Building : MonoBehaviour
     /// <param name="_settings">The settings for the building</param>
     public void Initialize(List<Vector3> _buildingCorners, string _kind, Settings _settings)
     {
-        landuseKind = string.IsNullOrEmpty(_kind) ? "default" : _kind; //If building foesn't have a kind, give it default material
+        landuseKind = string.IsNullOrEmpty(_kind) ? "default" : _kind; //If building doesn't have a kind, give it default material
         vertices = _buildingCorners;
         GetComponent<MeshFilter>().mesh = CreateMesh(_buildingCorners, _settings); //Creates a mesh for the building
         string path = (WorldMap.colorPalet.ToString() + "/" + landuseKind).ToLower();
