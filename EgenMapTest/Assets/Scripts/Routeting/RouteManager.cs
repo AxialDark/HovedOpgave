@@ -235,15 +235,18 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     public void UpdateRouteForUser()
     {
-        if (routePlanes.Count > 0 && points.Count > 0) //Makes sure outofindex exceptions wont occur
+        if (UIController.Instance.HitLocation == null)
         {
-            Destroy(points[0].gameObject);
-            points.RemoveAt(0);
-            Destroy(routePlanes[0].gameObject);
-            routePlanes.RemoveAt(0);
+            if (routePlanes.Count > 0 && points.Count > 0) //Makes sure outofindex exceptions wont occur
+            {
+                Destroy(points[0].gameObject);
+                points.RemoveAt(0);
+                Destroy(routePlanes[0].gameObject);
+                routePlanes.RemoveAt(0);
 
-            if (routePlanes.Count > 0) //Makes sure outofindex exceptions wont occur
-                routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Makes the next routePlane highlighted
+                if (routePlanes.Count > 0) //Makes sure outofindex exceptions wont occur
+                    routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Makes the next routePlane highlighted
+            }
         }
     }
 
@@ -267,6 +270,10 @@ public class RouteManager : MonoBehaviour
             gameLocation.gameObject.GetComponent<Renderer>().material.color = Color.blue;
             gameLocation.gameObject.GetComponent<Collider>().isTrigger = true;
             gamelocations.Add(gameLocation);
+
+
+            //Adds the routing point to the GameLocation
+            gameLocation.ViaPoint = points[(i - 1) + (indexIncrements * i)];
         }
     }
 
@@ -453,6 +460,9 @@ public class RouteManager : MonoBehaviour
     private void CouldNotFindAnyRoute()
     {
         print("Could not find any route");
+
+        ErrorPanel.Instance.ShowError("Couldn't find a route",
+            "It seems no route was available, for your prefered route length.\nMaybe try another route length, or go to another location and try again", ErrorType.COULD_NOT_FIND_ROUTE);
     }
 
     /// <summary>
