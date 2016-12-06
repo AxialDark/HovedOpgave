@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\AudioManager.cs" />
      <Compile Include="Assets\CameraMove.cs" />
      <Compile Include="Assets\DebugMovement.cs" />
      <Compile Include="Assets\DebugRouting.cs" />
@@ -121,6 +122,7 @@
      <Compile Include="Assets\Scripts\Tile.cs" />
      <Compile Include="Assets\Scripts\TileManager.cs" />
      <Compile Include="Assets\Scripts\UIController.cs" />
+     <Compile Include="Assets\Scripts\UIScripts\Challenge.cs" />
      <Compile Include="Assets\Scripts\UIScripts\MainScene.cs" />
      <Compile Include="Assets\Scripts\UIScripts\Panel_CreateUser.cs" />
      <Compile Include="Assets\Scripts\User.cs" />

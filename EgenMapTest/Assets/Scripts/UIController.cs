@@ -77,7 +77,7 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        //timerText.text = PointManager.Instance.TimeToTimer();
+        timerText.text = PointManager.Instance.TimeToTimer();
     }
 
     /// <summary>
