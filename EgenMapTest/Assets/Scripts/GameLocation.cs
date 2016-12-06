@@ -29,4 +29,12 @@ public class GameLocation : MonoBehaviour
 
         return this;
     }
+
+
+
+
+    /// <summary>
+    /// The point the GameLocations sits on
+    /// </summary>
+    public GameObject ViaPoint { get; set; }
 }

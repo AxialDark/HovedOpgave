@@ -123,7 +123,8 @@ public class User : MonoBehaviour {
 
         if (_other.gameObject.GetComponent<GameLocation>())
         {
-            UIController.Instance.btnStartGame.gameObject.SetActive(true);
+            //UIController.Instance.btnStartGame.gameObject.SetActive(true);
+            UIController.Instance.HitGameLocation(_other.gameObject.GetComponent<GameLocation>());
         }
     }
 
