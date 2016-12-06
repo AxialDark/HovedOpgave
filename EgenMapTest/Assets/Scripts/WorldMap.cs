@@ -88,11 +88,34 @@ public class WorldMap : MonoBehaviour
         }
     }
 
-    public void BeginRouteGeneration(RouteLength _routeLength)
+    /// <summary>
+    /// Begins the process of generating a route via the RouteManager class.
+    /// Use when generating route with the location of the device.
+    /// </summary>
+    /// <param name="_routeLength">The desired lenth of the route</param>
+    /// <param name="_viaPoints">An optional list of via points. Works as "checkpoints" between start and end points in a route</param>
+    public void BeginRouteGeneration(RouteLength _routeLength, List<Vector2> _viaPoints = null)
     {
-        List<Vector2> temp = null;
-        GameObject.Find("RouteManager").GetComponent<RouteManager>().InitiateRouteGeneration(new Vector2(settings.latitude, settings.longtitude), temp, settings, _routeLength);
+        RouteManager.Instance.GetComponent<RouteManager>().InitiateRouteGeneration(new Vector2(settings.latitude, settings.longtitude), _viaPoints, settings, _routeLength);
     }
+
+    /// <summary>
+    /// Begins the process of generating a route via the RouteManager class.
+    /// Use when generating route not based on devices own location (eg. challenge).
+    /// </summary>
+    /// <param name="_routePoints">A list containing all points of a route</param>
+    /// <param name="_routelength">The desired lenth of the route</param>
+    public void BeginRouteGeneration(List<Vector2> _routePoints, RouteLength _routeLength)
+    {
+        List<Vector2> tempViaPoints = _routePoints; //Makes a list we can manipulate
+
+        Vector2 startPoint = _routePoints[0]; //Extracts the start point of route
+
+        tempViaPoints.RemoveAt(0); //Removes the start point making it a list of via points
+
+        RouteManager.Instance.GetComponent<RouteManager>().InitiateRouteGeneration(startPoint, tempViaPoints, settings, _routeLength, true);
+    }
+  
 
     /// <summary>
     /// Settings for the map

@@ -15,7 +15,8 @@ using System.Linq;
 /// 
 /// TODO: Error Handle when a via point is ignored.
 /// </summary>
-public class Route {
+public class Route
+{
 
     private readonly string distanceFormat = "M";
     private readonly string apiUrl = "http://openls.geog.uni-heidelberg.de/route?api_key=ee0b8233adff52ce9fd6afc2a2859a28&start={0}&end={1}&via={2}&lang={3}&distunit={4}&routepref={5}&weighting={6}&avoidAreas=&useTMC=false&noMotorways=true&noTollways=false&noUnpavedroads=&noSteps=&noFerries=true&instructions=false";
@@ -31,7 +32,7 @@ public class Route {
     private TimeSpan estimatedTime;
     private int zoom = 16;
     private Vector2 startPosition;
-
+    private bool ignoreRetry;
     private RouteLength length;
 
     /// <summary>
@@ -66,16 +67,17 @@ public class Route {
     /// <param name="_via">List of via points API uses to generate route</param>
     /// <param name="_zoom">The detail level of the GPS</param>
     /// <param name="_length">The desired length of the route</param>
+    /// <param name="_ignoreRetry">Should the route reload from the API of the length doesn't meet the desired lenggth.</param>
     /// <returns>A complete route containing all needed information</returns>
-    public Route Initialize(Vector2 _startPos, List<Vector2> _via, int _zoom, RouteLength _length)
+    public Route Initialize(Vector2 _startPos, List<Vector2> _via, int _zoom, RouteLength _length, bool _ignoreRetry)
     {
         viaLatLongs = _via;
         zoom = _zoom;
         dataLoaded = false;
         distance = 0;
-
         length = _length;
         startPosition = _startPos;
+        ignoreRetry = _ignoreRetry;
 
         LoadAPIData(_startPos, _via);
 
@@ -106,8 +108,8 @@ public class Route {
         ObservableWWW.Get(url) //Third party code, meant for making task threaded
             .Subscribe(
             ConvertAPIData, FailToGetRouteAPIData);//succes
-            //exp => Debug.Log("Error fetching -> " + url)); //Error
-        
+                                                   //exp => Debug.Log("Error fetching -> " + url)); //Error
+
     }
 
     /// <summary>
@@ -160,13 +162,14 @@ public class Route {
         {
             Debug.Log("Shit happende");
 
-            RouteManager.Instance.RecalculateViaPoints(startPosition, length);
+            if(!ignoreRetry)
+                RouteManager.Instance.RecalculateViaPoints(startPosition, length);
             return;
         }
 
         APIDataExtractor extract = new APIDataExtractor(_text); //Instances an extractor and gives it the API data
 
-        if (extract.Data.DistanceOfRoute > 1000 * (int)length * 1.2f || extract.Data.DistanceOfRoute < 1000 * (int)length * 0.8f)
+        if (!ignoreRetry && (extract.Data.DistanceOfRoute > 1000 * (int)length * 1.2f || extract.Data.DistanceOfRoute < 1000 * (int)length * 0.8f))
         {
             //It is too long or to short try again
             RouteManager.Instance.RecalculateViaPoints(startPosition, length);
@@ -190,7 +193,7 @@ public class Route {
         }
 
         distance = extract.Data.DistanceOfRoute;
-        estimatedTime = new TimeSpan(0,0,extract.Data.TotalTimeInSeconds);
+        estimatedTime = new TimeSpan(0, 0, extract.Data.TotalTimeInSeconds);
 
         dataLoaded = true;
         Debug.Log("Route data loaded");
