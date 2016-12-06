@@ -82,7 +82,8 @@ public class RouteManager : MonoBehaviour
     /// <param name="_via">List of via points API uses to generate route</param>
     /// <param name="_settings">WorldMap settings</param>
     /// <param name="_routeLength">The desired length of the route to generate</param>
-    public void InitiateRouteGeneration(Vector2 _myLatLong, List<Vector2> _via, WorldMap.Settings _settings, RouteLength _routeLength)
+    /// <param name="_ignoreRetry">Optinal: Should the route reload from the API of the length doesn't meet the desired lenggth. Set as false as standard</param>
+    public void InitiateRouteGeneration(Vector2 _myLatLong, List<Vector2> _via, WorldMap.Settings _settings, RouteLength _routeLength, bool _ignoreRetry = false)
     {
         if (!routeInUse) //Makes the generation of a route impossible if one is already in use.
         {
@@ -93,10 +94,10 @@ public class RouteManager : MonoBehaviour
                 mapParent = GameObject.Find("Map").transform;
             }
 
-            if (_via == null) //Debug code
+            if (_via == null) //TODO: Handle appropiately. Might happen outside debugging
                 _via = RandomRouting(_routeLength, new Vector2(_settings.latitude, _settings.longtitude)); //Creates a random route
 
-            route = new Route().Initialize(_myLatLong, _via, _settings.detailLevel, _routeLength); //Make the route
+            route = new Route().Initialize(_myLatLong, _via, _settings.detailLevel, _routeLength, _ignoreRetry); //Make the route
 
             StartCoroutine(RouteToMap()); //Starts generating the route in scene based on data from the Route class
         }
