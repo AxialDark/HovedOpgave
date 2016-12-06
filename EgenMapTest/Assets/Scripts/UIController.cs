@@ -19,6 +19,9 @@ public class UIController : MonoBehaviour
     public Button btnDebugEndRoute;
     private GameObject refMainScene;
 
+    [SerializeField]
+    private Text timerText;
+
     /// <summary>
     /// Unity Singleton
     /// </summary>
@@ -58,6 +61,8 @@ public class UIController : MonoBehaviour
         }
     }
 
+
+
     /// <summary>
     /// Unity method called every time game object is enabled
     /// </summary>
@@ -67,6 +72,11 @@ public class UIController : MonoBehaviour
         btnDebugStartRoute.gameObject.SetActive(true);
         btnDebugEndRoute.gameObject.SetActive(true);
 #endif
+    }
+
+    private void Update()
+    {
+        timerText.text = PointManager.Instance.TimeToTimer();
     }
 
     /// <summary>
@@ -148,7 +158,6 @@ public class UIController : MonoBehaviour
     {
         RouteManager.Instance.EndRoute();
     }
-
 
     /// <summary>
     /// The GameLocation that the player hit

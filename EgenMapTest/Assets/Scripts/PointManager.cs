@@ -29,12 +29,14 @@ public class PointManager : MonoBehaviour
     private int routePoint;
 
     private Stopwatch timer;
+    private long millisecond;
+    private int second, minute, hour;
     #endregion
 
     /// <summary>
     /// Unity Method, called in the beginning, before Start().
     /// </summary>
-	private void Awake () 
+    private void Awake()
     {
         if (GameObject.FindObjectsOfType<PointManager>().Length > 1) //Makes sure that no doublicates of this class is created, because of DontDestroyOnLoad().
         {
@@ -42,7 +44,7 @@ public class PointManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(this);
-	}
+    }
 
     /// <summary>
     /// Instantiates the Stopwatch, while also starting the timer.
@@ -71,7 +73,7 @@ public class PointManager : MonoBehaviour
     {
         int elapsedTimeInMinutes = (int)(timer.ElapsedMilliseconds / 60000);
 
-        if(elapsedTimeInMinutes >= 1) routePoint = _routeLengthInMeters / elapsedTimeInMinutes;
+        if (elapsedTimeInMinutes >= 1) routePoint = _routeLengthInMeters / elapsedTimeInMinutes;
         totalPoint += routePoint;
 
         return totalPoint;
@@ -85,5 +87,21 @@ public class PointManager : MonoBehaviour
         timer.Reset();
         totalPoint = 0;
         routePoint = 0;
+    }
+
+    public string TimeToTimer()
+    {
+        if (timer != null)
+        {
+            millisecond = timer.ElapsedMilliseconds;
+
+            second = (int)(millisecond / 1000);
+            minute = Mathf.FloorToInt((float)second / 60.0f);
+            second = second % 60;
+            hour = Mathf.FloorToInt((float)minute / 60.0f);
+            minute = minute % 60;
+        }
+
+        return hour + " : " + minute + " : " + second;
     }
 }
