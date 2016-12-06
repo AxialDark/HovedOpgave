@@ -77,7 +77,7 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        timerText.text = PointManager.Instance.TimeToTimer();
+        //timerText.text = PointManager.Instance.TimeToTimer();
     }
 
     /// <summary>
@@ -178,10 +178,11 @@ public class UIController : MonoBehaviour
                 Map.BeginRouteGeneration(challenge.routePoints, challenge.routelength);
 
                 pnlChallengeMenu.gameObject.SetActive(false);
-                pnlRouteButtons.gameObject.SetActive(false);           
+                pnlRouteButtons.gameObject.SetActive(false);
                 break;
             }
-        }        
+        }
+    }      
     /// The GameLocation that the player hit
     /// </summary>
     public GameLocation HitLocation { get; private set; }
