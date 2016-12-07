@@ -290,11 +290,12 @@ public class RouteManager : MonoBehaviour
     public List<Vector2> RandomRouting(RouteLength _length, Vector2 _startPos)
     {
         //return FourPoints(_length, _settings);
-        return StarPoints(_length, _startPos);
+        //return StarPoints(_length, _startPos);
+        return PacmanPoints(_length, _startPos);
     }
 
     /// <summary>
-    /// Generates random route based on eight via points in a star formation
+    /// Generates a random route based on four via points in a square formation
     /// </summary>
     /// <param name="_length">The desired length of the route</param>
     /// <param name="_startPos">The players position in lat/long</param>
@@ -307,7 +308,7 @@ public class RouteManager : MonoBehaviour
 
         Vector2 dir = Vector2.zero; //Standard direction
 
-        if (triedDirections.Count == 4) //If tried in all directions
+        if (triedDirections.Count == 8) //If tried in all directions
         {
             return null; //Can't be done
         }
@@ -345,7 +346,7 @@ public class RouteManager : MonoBehaviour
         fourPointVia.Add(viaPoint);
 
         //RIGHT
-        otherDir *= -1; //We need to go to right side know
+        otherDir *= -1; //We need to go to right side now
         viaPoint = new Vector2(middlePoint.x + ((rnd / 4) * otherDir.y), middlePoint.y + ((rnd / 2) * otherDir.x)); //Via point on the right side relative to start position and direction
 
         fourPointVia.Add(viaPoint);
@@ -354,7 +355,7 @@ public class RouteManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Starts the random routing process
+    /// Generates random route based on eight via points in a star formation
     /// </summary>
     /// <param name="_length">The desired length of the route</param>
     /// <param name="_startPos">The players position in lat/long</param>
@@ -439,6 +440,61 @@ public class RouteManager : MonoBehaviour
         starPointVia.Add(botRight);
 
         return starPointVia; //Return list
+    }
+
+    private List<Vector2> PacmanPoints(RouteLength _length, Vector2 _startPos)
+    {
+        List<Vector2> pacmanPointVia = new List<Vector2>();
+
+        float rnd = (float)_length * 3f * 0.0016f; //Distance between via points
+
+        Vector2 dir = Vector2.zero; //Standard direction
+
+        if (triedDirections.Count == 8) //If tried in all directions
+        {
+            return null; //Can't be done
+        }
+
+        do //Find a random direction that haven't been tried before
+        {
+            dir = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
+        } while (dir == Vector2.zero || triedDirections.Contains(dir));
+
+        triedDirections.Add(dir); //Add direction to tried list
+
+        Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
+
+        //INFO:
+        //The x and y coordinates of our points are latitude and longtitude
+        //Which means that it's inverse of a normal coordinate system
+        //Where y (west - east) is length and x (north - south) is height
+
+        //LAT/LONG INFO
+        //Latitude goes from -90 to 90 which gives 180
+        //Longtitude goes from -180 to 180 which gives 360
+        //Therefore we need to either double the length of latitude 
+        //Or half the longtitude when converting to coordinates in our app
+        //And in calculations below we decided to take half of the longtitude
+
+        //LEFT
+        Vector2 viaPoint = new Vector2(_startPos.x + ((rnd / 4) * otherDir.y), _startPos.y + ((rnd / 2) * otherDir.x)); //Via point on the left side relative to start position and direction
+        pacmanPointVia.Add(viaPoint);
+
+        //UP
+        viaPoint = new Vector2(_startPos.x + ((rnd / 4) * dir.y), _startPos.y + ((rnd / 2) * dir.x)); //Via point straight ahead of start position
+        pacmanPointVia.Add(viaPoint);
+
+        //RIGHT
+        otherDir *= -1; //We need to go to right side now
+        viaPoint = new Vector2(_startPos.x + ((rnd / 4) * otherDir.y), _startPos.y + ((rnd / 2) * otherDir.x)); //Via point on the right side relative to start position and direction
+        pacmanPointVia.Add(viaPoint);
+
+        //Down
+        dir *= -1;
+        viaPoint = new Vector2(_startPos.x + ((rnd / 4) * dir.y), _startPos.y + ((rnd / 2) * dir.x)); //Via point behind the start position
+        pacmanPointVia.Add(viaPoint);
+
+        return pacmanPointVia;
     }
 
     /// <summary>

@@ -17,4 +17,13 @@ public class BasketBall : Ball {
     {
         base.Update();
 	}
+
+    /// <summary>
+    /// Method that runs whenever the object collides.
+    /// </summary>
+    /// <param name="_collision">Object that the object collides with.</param>
+    private void OnCollisionEnter(Collision _collision)
+    {
+        AudioManager.Instance.PlayEffect("BallBounce");
+    }
 }

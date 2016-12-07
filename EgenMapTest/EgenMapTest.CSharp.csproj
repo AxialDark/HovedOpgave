@@ -129,6 +129,7 @@
     <Compile Include="Assets\PhoneDebugMovement.cs" />
     <Compile Include="Assets\Scripts\APIData Classes\APIData.cs" />
     <Compile Include="Assets\Scripts\APIData Classes\APIDataExtractor.cs" />
+    <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Building.cs" />
     <Compile Include="Assets\Scripts\BuildingFactory.cs" />
     <Compile Include="Assets\Scripts\DynamicTileManager.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Assets\Scripts\GameScripts\BallTempScript.cs" />
     <Compile Include="Assets\Scripts\GameScripts\BasketBall.cs" />
     <Compile Include="Assets\Scripts\GameScripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GameScripts\TestBall.cs" />
     <Compile Include="Assets\Scripts\GameScripts\WorldView.cs" />
     <Compile Include="Assets\Scripts\GameType.cs" />
     <Compile Include="Assets\Scripts\MapColorPalet.cs" />
