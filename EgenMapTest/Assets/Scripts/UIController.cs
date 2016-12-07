@@ -15,9 +15,15 @@ public class UIController : MonoBehaviour
     public Button btnStartGame;
     public Image pnlEndRoute;
     public Image pnlInGameMenu;
+    public Image pnlChallengeMenu;
+    public Image pnlRouteButtons;
+    private GameObject refMainScene;
+
     public Button btnDebugStartRoute;
     public Button btnDebugEndRoute;
-    private GameObject refMainScene;
+
+    [SerializeField]
+    private Text timerText;
 
     /// <summary>
     /// Unity Singleton
@@ -67,6 +73,11 @@ public class UIController : MonoBehaviour
         btnDebugStartRoute.gameObject.SetActive(true);
         btnDebugEndRoute.gameObject.SetActive(true);
 #endif
+    }
+
+    private void Update()
+    {
+        timerText.text = PointManager.Instance.TimeToTimer();
     }
 
     /// <summary>
@@ -149,8 +160,29 @@ public class UIController : MonoBehaviour
         RouteManager.Instance.EndRoute();
     }
 
-
     /// <summary>
+    /// Button Click Method.
+    /// Confirms a selected challenge and start the process of generating the attached route
+    /// </summary>
+    /// <param name="obj">A scroll view's Content</param>
+    public void ClickConfirmChallenge(GameObject obj)
+    {
+        Toggle[] toggles = obj.GetComponentsInChildren<Toggle>();
+
+        for (int i = 0; i < toggles.Length; i++)
+        {
+            if (toggles[i].isOn)
+            {
+                Challenge challenge = toggles[i].GetComponentInChildren<Challenge>();
+
+                Map.BeginRouteGeneration(challenge.routePoints, challenge.routelength);
+
+                pnlChallengeMenu.gameObject.SetActive(false);
+                pnlRouteButtons.gameObject.SetActive(false);
+                break;
+            }
+        }
+    }      
     /// The GameLocation that the player hit
     /// </summary>
     public GameLocation HitLocation { get; private set; }
