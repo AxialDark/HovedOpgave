@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
 
         throwTriesCurrent = THROW_TRIES_TOTAL;
 
-        goalRenderer = goal.GetComponent<Renderer>();
+        goalRenderer = goal.GetComponent<MeshRenderer>();
 
         throwMissIcons = throwGoalPanel.GetComponentsInChildren<Image>();
         throwIndex = 1;

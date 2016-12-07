@@ -3,10 +3,72 @@ using System.Collections;
 using UnityEngine.UI;
 
 /// <summary>
+/// Enumeration to test different throw heights
+/// </summary>
+public enum BallUpSpeedTest { EQUAL, LIMIT_400, PROPERTIONAL_TO_LIMIT_400, SIXTY_DEGREES}
+
+
+/// <summary>
 /// The code in this script is made based on this: https://www.youtube.com/watch?v=wavvtztVK3c&index=11&list=FLHFTwh0AzY5XKPTt5P6dUWw
 /// </summary>
 public class Ball : MonoBehaviour
 {
+
+    [SerializeField]
+    private BallUpSpeedTest test;
+    private const float LIMIT = 400f;
+
+    private void SpeedTest(Vector3 _direction)
+    {
+        if (test == BallUpSpeedTest.LIMIT_400)
+        {
+            float upSpeed = (speed >= LIMIT) ? LIMIT : speed;
+
+            print("Speed: " + speed + "\n" + "Up Speed: " + upSpeed);
+
+            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+        }
+        else if (test == BallUpSpeedTest.EQUAL)
+        {
+            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * speed)); // Adds force in a direction to the ball.
+
+            print("Speed: " + speed + "\n" + "Up Speed: " + speed);
+        }
+        else if (test == BallUpSpeedTest.PROPERTIONAL_TO_LIMIT_400)
+        {
+
+            float diffFromLimit = (speed > LIMIT) ? speed - LIMIT : -1;
+            float upSpeed;
+
+            if (diffFromLimit == -1)
+                upSpeed = speed;
+            else
+            {
+                upSpeed = (((diffFromLimit / 10f) / 100f) + 1) * LIMIT;
+            }
+
+            print("Speed: " + speed + "\n" + "Up Speed: " + upSpeed);
+
+            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+
+        }
+        else if (test == BallUpSpeedTest.SIXTY_DEGREES)
+        {
+            speed = (speed > 1300 ? 1300 : speed);
+
+            float speedX = speed * 0.6f;
+            float speedY = speed * 0.4f;
+
+            print("Speed: " + speed + "\nSpeed X: " + speedX + "\n" + "Speed Y: " + speedY);
+
+            rigidBody.AddForce((_direction * speedX / 2f) + (Vector3.up * speedY)); // Adds force in a direction to the ball.
+
+
+        }
+    }
+
+
+
     #region Fields
     [SerializeField]
     private float throwSpeed;
@@ -112,7 +174,9 @@ public class Ball : MonoBehaviour
         Vector3 direction = new Vector3(x, 0f, 1f);
         direction = Camera.main.transform.TransformDirection(direction);
 
-        rigidBody.AddForce((direction * speed / 2f) + (Vector3.up * speed)); // Adds force in a direction to the ball.
+        //Debug
+        SpeedTest(direction);
+        //rigidBody.AddForce((direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
 
         holding = false;
         thrown = true;
