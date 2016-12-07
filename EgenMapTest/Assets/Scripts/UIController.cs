@@ -18,12 +18,13 @@ public class UIController : MonoBehaviour
     public Image pnlChallengeMenu;
     public Image pnlRouteButtons;
     private GameObject refMainScene;
+    [SerializeField]
+    private Text timerText;
 
     public Button btnDebugStartRoute;
     public Button btnDebugEndRoute;
+    public GameObject DebugPhoneMovement;
 
-    [SerializeField]
-    private Text timerText;
 
     /// <summary>
     /// Unity Singleton
@@ -70,8 +71,8 @@ public class UIController : MonoBehaviour
     void OnEnable()
     {
 #if UNITY_ANDROID
-        btnDebugStartRoute.gameObject.SetActive(true);
         btnDebugEndRoute.gameObject.SetActive(true);
+        DebugPhoneMovement.gameObject.SetActive(true);
 #endif
     }
 
