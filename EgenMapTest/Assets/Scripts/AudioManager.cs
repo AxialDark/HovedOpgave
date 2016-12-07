@@ -1,8 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
+    [SerializeField]
+    private Image[] soundSprites;
+    private bool isMuted = false;
+    [SerializeField]
+    private Image buttonSprite;
+
+    private void OnMuteClick()
+    {
+
+    }
+
+
+
+
+    #region SHOULD BE IN UICONTROLLER CLASS
+    private void OnGameTemaChange(int val)
+    {
+
+    }
+
+    private void OnAcceptNewTemaClick()
+    {
+
+    }
+
+    private void ChangeGameTema(MapColorPalet newPalet)
+    {
+
+    }
+    #endregion
+
+
+
 
     #region Singleton
     private static AudioManager instance;
@@ -34,6 +68,7 @@ public class AudioManager : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
     {
+
         outOfFocus = false;
 	}
 	
