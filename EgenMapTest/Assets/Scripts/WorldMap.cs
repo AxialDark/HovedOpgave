@@ -27,11 +27,11 @@ public class WorldMap : MonoBehaviour
         buildFac = GetComponentInChildren<BuildingFactory>();
         tileMan = GetComponent<TileManager>();
 
-#if UNITY_EDITOR
-        tileMan.Initialize(buildFac, roadFac, settings);
         if (settings.mapColorPalet != colorPalet)
             colorPalet = settings.mapColorPalet;
 
+#if UNITY_EDITOR
+        tileMan.Initialize(buildFac, roadFac, settings);
         new GameObject("DebugRouting").AddComponent<DebugRouting>().Initialize(settings);
 #endif
 #if UNITY_ANDROID
@@ -53,7 +53,7 @@ public class WorldMap : MonoBehaviour
 
 
         // Start service before querying location
-        Input.location.Start();
+        Input.location.Start(5, 5);
 
         // Wait until service initializes
         int maxWait = 20;
@@ -136,6 +136,6 @@ public class WorldMap : MonoBehaviour
         [SerializeField]
         public bool loadImages = false;
         [SerializeField]
-        public MapColorPalet mapColorPalet;
+        public MapColorPalet mapColorPalet = MapColorPalet.DARK;
     }
 }

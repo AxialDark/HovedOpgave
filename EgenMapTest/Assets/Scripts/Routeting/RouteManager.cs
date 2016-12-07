@@ -147,11 +147,12 @@ public class RouteManager : MonoBehaviour
             point.transform.position = new Vector3(route.RouteInMercCoords[i - 1].x, 10, route.RouteInMercCoords[i - 1].y);
             point.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
             point.GetComponent<Collider>().isTrigger = true;
+            point.GetComponent<SphereCollider>().radius = 1.75f;
             points.Add(point);
 
             //If it's the last run-through of the for-loop, add another sphere.
             //This is done because we start with i = 1, but the condition is still set as i < list.Count.
-            //We can't change it to i <= list.Count, as we use both i-1 and i+1 within this loop, and that would create an exception
+            //We can't change it to i <= list.Count, as the list is 0 indexed and would create an exception
             //This means that we have to add the following code to finish the route properly. 
             //Else we have a routePlane connecting to only 1 point, making the route impossible to complete
             if (i == route.RouteInMercCoords.Count - 1)
@@ -256,7 +257,8 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     private void CreateGameLocations()
     {
-        int numberOfLocations = Mathf.FloorToInt(route.Distance / 1000); //Calculates the numbers of locations needed (1 per whole kilometer)
+        int numberOfLocations = Mathf.FloorToInt(route.Distance / 1000) * (int)0.5f; //Calculates the numbers of locations needed
+        numberOfLocations = (numberOfLocations == 0) ? 1 : numberOfLocations; //If the number of locations equals 0, set it to one. Otherwise do nothing.
         print("Number of game locations: " + numberOfLocations);
         int indexIncrements = route.RouteInMercCoords.Count / (numberOfLocations + 1); //Calculates the increment needed for the location to be spread out fairly evenly
 
@@ -270,6 +272,7 @@ public class RouteManager : MonoBehaviour
             gameLocation.gameObject.transform.localScale = new Vector3(14, 14, 14);
             gameLocation.gameObject.GetComponent<Renderer>().material.color = Color.blue;
             gameLocation.gameObject.GetComponent<Collider>().isTrigger = true;
+            gameLocation.gameObject.GetComponent<SphereCollider>().radius = 1.75f;
             gamelocations.Add(gameLocation);
 
 

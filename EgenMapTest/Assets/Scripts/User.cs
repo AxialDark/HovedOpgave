@@ -12,7 +12,7 @@ public class User : MonoBehaviour {
     private Vector2 centerInMerc;
     private Vector2 lastLatLong;
     private Vector3 newPosition;
-    private float speed = 200;
+    private float speed = 100;
 
     /// <summary>
     /// Singleton in Unity
@@ -70,16 +70,7 @@ public class User : MonoBehaviour {
     {
         if (Application.platform == RuntimePlatform.WindowsEditor) return;
 
-        SmoothMovement();
-
-        LocationInfo info = Input.location.lastData; //Collects GPS data from device
-        if (new Vector2(info.latitude, info.longitude) == LastLatLong) return; //return if the same as last update
-
-        Vector2 currentLatLong = new Vector2(info.latitude, info.longitude); //Create vector using the new data
-
-        Vector2 vector = GM.LatLonToMeters(currentLatLong); //Convert LatLong to mercator coordinates
-        newPosition = (vector - centerInMerc).ToVector3xz(); //Creates new position relative to the center of the tile
-        lastLatLong = currentLatLong; //Updates last LatLong
+        Invoke("UpdatePosition", 1);
     }
 
     /// <summary>
@@ -108,9 +99,32 @@ public class User : MonoBehaviour {
         gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, newPosition, speed * Time.deltaTime);
     }
 
+    private void UpdatePosition()
+    {
+        CancelInvoke();
+
+        LocationInfo info = Input.location.lastData; //Collects GPS data from device
+        if (new Vector2(info.latitude, info.longitude) == LastLatLong) return; //return if the same as last update
+
+        Vector2 currentLatLong = new Vector2(info.latitude, info.longitude); //Create vector using the new data
+
+        Vector2 vector = GM.LatLonToMeters(currentLatLong); //Convert LatLong to mercator coordinates
+        newPosition = (vector - centerInMerc).ToVector3xz(); //Creates new position relative to the center of the tile
+        SmoothMovement();
+        lastLatLong = currentLatLong; //Updates last LatLong
+    }
+
+    private void OnTriggerEnter(Collider _other)
+    {
+        if (_other.gameObject.GetComponent<GameLocation>())
+        {
+            if (Application.platform == RuntimePlatform.Android) Handheld.Vibrate();
+        }
+    }
+
     /// <summary>
-    /// Unity method
-    /// Detects collisions with triggers at run time
+    /// Unity method.
+    /// Detects collisions with triggers at run time.
     /// </summary>
     /// <param name="other">The detected trigger collider</param>
     private void OnTriggerStay(Collider _other)
@@ -129,8 +143,8 @@ public class User : MonoBehaviour {
     }
 
     /// <summary>
-    /// Unity method
-    /// Detects when a tho colliders exit each other
+    /// Unity method.
+    /// Detects when a tho colliders exit each other.
     /// </summary>
     /// <param name="_other">The detected trigger collider</param>
     private void OnTriggerExit(Collider _other)
