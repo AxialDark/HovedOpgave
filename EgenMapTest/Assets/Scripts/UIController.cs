@@ -35,6 +35,8 @@ public class UIController : MonoBehaviour
     private Text timerText;
     [SerializeField]
     private Text EndStatsText;
+    [SerializeField]
+    private Button profileButton;
 
     public Button btnDebugStartRoute;
     public Button btnDebugEndRoute;
@@ -238,5 +240,13 @@ public class UIController : MonoBehaviour
     public void ChangeEndStatsText(string _endStatText)
     {
         EndStatsText.text = _endStatText;
+    }
+
+    /// <summary>
+    /// Activates the profile button
+    /// </summary>
+    public void ActivateProfileButton()
+    {
+        profileButton.gameObject.SetActive(true);
     }
 }
