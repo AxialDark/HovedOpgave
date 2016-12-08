@@ -33,6 +33,8 @@ public class UIController : MonoBehaviour
     private GameObject refMainScene;
     [SerializeField]
     private Text timerText;
+    [SerializeField]
+    private Text EndStatsText;
 
     public Button btnDebugStartRoute;
     public Button btnDebugEndRoute;
@@ -89,6 +91,9 @@ public class UIController : MonoBehaviour
 #endif
     }
 
+    /// <summary>
+    /// Unity method, runs once every frame
+    /// </summary>
     private void Update()
     {
         timerText.text = PointManager.Instance.TimeToTimer();
@@ -224,5 +229,14 @@ public class UIController : MonoBehaviour
     {
         HitLocation.gameObject.SetActive(false);
         HitLocation = null;
+    }
+
+    /// <summary>
+    /// Changes the end route statistic text
+    /// </summary>
+    /// <param name="_endStatText">The text to change the endStatText with</param>
+    public void ChangeEndStatsText(string _endStatText)
+    {
+        EndStatsText.text = _endStatText;
     }
 }

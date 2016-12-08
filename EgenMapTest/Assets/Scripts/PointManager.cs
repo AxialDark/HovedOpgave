@@ -80,6 +80,21 @@ public class PointManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Creates the text for the end route panel.
+    /// </summary>
+    /// <param name="_routeLengthInMeters">Length of the route in meters</param>
+    public void MakeEndStats(int _routeLengthInMeters)
+    {
+        string endStatsText =
+            "Time: " + TimeToTimer() + "\n" +
+            "Route length: " + _routeLengthInMeters + " meters\n" +
+            "Total points: " + CalcEndScore(_routeLengthInMeters) + "\n" +
+            "Points from games: " + (totalPoint - routePoint);
+
+        UIController.Instance.ChangeEndStatsText(endStatsText);
+    }
+
+    /// <summary>
     /// Resets the timer, as well as the scores.
     /// </summary>
     public void Reset()
@@ -89,6 +104,10 @@ public class PointManager : MonoBehaviour
         routePoint = 0;
     }
 
+    /// <summary>
+    /// Returns the elapsed time as a string, formatted in hours, minutes and seconds
+    /// </summary>
+    /// <returns>Elapsed time</returns>
     public string TimeToTimer()
     {
         if (timer != null)
