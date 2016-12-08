@@ -24,7 +24,7 @@ public class RouteManager : MonoBehaviour
     private List<GameObject> routePlanes = new List<GameObject>();
     private List<GameObject> points = new List<GameObject>();
     private List<GameLocation> gamelocations = new List<GameLocation>();
-    private List<Vector2> triedDirections = new List<Vector2>();
+    private List<Vector2> directions = new List<Vector2>();
 
     /// <summary>
     /// Singleton of RouteManager
@@ -87,7 +87,16 @@ public class RouteManager : MonoBehaviour
     {
         if (!routeInUse) //Makes the generation of a route impossible if one is already in use.
         {
-            triedDirections.Clear(); //Clears all tried directions when making a new route
+            directions.Clear(); // Clear the leftover directions
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    if (!(x == 0 && y == 0))
+                        directions.Add(new Vector2(x, y)); // Adds the directions
+                }
+            }
+
             print("Initiating Generation");
             if (mapParent == null)
             {
@@ -308,17 +317,15 @@ public class RouteManager : MonoBehaviour
 
         Vector2 dir = Vector2.zero; //Standard direction
 
-        if (triedDirections.Count == 8) //If tried in all directions
+        if (directions.Count <= 0) // If tried in all directions
         {
-            return null; //Can't be done
+            return null; // Can't be done
         }
 
-        do //Find a random direction that haven't been tried before
-        {
-            dir = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
-        } while (dir == Vector2.zero || triedDirections.Contains(dir));
+        int randomIndex = Random.Range(0, directions.Count);
 
-        triedDirections.Add(dir); //Add direction to tried list
+        dir = directions[randomIndex];
+        directions.RemoveAt(randomIndex); // So that it won't test the same direction twice.
 
         Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
 
@@ -369,21 +376,17 @@ public class RouteManager : MonoBehaviour
 
         Vector2 dir = Vector2.zero; //Standard direction
 
-        if (triedDirections.Count == 8) //If tried all eight directions
+        if (directions.Count <= 0) // If tried in all directions
         {
-            return null; //Can't be done
+            return null; // Can't be done
         }
 
-        do //Find a random direction that haven't been tried before
-        {
-            dir = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
-        } while (dir == Vector2.zero || triedDirections.Contains(dir));
+        int randomIndex = Random.Range(0, directions.Count);
 
-        triedDirections.Add(dir); //Add direction to tried list
+        dir = directions[randomIndex];
+        directions.RemoveAt(randomIndex); // So that it won't test the same direction twice.
 
-        print("Direction = " + dir);
-
-        Vector2 otherDir = FindTheOtherDirection(dir); //Finds the perpendicular direction
+        Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
 
         //INFO:
         //The x and y coordinates of our points are latitude and longtitude
@@ -442,6 +445,12 @@ public class RouteManager : MonoBehaviour
         return starPointVia; //Return list
     }
 
+    /// <summary>
+    /// Generates random route based on five via points in a pacman like formation.
+    /// </summary>
+    /// <param name="_length">The desired length of the route</param>
+    /// <param name="_startPos">The players position in lat/long</param>
+    /// <returns>Via points for route</returns>
     private List<Vector2> PacmanPoints(RouteLength _length, Vector2 _startPos)
     {
         List<Vector2> pacmanPointVia = new List<Vector2>();
@@ -450,17 +459,15 @@ public class RouteManager : MonoBehaviour
 
         Vector2 dir = Vector2.zero; //Standard direction
 
-        if (triedDirections.Count == 8) //If tried in all directions
+        if (directions.Count <= 0) // If tried in all directions
         {
-            return null; //Can't be done
+            return null; // Can't be done
         }
 
-        do //Find a random direction that haven't been tried before
-        {
-            dir = new Vector2(Random.Range(-1, 2), Random.Range(-1, 2));
-        } while (dir == Vector2.zero || triedDirections.Contains(dir));
+        int randomIndex = Random.Range(0, directions.Count);
 
-        triedDirections.Add(dir); //Add direction to tried list
+        dir = directions[randomIndex];
+        directions.RemoveAt(randomIndex); // So that it won't test the same direction twice.
 
         Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
 
