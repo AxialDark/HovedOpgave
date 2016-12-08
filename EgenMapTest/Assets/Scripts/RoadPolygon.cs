@@ -20,8 +20,15 @@ public enum RoadType
 /// Road is made based on data from mapzen
 /// </summary>
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
-internal class RoadPolygon : MonoBehaviour
+public class RoadPolygon : MonoBehaviour
 {
+    /// <summary>
+    /// List of renderes for all of the road parts
+    /// </summary>
+    public List<Renderer> MyRenderes { get; private set; }
+
+
+
     /// <summary>
     /// The ID for the road
     /// </summary>
@@ -41,6 +48,7 @@ internal class RoadPolygon : MonoBehaviour
     /// <param name="_kind">What kind of road is it</param>
     public void Initialize(string _id, Vector3 _tile, List<Vector3> _verts, string _kind)
     {
+        MyRenderes = new List<Renderer>();
         ID = _id;
         Type = _kind.ToRoadType();
         verts = _verts;
@@ -48,7 +56,13 @@ internal class RoadPolygon : MonoBehaviour
         for (int index = 1; index < verts.Count; index++) //Runs through all vertices for the road
         {
             GameObject roadPlane = Instantiate(Resources.Load<GameObject>(WorldMap.colorPalet + "/RoadQuad")); //Create a road
-            roadPlane.GetComponentInChildren<MeshRenderer>().material = Resources.Load<Material>(WorldMap.colorPalet + "/Road"); //Changes material to road material
+
+            MeshRenderer rend = roadPlane.GetComponentInChildren<MeshRenderer>();
+            MyRenderes.Add(rend);
+            rend.material = Resources.Load<Material>(WorldMap.colorPalet + "/Road"); //Changes material to road material
+
+
+
             roadPlane.transform.position = (_tile + verts[index] + _tile + verts[index - 1]) / 2; //Places the road
             roadPlane.transform.SetParent(transform, true); //Set's the parent (it looks nice in the inspector)
             Vector3 scale = roadPlane.transform.localScale; //Grab the scale of the road

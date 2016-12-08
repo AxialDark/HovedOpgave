@@ -10,6 +10,10 @@ using System.Linq;
 /// </summary>
 public class Tile : MonoBehaviour
 {
+    public Renderer myRend;
+
+
+
 
     public string mapImageBaseUrl = "http://b.tile.openstreetmap.org/";
 
@@ -83,6 +87,8 @@ public class Tile : MonoBehaviour
                     x.LoadImageIntoTexture((Texture2D)rend.material.mainTexture);
                 });
             }
+
+            myRend = rend;
 
             StartCoroutine(CreateBuildings(mapData["buildings"], settings.TileCenter)); //Creates buildings
             StartCoroutine(CreateRoads(mapData["roads"], settings.TileCenter));

@@ -12,6 +12,10 @@ using System;
 public class TileManager : MonoBehaviour
 { //Is gonna be a superclass later
 
+    public Dictionary<Vector2, Tile>.ValueCollection AllTiles { get { return tiles.Values; } }
+
+
+
     private readonly string mapzenURL = "https://tile.mapzen.com/mapzen/vector/v1/{0}/{1}/{2}/{3}.{4}?api_key={5}"; //Changed from tut
     private readonly string mapzenKey = "mapzen-ncia6gL";
     private readonly string mapzenLayer = "buildings,roads";

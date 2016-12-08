@@ -12,6 +12,16 @@ using System.Linq;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Building : MonoBehaviour
 {
+    /// <summary>
+    /// The Building's rendere
+    /// </summary>
+    public MeshRenderer myRendere { get; private set; }
+    /// <summary>
+    /// Returns the landusekind as lowercase
+    /// </summary>
+    public string LanduseKind { get { return landuseKind.ToLower(); } }
+
+
     private List<Vector3> vertices;
 
     public string landuseKind;
@@ -29,7 +39,9 @@ public class Building : MonoBehaviour
         vertices = _buildingCorners;
         GetComponent<MeshFilter>().mesh = CreateMesh(_buildingCorners, _settings); //Creates a mesh for the building
         string path = (WorldMap.colorPalet.ToString() + "/" + landuseKind).ToLower();
-        GetComponent<MeshRenderer>().material = Resources.Load<Material>(path); //Gives building material depending on type of building
+
+        myRendere = GetComponent<MeshRenderer>();
+        myRendere.material = Resources.Load<Material>(path); //Gives building material depending on type of building
 
         //print(landuseKind);
     }

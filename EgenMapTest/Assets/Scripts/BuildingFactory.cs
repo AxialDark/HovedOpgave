@@ -9,6 +9,12 @@ using System.Linq;
 /// Keeps track of all buildings created
 /// </summary>
 public class BuildingFactory : MonoBehaviour {
+    /// <summary>
+    /// Returns all the buildings in Building Dictionary
+    /// </summary>
+    public Dictionary<Vector3, Building>.ValueCollection AllBuildings { get { return Buildings.Values; } }
+
+
 
     [SerializeField]
     private Building.Settings settings;

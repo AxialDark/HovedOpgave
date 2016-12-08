@@ -9,6 +9,20 @@ using Assets.Helpers;
 public class RoadFactory : MonoBehaviour
 {
     /// <summary>
+    /// A list of all the roads
+    /// </summary>
+    public List<RoadPolygon> MyRoads { get; private set; }
+
+    /// <summary>
+    /// Unity method is run at the beginning
+    /// </summary>
+    private void Start()
+    {
+        MyRoads = new List<RoadPolygon>();
+    }
+
+
+    /// <summary>
     /// Creates a road on the map
     /// </summary>
     /// <param name="_tileMercPos">The XY coordinates of the tile</param>
@@ -61,6 +75,9 @@ public class RoadFactory : MonoBehaviour
     private void CreateRoadSegment(Transform _tileTransform, int _index, JSONObject _geo, List<Vector3> _roadEnds)
     {
         RoadPolygon m = new GameObject("Road" + _index).AddComponent<RoadPolygon>(); //Creates a part of the road
+
+        MyRoads.Add(m);
+
         m.transform.SetParent(_tileTransform, true); //Set the tile as the road segments parent
         try
         {

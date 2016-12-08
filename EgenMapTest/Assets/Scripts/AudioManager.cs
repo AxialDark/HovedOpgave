@@ -1,39 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField]
-    private Image[] soundSprites;
+    private Sprite[] soundSprites;
+    [SerializeField]
     private bool isMuted = false;
     [SerializeField]
     private Image buttonSprite;
 
-    private void OnMuteClick()
+    /// <summary>
+    /// Mute button event method when button is clicked
+    /// </summary>
+    public void OnMuteClick()
     {
+        isMuted = !isMuted;
+        buttonSprite.sprite = soundSprites[Convert.ToInt32(isMuted)];
 
+        MuteSound(isMuted);
     }
 
-
-
-
-    #region SHOULD BE IN UICONTROLLER CLASS
-    private void OnGameTemaChange(int val)
+    /// <summary>
+    /// Mutes the sound
+    /// </summary>
+    /// <param name="_mute">Should it be muted</param>
+    private void MuteSound(bool _mute)
     {
-
+        effectPlayer.mute = _mute;
     }
-
-    private void OnAcceptNewTemaClick()
-    {
-
-    }
-
-    private void ChangeGameTema(MapColorPalet newPalet)
-    {
-
-    }
-    #endregion
 
 
 
@@ -65,18 +62,18 @@ public class AudioManager : MonoBehaviour
 
     private bool outOfFocus;
 
-	// Use this for initialization
-	void Awake ()
+    // Use this for initialization
+    void Awake()
     {
-
+        buttonSprite.sprite = soundSprites[0];
         outOfFocus = false;
-	}
-	
-	// Update is called once per frame
-	void Update () 
+    }
+
+    // Update is called once per frame
+    void Update()
     {
 
-	}
+    }
 
     /// <summary>
     /// Plays an effect with delay
