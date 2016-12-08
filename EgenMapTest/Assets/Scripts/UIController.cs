@@ -85,7 +85,7 @@ public class UIController : MonoBehaviour
     {
 #if UNITY_ANDROID
         btnDebugEndRoute.gameObject.SetActive(true);
-        DebugPhoneMovement.gameObject.SetActive(true);
+        //DebugPhoneMovement.gameObject.SetActive(true);
 #endif
     }
 

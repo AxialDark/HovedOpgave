@@ -16,6 +16,7 @@ public class WorldMap : MonoBehaviour
     public void ChangeColorTheme(MapColorPalet _palet)
     {
         settings.mapColorPalet = _palet;
+        colorPalet = _palet;
 
         foreach (Tile tile in tileMan.AllTiles)
         {

@@ -299,8 +299,8 @@ public class RouteManager : MonoBehaviour
     public List<Vector2> RandomRouting(RouteLength _length, Vector2 _startPos)
     {
         //return FourPoints(_length, _settings);
-        //return StarPoints(_length, _startPos);
-        return PacmanPoints(_length, _startPos);
+        return StarPoints(_length, _startPos);
+        //return PacmanPoints(_length, _startPos);
     }
 
     /// <summary>
