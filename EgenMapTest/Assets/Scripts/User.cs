@@ -6,13 +6,13 @@ using UnityEngine.UI;
 /// <summary>
 /// Singleton class of the user in game
 /// </summary>
-public class User : MonoBehaviour {
+public class User : MonoBehaviour
+{
 
     private static User instance;
     private Vector2 centerInMerc;
     private Vector2 lastLatLong;
     private Vector3 newPosition;
-    private float speed = 100;
 
     /// <summary>
     /// Singleton in Unity
@@ -21,7 +21,7 @@ public class User : MonoBehaviour {
     {
         get
         {
-           if(instance == null)
+            if (instance == null)
             {
                 instance = CreateUserObject();
             }
@@ -70,7 +70,7 @@ public class User : MonoBehaviour {
     {
         if (Application.platform == RuntimePlatform.WindowsEditor) return;
 
-        Invoke("UpdatePosition", 1);
+        Invoke("UpdatePosition", 2); //Updates the users position every indicated interval in seconds
     }
 
     /// <summary>
@@ -90,30 +90,52 @@ public class User : MonoBehaviour {
     }
 
     /// <summary>
-    /// Makes the movement between last position and new position smooth
+    /// Updates the users position on the GPS using GPS data.
     /// </summary>
-    private void SmoothMovement()
-    {
-        if (newPosition == null) return;
-
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, newPosition, speed * Time.deltaTime);
-    }
-
     private void UpdatePosition()
     {
         CancelInvoke();
 
-        LocationInfo info = Input.location.lastData; //Collects GPS data from device
-        if (new Vector2(info.latitude, info.longitude) == LastLatLong) return; //return if the same as last update
+        if (Input.location.status == LocationServiceStatus.Running)
+        {
+            LocationInfo info = Input.location.lastData; //Collects GPS data from device
+            if (new Vector2(info.latitude, info.longitude) == LastLatLong) return; //return if the same as last update
 
-        Vector2 currentLatLong = new Vector2(info.latitude, info.longitude); //Create vector using the new data
+            Vector2 currentLatLong = new Vector2(info.latitude, info.longitude); //Create vector using the new data
 
-        Vector2 vector = GM.LatLonToMeters(currentLatLong); //Convert LatLong to mercator coordinates
-        newPosition = (vector - centerInMerc).ToVector3xz(); //Creates new position relative to the center of the tile
-        SmoothMovement();
-        lastLatLong = currentLatLong; //Updates last LatLong
+            Vector2 vector = GM.LatLonToMeters(currentLatLong); //Convert LatLong to mercator coordinates
+            newPosition = (vector - centerInMerc).ToVector3xz(); //Creates new position relative to the center of the tile
+            StartCoroutine(SmoothMovement(2));
+            lastLatLong = currentLatLong; //Updates last LatLong
+        }
+        else
+        {
+            ErrorPanel.Instance.ShowError("GPS connection lost.", "You no longer have a GPS connection", ErrorType.GPS_STATE_NOT_RUNNING);
+        }
+
     }
 
+    /// <summary>
+    /// Makes the movement between last position and new position smooth
+    /// <param name="value">The time it should take to move to the new position</param>
+    /// </summary>
+    private IEnumerator SmoothMovement(float value)
+    {
+        float rate = 1.0f / value;
+        float t = 0.0f;
+        while (t < 1.0)
+        {
+            t += Time.deltaTime * rate;
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Mathf.SmoothStep(0.0f, 1.0f, t));
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// Unity Method.
+    /// Detects when colliders enters each other.
+    /// </summary>
+    /// <param name="_other"></param>
     private void OnTriggerEnter(Collider _other)
     {
         if (_other.gameObject.GetComponent<GameLocation>())
@@ -124,12 +146,12 @@ public class User : MonoBehaviour {
 
     /// <summary>
     /// Unity method.
-    /// Detects collisions with triggers at run time.
+    /// Continuously detect when colliders stay within each other.
     /// </summary>
     /// <param name="other">The detected trigger collider</param>
     private void OnTriggerStay(Collider _other)
-    {        
-        if(RouteManager.Instance.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Instance.Points[1]) //If list contains 2 or more points, update it when colliding
+    {
+        if (RouteManager.Instance.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Instance.Points[1]) //If list contains 2 or more points, update it when colliding
         {
             RouteManager.Instance.UpdateRouteForUser();
             print("Collision with RoutePoint");
@@ -144,14 +166,14 @@ public class User : MonoBehaviour {
 
     /// <summary>
     /// Unity method.
-    /// Detects when a tho colliders exit each other.
+    /// Detects when colliders exit each other.
     /// </summary>
     /// <param name="_other">The detected trigger collider</param>
     private void OnTriggerExit(Collider _other)
     {
         if (_other.gameObject.GetComponent<GameLocation>())
         {
-            UIController.Instance.btnStartGame.gameObject.SetActive(false); 
+            UIController.Instance.btnStartGame.gameObject.SetActive(false);
         }
     }
 }

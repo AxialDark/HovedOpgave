@@ -5,7 +5,12 @@ using UnityEngine.UI;
 /// <summary>
 /// Enumeration depicting the type of error that can occur
 /// </summary>
-public enum ErrorType { NONE, COULD_NOT_FIND_ROUTE, COULD_NOT_LOAD_MAP, COULD_NOT_LOAD_ROUTE}
+public enum ErrorType {
+    NONE,
+    COULD_NOT_FIND_ROUTE,
+    COULD_NOT_LOAD_MAP,
+    COULD_NOT_LOAD_ROUTE,
+    GPS_STATE_NOT_RUNNING }
 
 /// <summary>
 /// Class handling the error window show to the user when using the application
