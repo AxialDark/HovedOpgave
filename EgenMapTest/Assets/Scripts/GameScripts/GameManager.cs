@@ -157,6 +157,8 @@ public class GameManager : MonoBehaviour
         consecutiveGoalCount = 0;
         throwIndex = 1;
 
+        UIController.Instance.ActivateProfileButton();
+
         Scene thisScene = SceneManager.GetActiveScene();
         SceneManager.UnloadScene(thisScene);
         UIController.Instance.RefMainScene.SetActive(true);

@@ -69,7 +69,8 @@ public class RouteManager : MonoBehaviour
             EndRoute(); //Makes sure the routes and points are cleaned up
             routeInUse = false;
 
-            print("Final points: " + PointManager.Instance.CalcEndScore((int)route.Distance)); //SHOULD BE CHANGED
+            PointManager.Instance.MakeEndStats((int)route.Distance); //Calculates the final score, and adds the necessary text to the end route panel.
+
             PointManager.Instance.Reset();
             route = null;
         }
