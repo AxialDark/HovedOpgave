@@ -17,63 +17,6 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private BallUpSpeedTest test;
     private const float LIMIT = 400f;
-
-    private void SpeedTest(Vector3 _direction)
-    {
-        print("Holdtime: " + holdTime);
-
-        if (test == BallUpSpeedTest.LIMIT_400)
-        {
-            float upSpeed = (speed >= LIMIT) ? LIMIT : speed;
-
-            print("Speed: " + speed + "\n" + "Up Speed: " + upSpeed);
-
-            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
-        }
-        else if (test == BallUpSpeedTest.EQUAL)
-        {
-            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * speed)); // Adds force in a direction to the ball.
-
-            print("Speed: " + speed + "\n" + "Up Speed: " + speed);
-        }
-        else if (test == BallUpSpeedTest.PROPERTIONAL_TO_LIMIT_400)
-        {
-
-            float diffFromLimit = (speed > LIMIT) ? speed - LIMIT : -1;
-            float upSpeed;
-
-            if (diffFromLimit == -1)
-                upSpeed = speed;
-            else
-            {
-                upSpeed = (((diffFromLimit / 10f) / 100f) + 1) * LIMIT;
-            }
-
-            print("Speed: " + speed + "\n" + "Up Speed: " + upSpeed);
-
-            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
-
-        }
-        else if (test == BallUpSpeedTest.SIXTY_DEGREES)
-        {
-            speed = (speed > 1300 ? 1300 : speed);
-
-            float speedX = speed * 0.6f;
-            float speedY = speed * 0.4f;
-
-            print("Speed: " + speed + "\nSpeed X: " + speedX + "\n" + "Speed Y: " + speedY);
-
-            rigidBody.AddForce((_direction * speedX / 2f) + (Vector3.up * speedY)); // Adds force in a direction to the ball.
-
-
-        }
-    }
-
-    public void TestOnValue(int newVal)
-    {
-        test = (BallUpSpeedTest)newVal;
-    }
-
     private Vector2 startHoldPos;
     private Vector2 lastCheckStillPos;
     private Vector2 lastStillPos;
@@ -208,7 +151,7 @@ public class Ball : MonoBehaviour
     /// Handles what happens when the ball is thrown.
     /// </summary>
     /// <param name="_mousePos">The mouse current position as this method is called.</param>
-    protected virtual void Throwball(Vector3 _mousePos)
+    private void Throwball(Vector3 _mousePos)
     {
         #region old
         //rigidBody.useGravity = true; // The ball is now affected by gravity.
@@ -250,6 +193,62 @@ public class Ball : MonoBehaviour
 
         holding = false;
         thrown = true;
+    }
+
+    private void SpeedTest(Vector3 _direction)
+    {
+        print("Holdtime: " + holdTime);
+
+        if (test == BallUpSpeedTest.LIMIT_400)
+        {
+            float upSpeed = (speed >= LIMIT) ? LIMIT : speed;
+
+            print("Speed: " + speed + "\n" + "Up Speed: " + upSpeed);
+
+            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+        }
+        else if (test == BallUpSpeedTest.EQUAL)
+        {
+            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * speed)); // Adds force in a direction to the ball.
+
+            print("Speed: " + speed + "\n" + "Up Speed: " + speed);
+        }
+        else if (test == BallUpSpeedTest.PROPERTIONAL_TO_LIMIT_400)
+        {
+
+            float diffFromLimit = (speed > LIMIT) ? speed - LIMIT : -1;
+            float upSpeed;
+
+            if (diffFromLimit == -1)
+                upSpeed = speed;
+            else
+            {
+                upSpeed = (((diffFromLimit / 10f) / 100f) + 1) * LIMIT;
+            }
+
+            print("Speed: " + speed + "\n" + "Up Speed: " + upSpeed);
+
+            rigidBody.AddForce((_direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+
+        }
+        else if (test == BallUpSpeedTest.SIXTY_DEGREES)
+        {
+            speed = (speed > 1300 ? 1300 : speed);
+
+            float speedX = speed * 0.6f;
+            float speedY = speed * 0.4f;
+
+            print("Speed: " + speed + "\nSpeed X: " + speedX + "\n" + "Speed Y: " + speedY);
+
+            rigidBody.AddForce((_direction * speedX / 2f) + (Vector3.up * speedY)); // Adds force in a direction to the ball.
+
+
+        }
+    }
+
+    public void TestOnValue(int newVal)
+    {
+        test = (BallUpSpeedTest)newVal;
     }
 
     /// <summary>
