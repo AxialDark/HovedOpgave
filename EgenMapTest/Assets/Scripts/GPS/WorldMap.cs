@@ -20,19 +20,19 @@ public class WorldMap : MonoBehaviour
 
         foreach (Tile tile in tileMan.AllTiles)
         {
-            tile.myRend.material = Resources.Load<Material>(settings.mapColorPalet + "/Ground");
+            tile.myRend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Ground");
         }
 
         foreach (Building building in buildFac.AllBuildings)
         {
-            building.myRendere.material = Resources.Load<Material>(settings.mapColorPalet + "/" + building.LanduseKind);
+            building.myRendere.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/" + building.LanduseKind);
         }
 
         foreach (RoadPolygon m in roadFac.MyRoads)
         {
             foreach (Renderer rend in m.MyRenderes)
             {
-                rend.material = Resources.Load<Material>(settings.mapColorPalet + "/Road");
+                rend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Road");
             }
         }
     }

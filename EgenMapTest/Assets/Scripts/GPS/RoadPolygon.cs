@@ -55,11 +55,11 @@ public class RoadPolygon : MonoBehaviour
 
         for (int index = 1; index < verts.Count; index++) //Runs through all vertices for the road
         {
-            GameObject roadPlane = Instantiate(Resources.Load<GameObject>(WorldMap.colorPalet + "/RoadQuad")); //Create a road
+            GameObject roadPlane = Instantiate(Resources.Load<GameObject>("Prefabs/RoadQuad")); //Create a road
 
             MeshRenderer rend = roadPlane.GetComponentInChildren<MeshRenderer>();
             MyRenderes.Add(rend);
-            rend.material = Resources.Load<Material>(WorldMap.colorPalet + "/Road"); //Changes material to road material
+            rend.material = Resources.Load<Material>("Map Themes/" + WorldMap.colorPalet + "/Road"); //Changes material to road material
 
 
 

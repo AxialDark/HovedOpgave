@@ -38,7 +38,7 @@ public class Building : MonoBehaviour
         landuseKind = string.IsNullOrEmpty(_kind) ? "default" : _kind; //If building doesn't have a kind, give it default material
         vertices = _buildingCorners;
         GetComponent<MeshFilter>().mesh = CreateMesh(_buildingCorners, _settings); //Creates a mesh for the building
-        string path = (WorldMap.colorPalet.ToString() + "/" + landuseKind).ToLower();
+        string path = ("Map Themes/" + WorldMap.colorPalet.ToString() + "/" + landuseKind).ToLower();
 
         myRendere = GetComponent<MeshRenderer>();
         myRendere.material = Resources.Load<Material>(path); //Gives building material depending on type of building
