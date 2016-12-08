@@ -1,8 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
+    [SerializeField]
+    private Sprite[] soundSprites;
+    [SerializeField]
+    private bool isMuted = false;
+    [SerializeField]
+    private Image buttonSprite;
+
+    /// <summary>
+    /// Mute button event method when button is clicked
+    /// </summary>
+    public void OnMuteClick()
+    {
+        isMuted = !isMuted;
+        buttonSprite.sprite = soundSprites[Convert.ToInt32(isMuted)];
+
+        MuteSound(isMuted);
+    }
+
+    /// <summary>
+    /// Mutes the sound
+    /// </summary>
+    /// <param name="_mute">Should it be muted</param>
+    private void MuteSound(bool _mute)
+    {
+        effectPlayer.mute = _mute;
+    }
+
+
+
 
     #region Singleton
     private static AudioManager instance;
@@ -31,17 +62,18 @@ public class AudioManager : MonoBehaviour
 
     private bool outOfFocus;
 
-	// Use this for initialization
-	void Awake ()
+    // Use this for initialization
+    void Awake()
     {
+        buttonSprite.sprite = soundSprites[0];
         outOfFocus = false;
-	}
-	
-	// Update is called once per frame
-	void Update () 
+    }
+
+    // Update is called once per frame
+    void Update()
     {
 
-	}
+    }
 
     /// <summary>
     /// Plays an effect with delay

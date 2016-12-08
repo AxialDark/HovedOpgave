@@ -9,6 +9,19 @@ using System;
 /// </summary>
 public class UIController : MonoBehaviour
 {
+    /// <summary>
+    /// Theme dropdown event method when choosing another color theme
+    /// </summary>
+    /// <param name="_val"></param>
+    public void OnColorTemaChange(int _val)
+    {
+        if (map != null)
+        {
+            map.ChangeColorTheme((MapColorPalet)_val);
+        }
+    }
+
+
     private WorldMap map = null;
 
     private static UIController instance;
@@ -72,7 +85,7 @@ public class UIController : MonoBehaviour
     {
 #if UNITY_ANDROID
         btnDebugEndRoute.gameObject.SetActive(true);
-        DebugPhoneMovement.gameObject.SetActive(true);
+        //DebugPhoneMovement.gameObject.SetActive(true);
 #endif
     }
 
