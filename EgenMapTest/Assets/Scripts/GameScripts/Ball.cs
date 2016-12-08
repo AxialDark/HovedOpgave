@@ -20,6 +20,8 @@ public class Ball : MonoBehaviour
 
     private void SpeedTest(Vector3 _direction)
     {
+        print("Holdtime: " + holdTime);
+
         if (test == BallUpSpeedTest.LIMIT_400)
         {
             float upSpeed = (speed >= LIMIT) ? LIMIT : speed;
@@ -67,7 +69,17 @@ public class Ball : MonoBehaviour
         }
     }
 
+    public void TestOnValue(int newVal)
+    {
+        test = (BallUpSpeedTest)newVal;
+    }
 
+    private Vector2 startHoldPos;
+    private Vector2 lastCheckStillPos;
+    private Vector2 lastStillPos;
+    private float mouseStillTime = 0;
+    private float delay = 0;
+    private float holdTime = 0;
 
     #region Fields
     [SerializeField]
@@ -136,24 +148,59 @@ public class Ball : MonoBehaviour
             {
                 if (hit.transform == transform) // Is the object hit by the raycast, this object?
                 {
+                    startHoldPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                    lastStillPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+                    holdTime = 0;
+
                     holding = true; // The player is now holding the ball.
                     transform.SetParent(null); // The ball is no longer locked to the Camera.
                 }
             }
         }
 
-        if (Input.GetMouseButtonUp(0)) // When the mouse/finger is released from the screen.
+        if (Input.GetMouseButtonUp(0) && holding) // When the mouse/finger is released from the screen.
         {
             if (lastMouseY < Input.mousePosition.y) // If the finger/mouse moved up on the screen, as it released. This is so you can't throw down.
             {
                 Throwball(Input.mousePosition); //Ball is thrown.
+
+                startHoldPos = Vector2.zero;
             }
         }
 
-        if (Input.GetMouseButton(0)) // As long as the "mouse is clicked / finger is touching the screen".
+        if (Input.GetMouseButton(0) && holding) // As long as the "mouse is clicked / finger is touching the screen".
         {
+            if (lastMouseX == Input.mousePosition.x && lastMouseY == Input.mousePosition.y && delay > 0.5f)
+            {
+                print("In place");
+                delay = 0;
+
+                lastCheckStillPos = new Vector2(lastMouseX, lastMouseY);
+            }
+
             lastMouseX = Input.mousePosition.x; // Used in calculating the direction and speed of the throw.
             lastMouseY = Input.mousePosition.y; // Ditto.
+
+            delay += Time.deltaTime;
+            holdTime += Time.deltaTime;
+
+            if (new Vector2(lastMouseX, lastMouseY) == lastCheckStillPos)
+            {
+                print("It checks out");
+                mouseStillTime += Time.deltaTime;
+            }
+
+            if (mouseStillTime > 0.5f)
+            {
+                print("New start pos");
+                startHoldPos = lastCheckStillPos;
+                lastStillPos = lastCheckStillPos;
+                lastCheckStillPos = Vector2.zero;
+                mouseStillTime = 0;
+                holdTime = 0;
+
+                print("StartPos: " + startHoldPos + " - " + "lastStillPos: " + lastStillPos);
+            }
         }
     }
 
@@ -163,13 +210,36 @@ public class Ball : MonoBehaviour
     /// <param name="_mousePos">The mouse current position as this method is called.</param>
     protected virtual void Throwball(Vector3 _mousePos)
     {
+        #region old
+        //rigidBody.useGravity = true; // The ball is now affected by gravity.
+
+        //float differenceY = (_mousePos.y - lastMouseY) / Screen.height * 100;
+        //speed = throwSpeed * differenceY;
+
+        //float x = (_mousePos.x / Screen.width) - (lastMouseX  / Screen.width);
+        //x = Mathf.Abs(Input.mousePosition.x - lastMouseX) / Screen.width * 100 * x;
+
+        //Vector3 direction = new Vector3(x, 0f, 1f);
+        //direction = Camera.main.transform.TransformDirection(direction);
+
+        ////Debug
+        //SpeedTest(direction);
+        ////rigidBody.AddForce((direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+
+        //holding = false;
+        //thrown = true;
+
+        ////Invoke("Reset", 3.0f); // calls the Reset() method after 3 seconds.
+        #endregion
+
         rigidBody.useGravity = true; // The ball is now affected by gravity.
 
-        float differenceY = (_mousePos.y - lastMouseY) / Screen.height * 100;
-        speed = throwSpeed * differenceY;
+        float differenceY = (_mousePos.y - startHoldPos.y) / Screen.height * 100;
+        //speed = throwSpeed * differenceY;
+        speed = throwSpeed * differenceY * (1 + (1 - (holdTime > 1 ? 1 : holdTime)));
 
-        float x = (_mousePos.x / Screen.width) - (lastMouseX  / Screen.width);
-        x = Mathf.Abs(Input.mousePosition.x - lastMouseX) / Screen.width * 100 * x;
+        float x = (_mousePos.x / Screen.width) - (startHoldPos.x / Screen.width);
+        x = Mathf.Abs(Input.mousePosition.x - startHoldPos.x) / Screen.width * 100 * x;
 
         Vector3 direction = new Vector3(x, 0f, 1f);
         direction = Camera.main.transform.TransformDirection(direction);
@@ -180,8 +250,6 @@ public class Ball : MonoBehaviour
 
         holding = false;
         thrown = true;
-
-        //Invoke("Reset", 3.0f); // calls the Reset() method after 3 seconds.
     }
 
     /// <summary>
