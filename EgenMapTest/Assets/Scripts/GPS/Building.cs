@@ -12,6 +12,10 @@ using System.Linq;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class Building : MonoBehaviour
 {
+    private List<Vector3> vertices;
+    public string landuseKind;
+    public string name;
+
     /// <summary>
     /// The Building's rendere
     /// </summary>
@@ -20,12 +24,6 @@ public class Building : MonoBehaviour
     /// Returns the landusekind as lowercase
     /// </summary>
     public string LanduseKind { get { return landuseKind.ToLower(); } }
-
-
-    private List<Vector3> vertices;
-
-    public string landuseKind;
-    public string name;
 
     /// <summary>
     /// Initializes the building

@@ -10,13 +10,8 @@ using System;
 /// Manages all tiles.
 /// </summary>
 public class TileManager : MonoBehaviour
-{ //Is gonna be a superclass later
-
-    public Dictionary<Vector2, Tile>.ValueCollection AllTiles { get { return tiles.Values; } }
-
-
-
-    private readonly string mapzenURL = "https://tile.mapzen.com/mapzen/vector/v1/{0}/{1}/{2}/{3}.{4}?api_key={5}"; //Changed from tut
+{ 
+        private readonly string mapzenURL = "https://tile.mapzen.com/mapzen/vector/v1/{0}/{1}/{2}/{3}.{4}?api_key={5}"; //Changed from tut
     private readonly string mapzenKey = "mapzen-ncia6gL";
     private readonly string mapzenLayer = "buildings,roads";
     private readonly string mapzenFormat = "json";
@@ -32,6 +27,10 @@ public class TileManager : MonoBehaviour
     protected Vector2 centerTMS; //TMS (Tile Map Service)
     protected Vector2 centerInMercator; //This is distance (meter) in mercator
 
+    /// <summary>
+    /// Returns all tiles from tile dictionary
+    /// </summary>
+    public Dictionary<Vector2, Tile>.ValueCollection AllTiles { get { return tiles.Values; } }
 
     /// <summary>
     /// Initialize fields
@@ -125,11 +124,11 @@ public class TileManager : MonoBehaviour
     /// Error handling method when can't get data from mapzen API
     /// </summary>
     /// <param name="ex"></param>
-    private void FailToGetDataFromAPI(Exception ex)
+    private void FailToGetDataFromAPI(Exception _ex)
     {
         ErrorPanel.Instance.ShowError("Failed to load map",
             "We were unable to load the map or part of the map.\nPlease check your internet connection and try again", ErrorType.COULD_NOT_LOAD_MAP);
 
-        Debug.Log("Error fetching -> " + ex);
+        Debug.Log("Error fetching -> " + _ex);
     }
 }

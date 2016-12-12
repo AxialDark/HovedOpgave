@@ -42,7 +42,7 @@ public class WorldView : MonoBehaviour {
     /// <summary>
     /// Unity method. Called when attached game object is destroyed
     /// </summary>
-    void OnDestroy()
+    private void OnDestroy()
     {
         view.Stop();
     }

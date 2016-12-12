@@ -6,17 +6,16 @@ using System.Collections;
 /// </summary>
 public class GameLocation : MonoBehaviour
 {
-    private bool used = false;
     private GameType gameType;
 
-    /// <summary>
-    /// Has the GameLocation been used
-    /// </summary>
-    public bool Used { get { return used; } }
     /// <summary>
     /// A game locations type of game (eg. Basketball)
     /// </summary>
     public GameType Gametype { get { return gameType; } }
+    /// <summary>
+    /// The point the GameLocations sits on
+    /// </summary>
+    public GameObject RoutePoint { get; set; }
 
     /// <summary>
     /// Initialize a game location
@@ -30,11 +29,4 @@ public class GameLocation : MonoBehaviour
         return this;
     }
 
-
-
-
-    /// <summary>
-    /// The point the GameLocations sits on
-    /// </summary>
-    public GameObject ViaPoint { get; set; }
 }

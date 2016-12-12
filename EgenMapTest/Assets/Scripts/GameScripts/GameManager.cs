@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
     #region Singleton
     private static GameManager instance;
     public static GameManager Instance
@@ -28,12 +27,10 @@ public class GameManager : MonoBehaviour
     private GameObject[] pointerArrows; // 0 = right ; 1 = left
     [SerializeField]
     private GameObject goal;
-
     [SerializeField]
-    Image throwGoalPanel;
-
+    private Image throwGoalPanel;
     [SerializeField]
-    Sprite[] throwMissSprites; // 0 = standard ; 1 = goal ; 2 = miss
+    private Sprite[] throwMissSprites; // 0 = standard ; 1 = goal ; 2 = miss
     #endregion
 
     #region Fields
@@ -45,9 +42,8 @@ public class GameManager : MonoBehaviour
     private int throwTriesCurrent;
     private float directionNumber;
     private Renderer goalRenderer;
-
-    Image[] throwMissIcons;
-    int throwIndex;
+    private Image[] throwMissIcons;
+    private int throwIndex;
     #endregion
 
     /// <summary>

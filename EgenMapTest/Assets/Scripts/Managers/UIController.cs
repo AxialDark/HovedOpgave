@@ -9,19 +9,6 @@ using System;
 /// </summary>
 public class UIController : MonoBehaviour
 {
-    /// <summary>
-    /// Theme dropdown event method when choosing another color theme
-    /// </summary>
-    /// <param name="_val"></param>
-    public void OnColorTemaChange(int _val)
-    {
-        if (map != null)
-        {
-            map.ChangeColorTheme((MapColorPalet)_val);
-        }
-    }
-
-
     private WorldMap map = null;
 
     private static UIController instance;
@@ -55,20 +42,21 @@ public class UIController : MonoBehaviour
             return instance;
         }
     }
-
+    /// <summary>
+    /// A reference til the game object with all object in the main scene as children.
+    /// Needed to reactivate the game object after a game has been played
+    /// </summary>
     public GameObject RefMainScene
     {
         get
         {
             return refMainScene;
         }
-
-        set
-        {
-            refMainScene = value;
-        }
     }
-
+    /// <summary>
+    /// Reference to the world map object in the main scene.
+    /// Used to make UI affect the main scene
+    /// </summary>
     public WorldMap Map
     {
         get
@@ -81,6 +69,9 @@ public class UIController : MonoBehaviour
             map = value;
         }
     }
+    /// The GameLocation that the player hit
+    /// </summary>
+    public GameLocation HitLocation { get; private set; }
 
     /// <summary>
     /// Unity method called every time game object is enabled
@@ -173,7 +164,7 @@ public class UIController : MonoBehaviour
     }
 
     /// <summary>
-    /// Button Click Method
+    /// Button Click Method.
     /// Ends a route
     /// </summary>
     public void ClickEndRoute()
@@ -204,9 +195,6 @@ public class UIController : MonoBehaviour
             }
         }
     }      
-    /// The GameLocation that the player hit
-    /// </summary>
-    public GameLocation HitLocation { get; private set; }
 
     /// <summary>
     /// Set the GameLocation as the HitLocation if null and shows the Start Game button
@@ -217,7 +205,7 @@ public class UIController : MonoBehaviour
         if (_loc == HitLocation)
             btnStartGame.gameObject.SetActive(true);
 
-        if (HitLocation == null && _loc.ViaPoint == RouteManager.Instance.Points[1])
+        if (HitLocation == null && _loc.RoutePoint == RouteManager.Instance.Points[1])
         {
             HitLocation = _loc;
             print("Hit location");
@@ -248,5 +236,17 @@ public class UIController : MonoBehaviour
     public void ActivateProfileButton()
     {
         profileButton.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Theme dropdown event method when choosing another color theme
+    /// </summary>
+    /// <param name="_val"></param>
+    public void OnColorThemeChange(int _val)
+    {
+        if (map != null)
+        {
+            map.ChangeColorTheme((MapColorPalet)_val);
+        }
     }
 }

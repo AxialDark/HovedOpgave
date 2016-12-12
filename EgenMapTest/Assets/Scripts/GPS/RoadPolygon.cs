@@ -22,13 +22,12 @@ public enum RoadType
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class RoadPolygon : MonoBehaviour
 {
+    private List<Vector3> verts;
+
     /// <summary>
     /// List of renderes for all of the road parts
     /// </summary>
     public List<Renderer> MyRenderes { get; private set; }
-
-
-
     /// <summary>
     /// The ID for the road
     /// </summary>
@@ -37,7 +36,6 @@ public class RoadPolygon : MonoBehaviour
     /// The type of road
     /// </summary>
     public RoadType Type { get; set; }
-    private List<Vector3> verts;
 
     /// <summary>
     /// Creates and places the roads on the map

@@ -21,7 +21,6 @@ public class RoadFactory : MonoBehaviour
         MyRoads = new List<RoadPolygon>();
     }
 
-
     /// <summary>
     /// Creates a road on the map
     /// </summary>

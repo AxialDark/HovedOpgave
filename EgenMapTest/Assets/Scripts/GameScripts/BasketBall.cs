@@ -6,7 +6,6 @@ using System.Collections;
 /// </summary>
 public class BasketBall : Ball
 {
-
     // Use this for initialization
     protected override void Start()
     {

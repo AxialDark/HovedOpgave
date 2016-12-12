@@ -9,36 +9,6 @@ using System.Collections.Generic;
 /// </summary>
 public class WorldMap : MonoBehaviour
 {
-    /// <summary>
-    /// Changes the Material on all buildings, tiles and roads
-    /// </summary>
-    /// <param name="_palet">The Color Theme to change to</param>
-    public void ChangeColorTheme(MapColorPalet _palet)
-    {
-        settings.mapColorPalet = _palet;
-        colorPalet = _palet;
-
-        foreach (Tile tile in tileMan.AllTiles)
-        {
-            tile.myRend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Ground");
-        }
-
-        foreach (Building building in buildFac.AllBuildings)
-        {
-            building.myRendere.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/" + building.LanduseKind);
-        }
-
-        foreach (RoadPolygon m in roadFac.MyRoads)
-        {
-            foreach (Renderer rend in m.MyRenderes)
-            {
-                rend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Road");
-            }
-        }
-    }
-
-
-
     [SerializeField]
     private Settings settings;
     public static MapColorPalet colorPalet;
@@ -144,7 +114,35 @@ public class WorldMap : MonoBehaviour
 
         RouteManager.Instance.GetComponent<RouteManager>().InitiateRouteGeneration(startPoint, tempViaPoints, settings, _routeLength, true);
     }
-  
+
+    /// <summary>
+    /// Changes the Material on all buildings, tiles and roads
+    /// </summary>
+    /// <param name="_palet">The Color Theme to change to</param>
+    public void ChangeColorTheme(MapColorPalet _palet)
+    {
+        settings.mapColorPalet = _palet;
+        colorPalet = _palet;
+
+        foreach (Tile tile in tileMan.AllTiles)
+        {
+            tile.myRend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Ground");
+        }
+
+        foreach (Building building in buildFac.AllBuildings)
+        {
+            building.myRendere.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/" + building.LanduseKind);
+        }
+
+        foreach (RoadPolygon m in roadFac.MyRoads)
+        {
+            foreach (Renderer rend in m.MyRenderes)
+            {
+                rend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Road");
+            }
+        }
+    }
+
 
     /// <summary>
     /// Settings for the map

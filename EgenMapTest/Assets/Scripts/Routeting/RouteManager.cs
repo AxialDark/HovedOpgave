@@ -26,6 +26,8 @@ public class RouteManager : MonoBehaviour
     private List<GameLocation> gamelocations = new List<GameLocation>();
     private List<Vector2> directions = new List<Vector2>();
 
+    public List<GameObject> debugViaPoints = new List<GameObject>();
+
     /// <summary>
     /// Singleton of RouteManager
     /// </summary>
@@ -41,9 +43,6 @@ public class RouteManager : MonoBehaviour
             return instance;
         }
     }
-
-    public List<GameObject> debugViaPoints = new List<GameObject>();
-
     /// <summary>
     /// List of game objects generated, in between points, making out the entire route
     /// </summary>
@@ -287,7 +286,7 @@ public class RouteManager : MonoBehaviour
 
 
             //Adds the routing point to the GameLocation
-            gameLocation.ViaPoint = points[(i - 1) + (indexIncrements * i)];
+            gameLocation.RoutePoint = points[(i - 1) + (indexIncrements * i)];
         }
     }
 
@@ -564,5 +563,4 @@ public class RouteManager : MonoBehaviour
         //else
         return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y) * distance;
     }
-
 }

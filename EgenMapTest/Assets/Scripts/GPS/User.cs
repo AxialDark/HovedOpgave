@@ -8,7 +8,6 @@ using UnityEngine.UI;
 /// </summary>
 public class User : MonoBehaviour
 {
-
     private static User instance;
     private Vector2 centerInMerc;
     private Vector2 lastLatLong;
@@ -119,9 +118,9 @@ public class User : MonoBehaviour
     /// Makes the movement between last position and new position smooth
     /// <param name="value">The time it should take to move to the new position</param>
     /// </summary>
-    private IEnumerator SmoothMovement(float value)
+    private IEnumerator SmoothMovement(float _value)
     {
-        float rate = 1.0f / value;
+        float rate = 1.0f / _value;
         float t = 0.0f;
         while (t < 1.0)
         {
