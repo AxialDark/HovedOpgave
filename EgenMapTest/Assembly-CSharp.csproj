@@ -45,7 +45,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\AudioManager.cs" />
      <Compile Include="Assets\CameraMove.cs" />
      <Compile Include="Assets\DebugMovement.cs" />
      <Compile Include="Assets\DebugRouting.cs" />
@@ -99,34 +98,33 @@
      <Compile Include="Assets\Helpers\GeoConverter.cs" />
      <Compile Include="Assets\Helpers\JSON.cs" />
      <Compile Include="Assets\Helpers\Tris.cs" />
+     <Compile Include="Assets\PhoneDebugMovement.cs" />
      <Compile Include="Assets\Scripts\APIData Classes\APIData.cs" />
      <Compile Include="Assets\Scripts\APIData Classes\APIDataExtractor.cs" />
-     <Compile Include="Assets\Scripts\Building.cs" />
-     <Compile Include="Assets\Scripts\BuildingFactory.cs" />
-     <Compile Include="Assets\Scripts\DynamicTileManager.cs" />
-     <Compile Include="Assets\Scripts\GameLocation.cs" />
+     <Compile Include="Assets\Scripts\GPS\Building.cs" />
+     <Compile Include="Assets\Scripts\GPS\BuildingFactory.cs" />
+     <Compile Include="Assets\Scripts\GPS\DynamicTileManager.cs" />
+     <Compile Include="Assets\Scripts\GPS\RoadFactory.cs" />
+     <Compile Include="Assets\Scripts\GPS\RoadPolygon.cs" />
+     <Compile Include="Assets\Scripts\GPS\Tile.cs" />
+     <Compile Include="Assets\Scripts\GPS\TileManager.cs" />
+     <Compile Include="Assets\Scripts\GPS\User.cs" />
+     <Compile Include="Assets\Scripts\GPS\WorldMap.cs" />
      <Compile Include="Assets\Scripts\GameScripts\Ball.cs" />
-     <Compile Include="Assets\Scripts\GameScripts\BallTempScript.cs" />
      <Compile Include="Assets\Scripts\GameScripts\BasketBall.cs" />
      <Compile Include="Assets\Scripts\GameScripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameScripts\WorldView.cs" />
-     <Compile Include="Assets\Scripts\GameType.cs" />
+     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\PointManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\UIController.cs" />
      <Compile Include="Assets\Scripts\MapColorPalet.cs" />
-     <Compile Include="Assets\Scripts\MenuScripts\MenuManager.cs" />
-     <Compile Include="Assets\Scripts\PointManager.cs" />
-     <Compile Include="Assets\Scripts\RoadFactory.cs" />
-     <Compile Include="Assets\Scripts\RoadPolygon.cs" />
+     <Compile Include="Assets\Scripts\Routeting\GameLocation.cs" />
+     <Compile Include="Assets\Scripts\Routeting\GameType.cs" />
      <Compile Include="Assets\Scripts\Routeting\Route.cs" />
      <Compile Include="Assets\Scripts\Routeting\RouteManager.cs" />
-     <Compile Include="Assets\Scripts\Test.cs" />
-     <Compile Include="Assets\Scripts\Tile.cs" />
-     <Compile Include="Assets\Scripts\TileManager.cs" />
-     <Compile Include="Assets\Scripts\UIController.cs" />
      <Compile Include="Assets\Scripts\UIScripts\Challenge.cs" />
      <Compile Include="Assets\Scripts\UIScripts\MainScene.cs" />
      <Compile Include="Assets\Scripts\UIScripts\Panel_CreateUser.cs" />
-     <Compile Include="Assets\Scripts\User.cs" />
-     <Compile Include="Assets\Scripts\WorldMap.cs" />
      <None Include="Assets\GoogleVR\Distortion\GvrDistortion.cginc" />
      <None Include="Assets\GoogleVR\Legacy\Resources\UnlitTexture.shader" />
      <None Include="Assets\Plugins\Android\AndroidManifest-Daydream.xml" />
