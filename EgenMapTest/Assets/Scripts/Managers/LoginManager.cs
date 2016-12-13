@@ -8,6 +8,9 @@ public class LoginManager : MonoBehaviour
     [SerializeField]
     InputField[] loginCreateInputFields; // 0 = Login username; 1 = Login password; 2 = Create username; 3 = Create password.
 
+    [SerializeField]
+    Image startMenuPanel;
+
     private Toaster toaster;
 
     // Use this for initialization
@@ -18,13 +21,14 @@ public class LoginManager : MonoBehaviour
 
     public void Login()
     {
-        toaster.ShowToast("I work");
         if (loginCreateInputFields[0].text != "" && loginCreateInputFields[1].text != "")
         {
             if (DBManager.Instance.LoginToExistingUser(loginCreateInputFields[0].text, loginCreateInputFields[1].text))
             {
                 print("Login succesfull");
                 toaster.ShowToast("Login succesfull");
+                startMenuPanel.gameObject.SetActive(false);
+                UIController.Instance.LoadScene("Main");
             }
             else
             {
