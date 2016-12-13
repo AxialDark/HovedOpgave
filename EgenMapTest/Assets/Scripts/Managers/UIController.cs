@@ -9,6 +9,20 @@ using System;
 /// </summary>
 public class UIController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject pnlLoading;
+    public bool show = false; //ONLY FOR DEBUG
+
+    /// <summary>
+    /// Shows the loading paneæ
+    /// </summary>
+    /// <param name="_show">Show or hide</param>
+    public void ShowLoading(bool _show)
+    {
+        show = _show; //ONLY FOR DEBUG
+        pnlLoading.SetActive(_show);
+    }
+
     private WorldMap map = null;
 
     private static UIController instance;
@@ -98,6 +112,8 @@ public class UIController : MonoBehaviour
     /// <param name="sceneName">Name of scene</param>
     public void LoadScene(string _sceneName)
     {
+        if (_sceneName == "GameScene")
+            ShowLoading(true);
         StartCoroutine(LoadNextScene(_sceneName));
     }
 
@@ -129,7 +145,7 @@ public class UIController : MonoBehaviour
             {
                 refMainScene = GameObject.FindGameObjectWithTag("AllMainObjects"); //Find the parent to all objects in main scene. Needed when unloading from game scene
                 refMainScene.SetActive(false); //Disable all objects in Main scene
-                btnStartGame.gameObject.SetActive(false); //Hide button                
+                btnStartGame.gameObject.SetActive(false); //Hide button             
             }
             //Scene activeScene = SceneManager.GetActiveScene();
             SceneManager.SetActiveScene(nextScene); //Activates the loaded scene

@@ -69,6 +69,8 @@ public class GameManager : MonoBehaviour
 
         throwMissIcons = throwGoalPanel.GetComponentsInChildren<Image>();
         throwIndex = 1;
+
+        UIController.Instance.ShowLoading(false);
     }
 
     /// <summary>
