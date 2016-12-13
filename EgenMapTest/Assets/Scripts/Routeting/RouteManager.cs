@@ -87,6 +87,9 @@ public class RouteManager : MonoBehaviour
     {
         if (!routeInUse) //Makes the generation of a route impossible if one is already in use.
         {
+            UIController.Instance.ShowLoading(true);
+
+
             directions.Clear(); // Clear the leftover directions
             for (int x = -1; x <= 1; x++)
             {
@@ -210,6 +213,8 @@ public class RouteManager : MonoBehaviour
         routeInUse = true; //Route is now created and in use
 
         PointManager.Instance.StartRouteTimer();
+
+        UIController.Instance.ShowLoading(false);
     }
 
     /// <summary>
