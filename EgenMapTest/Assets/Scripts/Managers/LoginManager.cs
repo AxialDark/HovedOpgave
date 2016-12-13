@@ -5,25 +5,35 @@ using UnityEngine.SceneManagement;
 
 public class LoginManager : MonoBehaviour
 {
+    #region Serialized Fields
     [SerializeField]
     InputField[] loginCreateInputFields; // 0 = Login username; 1 = Login password; 2 = Create username; 3 = Create password.
 
     [SerializeField]
     Image startMenuPanel;
 
+    [SerializeField]
+    Image createUserPanel;
+    #endregion
+
     private Toaster toaster;
 
-    // Use this for initialization
+    /// <summary>
+    /// Unity method, runs in the beginning before Start()
+    /// </summary>
 	void Awake () 
     {
         toaster = new Toaster();
 	}
 
+    /// <summary>
+    /// Method for logging in, meant to be called from a button.
+    /// </summary>
     public void Login()
     {
-        if (loginCreateInputFields[0].text != "" && loginCreateInputFields[1].text != "")
+        if (loginCreateInputFields[0].text != "" && loginCreateInputFields[1].text != "") // Are the login input fields not empty?
         {
-            if (DBManager.Instance.LoginToExistingUser(loginCreateInputFields[0].text, loginCreateInputFields[1].text))
+            if (DBManager.Instance.LoginToExistingUser(loginCreateInputFields[0].text, loginCreateInputFields[1].text)) // Did the username and password match a profile in the database?
             {
                 print("Login succesfull");
                 toaster.ShowToast("Login succesfull");
@@ -38,17 +48,24 @@ public class LoginManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method for creating a user, meant to be called from a button.
+    /// </summary>
     public void CreateUser()
     {
-        if (loginCreateInputFields[2].text != "" && loginCreateInputFields[3].text != "")
+        if (loginCreateInputFields[2].text != "" && loginCreateInputFields[3].text != "") // Are the create user input fields not empty?
         {
-            if (!DBManager.Instance.ExistingUser(loginCreateInputFields[2].text))
+            if (!DBManager.Instance.ExistingUser(loginCreateInputFields[2].text)) // Does the profile already exist?
             {
-                DBManager.Instance.InsertNewUser(loginCreateInputFields[2].text, loginCreateInputFields[3].text);
+                DBManager.Instance.InsertNewUser(loginCreateInputFields[2].text, loginCreateInputFields[3].text); // Insert the new user into the database.
                 print("Created user");
+
+                createUserPanel.gameObject.SetActive(false);
+                startMenuPanel.gameObject.SetActive(true);
+
                 toaster.ShowToast("Created user");
             }
-            else if (DBManager.Instance.ExistingUser(loginCreateInputFields[2].text))
+            else if (DBManager.Instance.ExistingUser(loginCreateInputFields[2].text)) // If the profile already exist.
             {
                 print("could not create user");
                 toaster.ShowToast("could not create user");

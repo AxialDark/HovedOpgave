@@ -1,19 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Toaster : MonoBehaviour {
-
+/// <summary>
+/// This class is made based on this page: https://deltabit.wordpress.com/2016/03/04/show-toast-on-unity/#more-228
+/// </summary>
+public class Toaster : MonoBehaviour
+{
+    #region Fields
     private string toastString;
     AndroidJavaObject currentActivity;
+    #endregion
 
+    /// <summary>
+    /// Method for showing a given string as a toast on the android device
+    /// </summary>
+    /// <param name="_toastText">String to be the toast</param>
     public void ShowToast(string _toastText)
     {
-        if (Application.platform == RuntimePlatform.Android)
+        if (Application.platform == RuntimePlatform.Android) // Is the program being run on an Android device?
         {
             ShowToastOnUiThread(_toastText);
         }
     }
 
+    /// <summary>
+    /// Method for showing the toast on the ui thread.
+    /// </summary>
+    /// <param name="_toastString"></param>
     private void ShowToastOnUiThread(string _toastString)
     {
         AndroidJavaClass UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -21,10 +34,13 @@ public class Toaster : MonoBehaviour {
         currentActivity = UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
         this.toastString = _toastString;
 
-        currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(showToast));
+        currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(ShowTheToast));
     }
 
-    private void showToast()
+    /// <summary>
+    /// Method that creates and shows a given toast
+    /// </summary>
+    private void ShowTheToast()
     {
         AndroidJavaObject context = currentActivity.Call<AndroidJavaObject>("getApplicationContext");
         AndroidJavaClass Toast = new AndroidJavaClass("android.widget.Toast");
