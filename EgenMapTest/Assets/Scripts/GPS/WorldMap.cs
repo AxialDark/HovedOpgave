@@ -45,14 +45,11 @@ public class WorldMap : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator Init()
-    {
-        // First, check if user has location service enabled
-        if (!Input.location.isEnabledByUser)
+    {        
+        if (!Input.location.isEnabledByUser) // First, check if user has location service enabled
             yield break;
-
-
-        // Start service before querying location
-        Input.location.Start(5, 5);
+                
+        Input.location.Start(5, 5); // Start service before querying location
 
         // Wait until service initializes
         int maxWait = 20;
@@ -78,7 +75,11 @@ public class WorldMap : MonoBehaviour
         else
         {
             // Access granted and location value could be retrieved
-            print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            print("Location: " + Input.location.lastData.latitude 
+                + " " + Input.location.lastData.longitude + " " 
+                + Input.location.lastData.altitude + " " 
+                + Input.location.lastData.horizontalAccuracy + " " 
+                + Input.location.lastData.timestamp);
             LocationInfo locData = Input.location.lastData;
 
             settings.latitude = locData.latitude;
