@@ -7,13 +7,13 @@ public class LoginManager : MonoBehaviour
 {
     #region Serialized Fields
     [SerializeField]
-    InputField[] loginCreateInputFields; // 0 = Login username; 1 = Login password; 2 = Create username; 3 = Create password.
+    private InputField[] loginCreateInputFields; // 0 = Login username; 1 = Login password; 2 = Create username; 3 = Create password.
 
     [SerializeField]
-    Image startMenuPanel;
+    private Image startMenuPanel;
 
     [SerializeField]
-    Image createUserPanel;
+    private Image createUserPanel;
     #endregion
 
     private Toaster toaster;
@@ -21,7 +21,7 @@ public class LoginManager : MonoBehaviour
     /// <summary>
     /// Unity method, runs in the beginning before Start()
     /// </summary>
-	void Awake () 
+	private void Awake () 
     {
         toaster = new Toaster();
 	}
