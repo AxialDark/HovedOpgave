@@ -89,7 +89,8 @@ public class TileManager : MonoBehaviour
     protected virtual IEnumerator CreateTile(Vector2 _tileTMS, Vector2 _centerInMercator)
     {
         Rect rect = GM.TileBounds(_tileTMS, zoom); //The new Tile bounds
-        Tile tile = new GameObject("Tile " + _tileTMS.x + "-" + _tileTMS.y).AddComponent<Tile>().Initialize(buildFac ,roadFac, //Creates the tile with the settings
+        Tile tile = new GameObject("Tile " + _tileTMS.x + "-" + _tileTMS.y)
+            .AddComponent<Tile>().Initialize(buildFac ,roadFac, //Creates the tile with the settings
             new Tile.Settings()
             {
                 Zoom = zoom,
