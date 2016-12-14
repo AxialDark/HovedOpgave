@@ -534,7 +534,7 @@ public class RouteManager : MonoBehaviour
         print("Could not find any route");
 
         ErrorPanel.Instance.ShowError("Couldn't find a route",
-            "It seems no route was available, for your prefered route length.\nMaybe try another route length, or go to another location and try again", ErrorType.COULD_NOT_FIND_ROUTE);
+            "No route was available, for your prefered route length.\nTry another route length, or go to another location and try again", ErrorType.COULD_NOT_FIND_ROUTE);
     }
 
     /// <summary>

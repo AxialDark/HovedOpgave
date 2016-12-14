@@ -116,8 +116,8 @@ public class Route
     /// <param name="_ex">The exeption</param>
     private void FailToGetRouteAPIData(Exception _ex)
     {
-        ErrorPanel.Instance.ShowError("Failed to get data",
-            "Was for some reason unable to get data from routing API\nPlease check your internet connection", ErrorType.COULD_NOT_LOAD_ROUTE);
+        ErrorPanel.Instance.ShowError("Failed to get the data",
+            "Unable to get data from routing API\nPlease check your internet connection", ErrorType.COULD_NOT_LOAD_ROUTE);
         Debug.Log("Error getting route - " + _ex);
     }
 
