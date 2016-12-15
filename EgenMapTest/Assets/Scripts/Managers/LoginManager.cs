@@ -46,6 +46,15 @@ public class LoginManager : MonoBehaviour
                 toaster.ShowToast("Login unsuccesfull");
             }
         }
+        #region DEBUG
+        else // only for debugging
+        {
+            print("Debug Login");
+            toaster.ShowToast("Debug Login");
+            startMenuPanel.gameObject.SetActive(false);
+            UIController.Instance.LoadScene("Main");
+        }
+        #endregion
     }
 
     /// <summary>

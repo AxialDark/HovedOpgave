@@ -128,39 +128,27 @@ public class RouteManager : MonoBehaviour
 
         print("Creating route on map");
 
+        int pointCount = 1;
+
         //Runs through all the route coordinates to create points and route objects in between these points
         //i starts at 1 meaning, that the "current" index for route is (i - 1) and i is the distination,
         //because it's zero-indexed
         for (int i = 1; i < route.RouteInMercCoords.Count; i++)
         {
-            GameObject routePlane = GameObject.CreatePrimitive(PrimitiveType.Plane); //Create plane game object
+            if (points.Count == 0 || new Vector3(route.RouteInMercCoords[i - 1].x, 10, route.RouteInMercCoords[i - 1].y) != points[points.Count - 1].transform.position)
+            {
+                //Create point gameobject
+                GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                point.name = "Route point " + pointCount;
+                point.transform.SetParent(mapParent);
+                point.transform.position = new Vector3(route.RouteInMercCoords[i - 1].x, 10, route.RouteInMercCoords[i - 1].y);
+                point.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
+                point.GetComponent<Collider>().isTrigger = true;
+                point.GetComponent<SphereCollider>().radius = 1.75f;
+                points.Add(point);
 
-            float distance = Vector2.Distance(route.RouteInMercCoords[i - 1], route.RouteInMercCoords[i]); //Calculates distance between current point and the next
-
-            Vector2 diff = new Vector2(route.RouteInMercCoords[i].x - route.RouteInMercCoords[i - 1].x,
-                route.RouteInMercCoords[i].y - route.RouteInMercCoords[i - 1].y); //Gets the vector in between the current point vector and the distination point vector
-
-            Vector3 middlePoint = new Vector3((diff.x / 2) + route.RouteInMercCoords[i - 1].x,
-                0.5f, (diff.y / 2) + route.RouteInMercCoords[i - 1].y);//Gets the point exactly between the current point and the distination point
-
-            //Creates route object
-            routePlane.transform.SetParent(mapParent);
-            routePlane.transform.position = middlePoint;
-            routePlane.name = "Route between: " + i + " - " + (i + 1);
-            routePlane.transform.localScale = new Vector3(0.25f, 0, distance / 10);
-            routePlane.GetComponent<Renderer>().material = Resources.Load<Material>("DebugRoute");
-            routePlane.transform.LookAt(new Vector3(route.RouteInMercCoords[i].x, 0.5f, route.RouteInMercCoords[i].y));
-            routePlanes.Add(routePlane);
-
-            //Create point gameobject
-            GameObject point = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            point.name = "Route point " + i;
-            point.transform.SetParent(mapParent);
-            point.transform.position = new Vector3(route.RouteInMercCoords[i - 1].x, 10, route.RouteInMercCoords[i - 1].y);
-            point.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
-            point.GetComponent<Collider>().isTrigger = true;
-            point.GetComponent<SphereCollider>().radius = 1.75f;
-            points.Add(point);
+                pointCount++;
+            }
 
             //If it's the last run-through of the for-loop, add another sphere.
             //This is done because we start with i = 1, but the condition is still set as i < list.Count.
@@ -171,7 +159,7 @@ public class RouteManager : MonoBehaviour
             {
                 //Create point gameobject
                 GameObject point2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                point2.name = "Route point " + (i + 1);
+                point2.name = "Route point " + (pointCount);
                 point2.transform.SetParent(mapParent);
                 point2.transform.position = new Vector3(route.RouteInMercCoords[i].x, 10, route.RouteInMercCoords[i].y);
                 point2.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
@@ -179,6 +167,30 @@ public class RouteManager : MonoBehaviour
                 points.Add(point2);
             }
         }
+
+        //We got the points, now we make all the routes between the points.
+        for(int i = 1; i < points.Count; i++)
+        {
+            float distance = Vector3.Distance(points[i - 1].transform.position, points[i].transform.position); //Calculates distance between current point and the next
+
+            Vector2 diff = new Vector2(points[i].transform.position.x - points[i - 1].transform.position.x,
+                points[i].transform.position.z - points[i - 1].transform.position.z); //Gets the vector in between the current point vector and the distination point vector
+
+            Vector3 middlePoint = new Vector3((diff.x / 2) + points[i - 1].transform.position.x,
+                0.5f, (diff.y / 2) + points[i - 1].transform.position.z);//Gets the point exactly between the current point and the distination point
+
+            GameObject routePlane = GameObject.CreatePrimitive(PrimitiveType.Plane); //Create plane game object
+
+            //Creates route object
+            routePlane.transform.SetParent(mapParent);
+            routePlane.transform.position = middlePoint;
+            routePlane.name = "Route between: " + i + " - " + (i + 1);
+            routePlane.transform.localScale = new Vector3(0.25f, 0, distance / 10);
+            routePlane.GetComponent<Renderer>().material = Resources.Load<Material>("DebugRoute");
+            routePlane.transform.LookAt(new Vector3(points[i].transform.position.x, 0.5f, points[i].transform.position.z));
+            routePlanes.Add(routePlane);
+        }
+
         routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Shows the first route as highlighted
 
         print("Route Done: Route Distance: " + route.Distance + " meters - Route Time: " + route.EstimatedTime);
@@ -274,7 +286,7 @@ public class RouteManager : MonoBehaviour
         int numberOfLocations = Mathf.FloorToInt(route.Distance / 1000) * (int)0.5f; //Calculates the numbers of locations needed
         numberOfLocations = (numberOfLocations == 0) ? 1 : numberOfLocations; //If the number of locations equals 0, set it to one. Otherwise do nothing.
         print("Number of game locations: " + numberOfLocations);
-        int indexIncrements = route.RouteInMercCoords.Count / (numberOfLocations + 1); //Calculates the increment needed for the location to be spread out fairly evenly
+        int indexIncrements = points.Count/*route.RouteInMercCoords.Count*/ / (numberOfLocations + 1); //Calculates the increment needed for the location to be spread out fairly evenly
 
         //Creates all game locations
         for (int i = 1; i <= numberOfLocations; i++)
@@ -390,6 +402,8 @@ public class RouteManager : MonoBehaviour
 
         dir = directions[randomIndex];
         directions.RemoveAt(randomIndex); // So that it won't test the same direction twice.
+
+        dir = new Vector2(-1, 0);
 
         Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
 
