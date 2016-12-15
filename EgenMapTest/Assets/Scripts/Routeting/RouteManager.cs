@@ -61,7 +61,7 @@ public class RouteManager : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        //If a route exists and it's current in use
+        //If a route exists and it's currently in use
         //but it's empty, it means the route is completed by a user
         if (route != null && routeInUse && routePlanes.Count == 0)
         {
@@ -260,8 +260,11 @@ public class RouteManager : MonoBehaviour
                 Destroy(routePlanes[0].gameObject);
                 routePlanes.RemoveAt(0);
 
-                if (routePlanes.Count > 0) //Makes sure outofindex exceptions wont occur
+                if (routePlanes.Count > 0)//Makes sure outofindex exceptions wont occur
+                {                    
                     routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Makes the next routePlane highlighted
+                    routePlanes[0].transform.position += Vector3.up; //Makes sure the highlighted route is above other routes and visible.
+                }
             }
         }
     }
@@ -272,7 +275,7 @@ public class RouteManager : MonoBehaviour
     private void CreateGameLocations()
     {
         int numberOfLocations = Mathf.FloorToInt(route.Distance / 1000) * (int)0.5f; //Calculates the numbers of locations needed
-        numberOfLocations = (numberOfLocations == 0) ? 1 : numberOfLocations; //If the number of locations equals 0, set it to one. Otherwise do nothing.
+        numberOfLocations = (numberOfLocations == 0) ? 1 : numberOfLocations; //If the number of locations equals 0, set it to 1. Otherwise do nothing.
         print("Number of game locations: " + numberOfLocations);
         int indexIncrements = route.RouteInMercCoords.Count / (numberOfLocations + 1); //Calculates the increment needed for the location to be spread out fairly evenly
 
@@ -292,6 +295,7 @@ public class RouteManager : MonoBehaviour
 
             //Adds the routing point to the GameLocation
             gameLocation.RoutePoint = points[(i - 1) + (indexIncrements * i)];
+            gameLocation.RoutePoint.SetActive(false);
         }
     }
 
@@ -390,6 +394,8 @@ public class RouteManager : MonoBehaviour
 
         dir = directions[randomIndex];
         directions.RemoveAt(randomIndex); // So that it won't test the same direction twice.
+
+        dir = new Vector2(-1, 0);
 
         Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
 

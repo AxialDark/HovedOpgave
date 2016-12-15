@@ -218,14 +218,14 @@ public class UIController : MonoBehaviour
     /// <param name="_loc">The GameLocation hit</param>
     public void HitGameLocation(GameLocation _loc)
     {
-        if (_loc == HitLocation)
-            btnStartGame.gameObject.SetActive(true);
-
         if (HitLocation == null && _loc.RoutePoint == RouteManager.Instance.Points[1])
         {
             HitLocation = _loc;
             print("Hit location");
         }
+
+        if (_loc == HitLocation)
+            btnStartGame.gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -235,6 +235,7 @@ public class UIController : MonoBehaviour
     {
         HitLocation.gameObject.SetActive(false);
         HitLocation = null;
+        RouteManager.Instance.Points[1].SetActive(true);
     }
 
     /// <summary>

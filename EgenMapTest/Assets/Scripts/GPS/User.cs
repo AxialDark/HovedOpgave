@@ -150,17 +150,16 @@ public class User : MonoBehaviour
     /// <param name="other">The detected trigger collider</param>
     private void OnTriggerStay(Collider _other)
     {
+        if (_other.gameObject.GetComponent<GameLocation>())
+        {
+            UIController.Instance.HitGameLocation(_other.gameObject.GetComponent<GameLocation>());
+        }
+
         if (RouteManager.Instance.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Instance.Points[1]) //If list contains 2 or more points, update it when colliding
         {
             RouteManager.Instance.UpdateRouteForUser();
-            print("Collision with RoutePoint");
         }
 
-        if (_other.gameObject.GetComponent<GameLocation>())
-        {
-            //UIController.Instance.btnStartGame.gameObject.SetActive(true);
-            UIController.Instance.HitGameLocation(_other.gameObject.GetComponent<GameLocation>());
-        }
     }
 
     /// <summary>
