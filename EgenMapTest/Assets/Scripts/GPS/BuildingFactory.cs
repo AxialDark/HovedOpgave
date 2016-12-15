@@ -43,18 +43,18 @@ public class BuildingFactory : MonoBehaviour {
         List<Vector3> buildingCorners = new List<Vector3>();
 
         JSONObject buildingJ = _geo["geometry"]["coordinates"].list[0];
+        Vector3 uniqPos = new Vector3(buildingJ.list[0][1].f, 0, buildingJ[0][0].f);
+        if (Buildings.ContainsKey(uniqPos)) //Checks to see if the building in this position is already in the dictionary
+        {
+            return;
+        }
+
         for (int i = 0; i < buildingJ.list.Count - 1; i++)
         {
             JSONObject coordinate = buildingJ.list[i];
             Vector2 dotMerc = GM.LatLonToMeters(coordinate[1].f, coordinate[0].f);
             Vector2 localMercPos = new Vector2(dotMerc.x - _tileMercPos.x, dotMerc.y - _tileMercPos.y);
             buildingCorners.Add(localMercPos.ToVector3xz());
-        }
-
-        Vector3 uniqPos = new Vector3(buildingJ.list[0][1].f, 0, buildingJ[0][0].f);
-        if (Buildings.ContainsKey(uniqPos))
-        {
-            return;
         }
 
         try

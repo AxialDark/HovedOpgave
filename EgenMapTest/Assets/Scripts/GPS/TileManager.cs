@@ -100,7 +100,7 @@ public class TileManager : MonoBehaviour
             });
 
         tiles.Add(_tileTMS, tile); //Adds the tile to the dictionary
-        tile.transform.SetParent(mapParent, true); //Sets the map parent as the tile's paren, but the tile keeps it's position in the world
+        tile.transform.SetParent(mapParent, true); //Sets the map parent as the tile's parent, but the tile keeps it's position in the world
         tile.transform.position = (rect.center - centerInMercator).ToVector3xz(); //Moves the tile to the right position, and makes the y coordinate the z coordinate
         LoadTile(_tileTMS, tile);
 

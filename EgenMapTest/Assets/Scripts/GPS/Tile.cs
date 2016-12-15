@@ -58,7 +58,7 @@ public class Tile : MonoBehaviour
 
         heavyMethod.ObserveOnMainThread().Subscribe(mapData =>
         {
-            if (!this) //Checks if the tile still exists and haven't destroyed yet
+            if (!this) //Checks if the tile still exists and hasn't been destroyed yet
                 return;
 
             Transform gameObject = GameObject.CreatePrimitive(PrimitiveType.Plane).transform; //Creates af plane
@@ -86,7 +86,7 @@ public class Tile : MonoBehaviour
             myRend = rend;
 
             StartCoroutine(CreateBuildings(mapData["buildings"], settings.TileCenter)); //Creates buildings
-            StartCoroutine(CreateRoads(mapData["roads"], settings.TileCenter));
+            StartCoroutine(CreateRoads(mapData["roads"], settings.TileCenter)); //Creates roads
         });
     }
 
