@@ -26,6 +26,8 @@ public class RouteManager : MonoBehaviour
     private List<GameLocation> gamelocations = new List<GameLocation>();
     private List<Vector2> directions = new List<Vector2>();
 
+    public List<GameObject> debugViaPoints = new List<GameObject>();
+
     /// <summary>
     /// Singleton of RouteManager
     /// </summary>
@@ -41,9 +43,6 @@ public class RouteManager : MonoBehaviour
             return instance;
         }
     }
-
-    public List<GameObject> debugViaPoints = new List<GameObject>();
-
     /// <summary>
     /// List of game objects generated, in between points, making out the entire route
     /// </summary>
@@ -88,6 +87,9 @@ public class RouteManager : MonoBehaviour
     {
         if (!routeInUse) //Makes the generation of a route impossible if one is already in use.
         {
+            UIController.Instance.ShowLoading(true);
+
+
             directions.Clear(); // Clear the leftover directions
             for (int x = -1; x <= 1; x++)
             {
@@ -211,6 +213,8 @@ public class RouteManager : MonoBehaviour
         routeInUse = true; //Route is now created and in use
 
         PointManager.Instance.StartRouteTimer();
+
+        UIController.Instance.ShowLoading(false);
     }
 
     /// <summary>
@@ -287,7 +291,7 @@ public class RouteManager : MonoBehaviour
 
 
             //Adds the routing point to the GameLocation
-            gameLocation.ViaPoint = points[(i - 1) + (indexIncrements * i)];
+            gameLocation.RoutePoint = points[(i - 1) + (indexIncrements * i)];
         }
     }
 
@@ -530,7 +534,7 @@ public class RouteManager : MonoBehaviour
         print("Could not find any route");
 
         ErrorPanel.Instance.ShowError("Couldn't find a route",
-            "It seems no route was available, for your prefered route length.\nMaybe try another route length, or go to another location and try again", ErrorType.COULD_NOT_FIND_ROUTE);
+            "No route was available, for your prefered route length.\nTry another route length, or go to another location and try again", ErrorType.COULD_NOT_FIND_ROUTE);
     }
 
     /// <summary>
@@ -564,5 +568,4 @@ public class RouteManager : MonoBehaviour
         //else
         return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y) * distance;
     }
-
 }

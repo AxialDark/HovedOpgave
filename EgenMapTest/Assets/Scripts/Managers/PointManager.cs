@@ -4,7 +4,6 @@ using System.Diagnostics;
 
 public class PointManager : MonoBehaviour
 {
-
     #region Singleton
     private static PointManager instance;
 
@@ -27,7 +26,6 @@ public class PointManager : MonoBehaviour
     #region Fields
     private int totalPoint;
     private int routePoint;
-
     private Stopwatch timer;
     private long millisecond;
     private int second, minute, hour;

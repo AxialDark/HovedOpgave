@@ -35,7 +35,14 @@ public class ErrorPanel : MonoBehaviour {
     /// <summary>
     /// Unity Start Method
     /// </summary>
-    private void Start()
+    //private void Start()
+    //{
+    //    instance = this;
+    //    errorPanelTexts = GetComponentsInChildren<Text>();
+    //    gameObject.SetActive(false);
+    //}
+
+    public void Initialize()
     {
         instance = this;
         errorPanelTexts = GetComponentsInChildren<Text>();
@@ -50,7 +57,8 @@ public class ErrorPanel : MonoBehaviour {
     /// <param name="_type">The type of error</param>
     public void ShowError(string _subTitle, string _info, ErrorType _type)
     {
-        errorPanelTexts[1].text = _subTitle;
+        UIController.Instance.ShowLoading(false); //Hides the loading panel if it's active
+        errorPanelTexts[1].text = "Error - " + _subTitle;
         errorPanelTexts[2].text = _info;
         error = _type;
 
@@ -74,8 +82,8 @@ public class ErrorPanel : MonoBehaviour {
 
 
         ResetErrorText();
-        HideError();
         error = ErrorType.NONE;
+        HideError();
     }
 
     /// <summary>

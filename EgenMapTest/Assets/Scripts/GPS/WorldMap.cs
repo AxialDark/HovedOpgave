@@ -9,36 +9,6 @@ using System.Collections.Generic;
 /// </summary>
 public class WorldMap : MonoBehaviour
 {
-    /// <summary>
-    /// Changes the Material on all buildings, tiles and roads
-    /// </summary>
-    /// <param name="_palet">The Color Theme to change to</param>
-    public void ChangeColorTheme(MapColorPalet _palet)
-    {
-        settings.mapColorPalet = _palet;
-        colorPalet = _palet;
-
-        foreach (Tile tile in tileMan.AllTiles)
-        {
-            tile.myRend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Ground");
-        }
-
-        foreach (Building building in buildFac.AllBuildings)
-        {
-            building.myRendere.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/" + building.LanduseKind);
-        }
-
-        foreach (RoadPolygon m in roadFac.MyRoads)
-        {
-            foreach (Renderer rend in m.MyRenderes)
-            {
-                rend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Road");
-            }
-        }
-    }
-
-
-
     [SerializeField]
     private Settings settings;
     public static MapColorPalet colorPalet;
@@ -75,14 +45,11 @@ public class WorldMap : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator Init()
-    {
-        // First, check if user has location service enabled
-        if (!Input.location.isEnabledByUser)
+    {        
+        if (!Input.location.isEnabledByUser) // First, check if user has location service enabled
             yield break;
-
-
-        // Start service before querying location
-        Input.location.Start(5, 5);
+                
+        Input.location.Start(5, 5); // Start service before querying location
 
         // Wait until service initializes
         int maxWait = 20;
@@ -108,7 +75,11 @@ public class WorldMap : MonoBehaviour
         else
         {
             // Access granted and location value could be retrieved
-            print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            print("Location: " + Input.location.lastData.latitude 
+                + " " + Input.location.lastData.longitude + " " 
+                + Input.location.lastData.altitude + " " 
+                + Input.location.lastData.horizontalAccuracy + " " 
+                + Input.location.lastData.timestamp);
             LocationInfo locData = Input.location.lastData;
 
             settings.latitude = locData.latitude;
@@ -144,7 +115,35 @@ public class WorldMap : MonoBehaviour
 
         RouteManager.Instance.GetComponent<RouteManager>().InitiateRouteGeneration(startPoint, tempViaPoints, settings, _routeLength, true);
     }
-  
+
+    /// <summary>
+    /// Changes the Material on all buildings, tiles and roads
+    /// </summary>
+    /// <param name="_palet">The Color Theme to change to</param>
+    public void ChangeColorTheme(MapColorPalet _palet)
+    {
+        settings.mapColorPalet = _palet;
+        colorPalet = _palet;
+
+        foreach (Tile tile in tileMan.AllTiles)
+        {
+            tile.myRend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Ground");
+        }
+
+        foreach (Building building in buildFac.AllBuildings)
+        {
+            building.myRendere.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/" + building.LanduseKind);
+        }
+
+        foreach (RoadPolygon m in roadFac.MyRoads)
+        {
+            foreach (Renderer rend in m.MyRenderes)
+            {
+                rend.material = Resources.Load<Material>("Map Themes/" + settings.mapColorPalet + "/Road");
+            }
+        }
+    }
+
 
     /// <summary>
     /// Settings for the map

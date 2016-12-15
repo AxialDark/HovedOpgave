@@ -16,9 +16,7 @@ using System.Linq;
 /// TODO: Error Handle when a via point is ignored.
 /// </summary>
 public class Route
-{
-
-    private readonly string distanceFormat = "M";
+{    private readonly string distanceFormat = "M";
     private readonly string apiUrl = "http://openls.geog.uni-heidelberg.de/route?api_key=ee0b8233adff52ce9fd6afc2a2859a28&start={0}&end={1}&via={2}&lang={3}&distunit={4}&routepref={5}&weighting={6}&avoidAreas=&useTMC=false&noMotorways=true&noTollways=false&noUnpavedroads=&noSteps=&noFerries=true&instructions=false";
     private readonly string transportType = "Pedestrian";
     private readonly string routingLanguage = "en";
@@ -115,12 +113,12 @@ public class Route
     /// <summary>
     /// Exeption Handling if failed to get data from api
     /// </summary>
-    /// <param name="ex">The exeption</param>
-    private void FailToGetRouteAPIData(Exception ex)
+    /// <param name="_ex">The exeption</param>
+    private void FailToGetRouteAPIData(Exception _ex)
     {
-        ErrorPanel.Instance.ShowError("Failed to get data",
-            "Was for some reason unable to get data from routing API\nPlease check your internet connection", ErrorType.COULD_NOT_LOAD_ROUTE);
-        Debug.Log("Error getting route - " + ex);
+        ErrorPanel.Instance.ShowError("Failed to get the data",
+            "Unable to get data from routing API\nPlease check your internet connection", ErrorType.COULD_NOT_LOAD_ROUTE);
+        Debug.Log("Error getting route - " + _ex);
     }
 
     /// <summary>
@@ -129,40 +127,11 @@ public class Route
     /// <param name="_text">Everything revieced from the API</param>
     private void ConvertAPIData(string _text)
     {
-        #region delete?
-        //_text = _text.Trim('\n'); //Removes all instances of "\n"
-
-        //_text = _text.Replace("<gml:pos>", ";"); //Replaces unuseable string with ";"
-        //_text = _text.Replace("</gml:pos>", ";");//Replaces unuseable string with ";"
-
-        //string[] splitResult = _text.Split(';'); //Splits on ";"
-        //List<string> coords = new List<string>();
-
-        ////Runs through the string array
-        //for (int i = 0; i < splitResult.Length; i++)
-        //{
-        //    if (numberArray.Contains(splitResult[i][0])) //Adds it to the list if it contains numbers on the first index
-        //    {
-        //        coords.Add(splitResult[i]);
-        //    }
-        //}
-
-        //coords.RemoveAt(0); //Forgot to format first two values :)
-        //coords.RemoveAt(0); //Forgot to format first two values :)
-
-        //for (int i = 0; i < coords.Count; i++) //Format and add all of the routes latitudes and longtitude
-        //{
-        //    string[] longLat = coords[i].Split(' ');
-
-        //    routeLatLongs.Add(new Vector2(float.Parse(longLat[1]), float.Parse(longLat[0])));
-        //}
-        #endregion
-
         if (_text.Contains("Error")) //If response contains errors
         {
             Debug.Log("Shit happende");
 
-            if(!ignoreRetry)
+            if (!ignoreRetry)
                 RouteManager.Instance.RecalculateViaPoints(startPosition, length);
             return;
         }

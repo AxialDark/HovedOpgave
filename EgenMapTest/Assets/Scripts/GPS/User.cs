@@ -8,6 +8,8 @@ using UnityEngine.UI;
 /// </summary>
 public class User : MonoBehaviour
 {
+    private Text debugText;
+
 
     private static User instance;
     private Vector2 centerInMerc;
@@ -55,6 +57,11 @@ public class User : MonoBehaviour
         gameObject.transform.position = (vector - _centerInMerc).ToVector3xz();
         gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0, 255);
         gameObject.transform.localScale = new Vector3(20, 20, 20);
+
+        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
+        debugText = GameObject.Find("ddPosText").GetComponent<Text>();
+        StartCoroutine(OtherMovement());
+
         cam.transform.SetParent(gameObject.transform, true);
         Vector3 camPos = Vector3.zero;
         camPos.y = cam.transform.localPosition.y;
@@ -69,6 +76,8 @@ public class User : MonoBehaviour
     private void Update()
     {
         if (Application.platform == RuntimePlatform.WindowsEditor) return;
+
+        debugText.text = "Current Position:\n" + transform.position + "\nNew Position:\n" + newPosition;
 
         Invoke("UpdatePosition", 2); //Updates the users position every indicated interval in seconds
     }
@@ -105,7 +114,8 @@ public class User : MonoBehaviour
 
             Vector2 vector = GM.LatLonToMeters(currentLatLong); //Convert LatLong to mercator coordinates
             newPosition = (vector - centerInMerc).ToVector3xz(); //Creates new position relative to the center of the tile
-            StartCoroutine(SmoothMovement(2));
+            newPosition.y = 10;
+            //StartCoroutine(SmoothMovement(2));
             lastLatLong = currentLatLong; //Updates last LatLong
         }
         else
@@ -119,14 +129,28 @@ public class User : MonoBehaviour
     /// Makes the movement between last position and new position smooth
     /// <param name="value">The time it should take to move to the new position</param>
     /// </summary>
-    private IEnumerator SmoothMovement(float value)
+    private IEnumerator SmoothMovement(float _value)
     {
-        float rate = 1.0f / value;
+        float rate = 1.0f / _value;
         float t = 0.0f;
         while (t < 1.0)
         {
             t += Time.deltaTime * rate;
             gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Mathf.SmoothStep(0.0f, 1.0f, t));
+            yield return null;
+        }
+    }
+
+    private IEnumerator OtherMovement()
+    {
+        while (true)
+        {
+            if (newPosition != null && gameObject.transform.position != newPosition)
+            {
+                //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Time.deltaTime * Vector3.Distance(gameObject.transform.position, newPosition));
+                transform.position = newPosition;
+            }
+
             yield return null;
         }
     }
@@ -175,5 +199,21 @@ public class User : MonoBehaviour
         {
             UIController.Instance.btnStartGame.gameObject.SetActive(false);
         }
+    }
+
+
+
+
+    /// <summary>
+    /// Centralizes the User avatar
+    /// </summary>
+    /// <param name="_tileDiff">The difference in the unity position</param>
+    /// <param name="_newCenterInMerc">The new tiles center position in Mercator</param>
+    public void Centralize(Vector3 _tileDiff, Vector2 _newCenterInMerc)
+    {
+        transform.position -= _tileDiff;
+        newPosition -= _tileDiff;
+
+        centerInMerc = _newCenterInMerc;
     }
 }

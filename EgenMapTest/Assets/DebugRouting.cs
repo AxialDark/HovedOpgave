@@ -56,5 +56,7 @@ public class DebugRouting : MonoBehaviour
             List<Vector2> temp = null;
             GameObject.Find("RouteManager").GetComponent<RouteManager>().InitiateRouteGeneration(new Vector2(settings.latitude, settings.longtitude), temp, settings, RouteLength.LONG);
         }
+        else if (Input.GetKeyDown(KeyCode.B))
+            UIController.Instance.ShowLoading(!UIController.Instance.show);
     }
 }

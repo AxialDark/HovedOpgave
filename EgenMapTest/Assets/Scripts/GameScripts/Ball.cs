@@ -7,13 +7,12 @@ using UnityEngine.UI;
 /// </summary>
 public enum BallUpSpeedTest { EQUAL, LIMIT_400, PROPERTIONAL_TO_LIMIT_400, SIXTY_DEGREES}
 
-
 /// <summary>
 /// The code in this script is made based on this: https://www.youtube.com/watch?v=wavvtztVK3c&index=11&list=FLHFTwh0AzY5XKPTt5P6dUWw
 /// </summary>
 public class Ball : MonoBehaviour
 {
-
+    #region Fields
     [SerializeField]
     private BallUpSpeedTest test;
     private const float LIMIT = 400f;
@@ -23,16 +22,11 @@ public class Ball : MonoBehaviour
     private float mouseStillTime = 0;
     private float delay = 0;
     private float holdTime = 0;
-
-    #region Fields
     [SerializeField]
     private float throwSpeed;
-
     private float speed;
     private float lastMouseX, lastMouseY;
-
     private bool thrown, holding;
-
     private Rigidbody rigidBody;
     private Vector3 newPosition;
     #endregion
@@ -195,6 +189,50 @@ public class Ball : MonoBehaviour
         thrown = true;
     }
 
+    /// <summary>
+    /// Resets the ball to its start values.
+    /// </summary>
+    private void Reset()
+    {
+        CancelInvoke();
+
+        transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, Camera.main.nearClipPlane * 7.5f));
+        newPosition = transform.position;
+
+        thrown = holding = false;
+
+        rigidBody.useGravity = false;
+        rigidBody.velocity = Vector3.zero;
+        rigidBody.angularVelocity = Vector3.zero;
+        transform.rotation = Quaternion.Euler(0f, 200f, 0f);
+        transform.SetParent(Camera.main.transform);
+
+        GameManager.Instance.ThrowDeduct();
+    }
+
+    /// <summary>
+    /// Handles what happens when the ball collides with a trigger object.
+    /// </summary>
+    /// <param name="_collider">The colliding object</param>
+    private void OnTriggerEnter(Collider _collider)
+    {
+        if (_collider.gameObject.tag == "Goal") // If the colliding object is the goal.
+        {
+            GameManager.Instance.CalculateGoalPoints();
+            GameManager.Instance.AddConsecutiveGoal();
+            Invoke("Reset", 0.5f);
+        }
+        else if (_collider.gameObject.tag == "Floor") // If the colliding object is the floorplane.
+        {
+            GameManager.Instance.ResetConsecutiveGoals();
+            Reset();
+        }
+    }
+
+    /// <summary>
+    /// Debug Methods
+    /// </summary>
+    /// <param name="_direction"></param>
     private void SpeedTest(Vector3 _direction)
     {
         print("Holdtime: " + holdTime);
@@ -246,48 +284,12 @@ public class Ball : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Debug Methods
+    /// </summary>
+    /// <param name="newVal"></param>
     public void TestOnValue(int newVal)
     {
         test = (BallUpSpeedTest)newVal;
-    }
-
-    /// <summary>
-    /// Resets the ball to its start values.
-    /// </summary>
-    private void Reset()
-    {
-        CancelInvoke();
-
-        transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.1f, Camera.main.nearClipPlane * 7.5f));
-        newPosition = transform.position;
-
-        thrown = holding = false;
-
-        rigidBody.useGravity = false;
-        rigidBody.velocity = Vector3.zero;
-        rigidBody.angularVelocity = Vector3.zero;
-        transform.rotation = Quaternion.Euler(0f, 200f, 0f);
-        transform.SetParent(Camera.main.transform);
-
-        GameManager.Instance.ThrowDeduct();
-    }
-
-    /// <summary>
-    /// Handles what happens when the ball collides with a trigger object.
-    /// </summary>
-    /// <param name="_collider">The colliding object</param>
-    private void OnTriggerEnter(Collider _collider)
-    {
-        if (_collider.gameObject.tag == "Goal") // If the colliding object is the goal.
-        {
-            GameManager.Instance.CalculateGoalPoints();
-            GameManager.Instance.AddConsecutiveGoal();
-            Invoke("Reset", 0.5f);
-        }
-        else if (_collider.gameObject.tag == "Floor") // If the colliding object is the floorplane.
-        {
-            GameManager.Instance.ResetConsecutiveGoals();
-            Reset();
-        }
     }
 }

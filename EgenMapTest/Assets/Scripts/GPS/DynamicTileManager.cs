@@ -105,7 +105,8 @@ public class DynamicTileManager : TileManager {
         centerTMS += _tileDif;
         centerInMercator = GM.TileBounds(centerTMS, zoom).center;
         Vector3 difInUnity = new Vector3(_tileDif.x * tileSize.x, 0, _tileDif.y * tileSize.y);
-        user.transform.position -= difInUnity;
+        //user.transform.position -= difInUnity;
+        User.Instance.Centralize(difInUnity, centerInMercator);
     }
 
     /// <summary>

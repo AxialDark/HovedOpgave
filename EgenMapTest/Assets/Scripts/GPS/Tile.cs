@@ -10,16 +10,11 @@ using System.Linq;
 /// </summary>
 public class Tile : MonoBehaviour
 {
-    public Renderer myRend;
-
-
-
-
     public string mapImageBaseUrl = "http://b.tile.openstreetmap.org/";
 
     [SerializeField]
     public Rect rect;
-
+    public Renderer myRend;
     private RoadFactory roadFac;
     private BuildingFactory buildFac;
     private Settings settings;

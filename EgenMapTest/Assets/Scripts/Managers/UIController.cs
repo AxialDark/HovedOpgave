@@ -9,18 +9,21 @@ using System;
 /// </summary>
 public class UIController : MonoBehaviour
 {
-    /// <summary>
-    /// Theme dropdown event method when choosing another color theme
-    /// </summary>
-    /// <param name="_val"></param>
-    public void OnColorTemaChange(int _val)
-    {
-        if (map != null)
-        {
-            map.ChangeColorTheme((MapColorPalet)_val);
-        }
-    }
+    [SerializeField]
+    private GameObject pnlLoading;
+    public bool show = false; //ONLY FOR DEBUG
+    [SerializeField]
+    private ErrorPanel pnlError;
 
+    /// <summary>
+    /// Shows the loading paneæ
+    /// </summary>
+    /// <param name="_show">Show or hide</param>
+    public void ShowLoading(bool _show)
+    {
+        show = _show; //ONLY FOR DEBUG
+        pnlLoading.SetActive(_show);
+    }
 
     private WorldMap map = null;
 
@@ -55,20 +58,21 @@ public class UIController : MonoBehaviour
             return instance;
         }
     }
-
+    /// <summary>
+    /// A reference til the game object with all object in the main scene as children.
+    /// Needed to reactivate the game object after a game has been played
+    /// </summary>
     public GameObject RefMainScene
     {
         get
         {
             return refMainScene;
         }
-
-        set
-        {
-            refMainScene = value;
-        }
     }
-
+    /// <summary>
+    /// Reference to the world map object in the main scene.
+    /// Used to make UI affect the main scene
+    /// </summary>
     public WorldMap Map
     {
         get
@@ -81,6 +85,16 @@ public class UIController : MonoBehaviour
             map = value;
         }
     }
+    /// The GameLocation that the player hit
+    /// </summary>
+    public GameLocation HitLocation { get; private set; }
+
+
+    private void Start()
+    {
+        pnlError.Initialize();
+    }
+
 
     /// <summary>
     /// Unity method called every time game object is enabled
@@ -107,6 +121,8 @@ public class UIController : MonoBehaviour
     /// <param name="sceneName">Name of scene</param>
     public void LoadScene(string _sceneName)
     {
+        if (_sceneName == "GameScene")
+            ShowLoading(true);
         StartCoroutine(LoadNextScene(_sceneName));
     }
 
@@ -138,7 +154,7 @@ public class UIController : MonoBehaviour
             {
                 refMainScene = GameObject.FindGameObjectWithTag("AllMainObjects"); //Find the parent to all objects in main scene. Needed when unloading from game scene
                 refMainScene.SetActive(false); //Disable all objects in Main scene
-                btnStartGame.gameObject.SetActive(false); //Hide button                
+                btnStartGame.gameObject.SetActive(false); //Hide button             
             }
             //Scene activeScene = SceneManager.GetActiveScene();
             SceneManager.SetActiveScene(nextScene); //Activates the loaded scene
@@ -173,7 +189,7 @@ public class UIController : MonoBehaviour
     }
 
     /// <summary>
-    /// Button Click Method
+    /// Button Click Method.
     /// Ends a route
     /// </summary>
     public void ClickEndRoute()
@@ -204,9 +220,6 @@ public class UIController : MonoBehaviour
             }
         }
     }      
-    /// The GameLocation that the player hit
-    /// </summary>
-    public GameLocation HitLocation { get; private set; }
 
     /// <summary>
     /// Set the GameLocation as the HitLocation if null and shows the Start Game button
@@ -217,7 +230,7 @@ public class UIController : MonoBehaviour
         if (_loc == HitLocation)
             btnStartGame.gameObject.SetActive(true);
 
-        if (HitLocation == null && _loc.ViaPoint == RouteManager.Instance.Points[1])
+        if (HitLocation == null && _loc.RoutePoint == RouteManager.Instance.Points[1])
         {
             HitLocation = _loc;
             print("Hit location");
@@ -248,5 +261,17 @@ public class UIController : MonoBehaviour
     public void ActivateProfileButton()
     {
         profileButton.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Theme dropdown event method when choosing another color theme
+    /// </summary>
+    /// <param name="_val"></param>
+    public void OnColorThemeChange(int _val)
+    {
+        if (map != null)
+        {
+            map.ChangeColorTheme((MapColorPalet)_val);
+        }
     }
 }
