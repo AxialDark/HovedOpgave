@@ -59,7 +59,7 @@ public class User : MonoBehaviour
         gameObject.transform.localScale = new Vector3(20, 20, 20);
 
         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-        debugText = GameObject.Find("ddPosText").GetComponent<Text>();
+        //debugText = GameObject.Find("ddPosText").GetComponent<Text>();
 #if !UNITY_EDITOR
         StartCoroutine(OtherMovement());
 #endif
@@ -79,7 +79,7 @@ public class User : MonoBehaviour
     {
         if (Application.platform == RuntimePlatform.WindowsEditor) return;
 
-        debugText.text = "Current Position:\n" + transform.position + "\nNew Position:\n" + newPosition;
+        //debugText.text = "Current Position:\n" + transform.position + "\nNew Position:\n" + newPosition;
 
         Invoke("UpdatePosition", 2); //Updates the users position every indicated interval in seconds
     }
