@@ -128,7 +128,7 @@ public class TileManager : MonoBehaviour
     private void FailToGetDataFromAPI(Exception _ex)
     {
         ErrorPanel.Instance.ShowError("Failed to load map",
-            "We were unable to load the map or part of the map.\nPlease check your internet connection and try again", ErrorType.COULD_NOT_LOAD_MAP);
+            "Unable to fully load the map.\nPlease check your internet connection and try again", ErrorType.COULD_NOT_LOAD_MAP);
 
         Debug.Log("Error fetching -> " + _ex);
     }

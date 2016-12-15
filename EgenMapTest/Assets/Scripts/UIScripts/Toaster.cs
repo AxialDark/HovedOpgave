@@ -8,7 +8,7 @@ public class Toaster : MonoBehaviour
 {
     #region Fields
     private string toastString;
-    AndroidJavaObject currentActivity;
+    private AndroidJavaObject currentActivity;
     #endregion
 
     /// <summary>

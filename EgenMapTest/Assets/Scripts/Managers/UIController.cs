@@ -12,6 +12,8 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameObject pnlLoading;
     public bool show = false; //ONLY FOR DEBUG
+    [SerializeField]
+    private ErrorPanel pnlError;
 
     /// <summary>
     /// Shows the loading paneæ
@@ -86,6 +88,13 @@ public class UIController : MonoBehaviour
     /// The GameLocation that the player hit
     /// </summary>
     public GameLocation HitLocation { get; private set; }
+
+
+    private void Start()
+    {
+        pnlError.Initialize();
+    }
+
 
     /// <summary>
     /// Unity method called every time game object is enabled
