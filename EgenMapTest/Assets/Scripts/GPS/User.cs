@@ -60,8 +60,10 @@ public class User : MonoBehaviour
 
         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
         debugText = GameObject.Find("ddPosText").GetComponent<Text>();
-        StartCoroutine(OtherMovement());
 
+#if !UNITY_EDITOR
+        StartCoroutine(OtherMovement());
+#endif
         cam.transform.SetParent(gameObject.transform, true);
         Vector3 camPos = Vector3.zero;
         camPos.y = cam.transform.localPosition.y;

@@ -332,7 +332,7 @@ public class RouteManager : MonoBehaviour
         dir = directions[randomIndex];
         directions.RemoveAt(randomIndex); // So that it won't test the same direction twice.
 
-        Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
+        Vector2 otherDir = FindTheOtherDirection(dir); //Direction perpendicular to start direction
 
         //INFO:
         //The x and y coordinates of our points are latitude and longtitude
@@ -391,7 +391,7 @@ public class RouteManager : MonoBehaviour
         dir = directions[randomIndex];
         directions.RemoveAt(randomIndex); // So that it won't test the same direction twice.
 
-        Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
+        Vector2 otherDir = FindTheOtherDirection(dir); //Direction perpendicular to start direction
 
         //INFO:
         //The x and y coordinates of our points are latitude and longtitude
@@ -474,7 +474,7 @@ public class RouteManager : MonoBehaviour
         dir = directions[randomIndex];
         directions.RemoveAt(randomIndex); // So that it won't test the same direction twice.
 
-        Vector2 otherDir = new Vector2(dir.y, dir.x); //Direction perpendicular to start direction
+        Vector2 otherDir = FindTheOtherDirection(dir); //Direction perpendicular to start direction
 
         //INFO:
         //The x and y coordinates of our points are latitude and longtitude
@@ -563,9 +563,14 @@ public class RouteManager : MonoBehaviour
     /// <returns>Diagonal via point</returns>
     private Vector2 CalcDiagonalPlacement(Vector2 _middelPoint, Vector2 _direction, float distance)
     {
-        //if (_direction.x == 0 || _direction.y == 0)
-        //    return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y) * distance;
-        //else
-        return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y) * distance;
+        if (_direction.x == 0 || _direction.y == 0)
+        {
+            return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y) * distance;
+        }
+        else
+        {
+            return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y * 0.5f) * distance;
+        }
+        
     }
 }
