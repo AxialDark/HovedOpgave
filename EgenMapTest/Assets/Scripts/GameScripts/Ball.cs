@@ -107,7 +107,7 @@ public class Ball : MonoBehaviour
 
         if (Input.GetMouseButton(0) && holding) // As long as the "mouse is clicked / finger is touching the screen".
         {
-            if (lastMouseX == Input.mousePosition.x && lastMouseY == Input.mousePosition.y && delay > 0.5f)
+            if (lastMouseX == Input.mousePosition.x && lastMouseY == Input.mousePosition.y && delay > 0.1f)
             {
                 print("In place");
                 delay = 0;
@@ -123,13 +123,13 @@ public class Ball : MonoBehaviour
 
             if (new Vector2(lastMouseX, lastMouseY) == lastCheckStillPos)
             {
-                print("It checks out");
+                //print("It checks out");
                 mouseStillTime += Time.deltaTime;
             }
 
-            if (mouseStillTime > 0.5f)
+            if (mouseStillTime > 0.05f)
             {
-                print("New start pos");
+                //print("New start pos");
                 startHoldPos = lastCheckStillPos;
                 lastStillPos = lastCheckStillPos;
                 lastCheckStillPos = Vector2.zero;
@@ -176,7 +176,7 @@ public class Ball : MonoBehaviour
         speed = throwSpeed * differenceY * (1 + (1 - (holdTime > 1 ? 1 : holdTime)));
 
         float x = (_mousePos.x / Screen.width) - (startHoldPos.x / Screen.width);
-        x = Mathf.Abs(Input.mousePosition.x - startHoldPos.x) / Screen.width * 100 * x;
+        x = Mathf.Abs(Input.mousePosition.x - startHoldPos.x) / Screen.width * 10 * x;
 
         Vector3 direction = new Vector3(x, 0f, 1f);
         direction = Camera.main.transform.TransformDirection(direction);
