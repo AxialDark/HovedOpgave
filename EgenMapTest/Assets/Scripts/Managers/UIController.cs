@@ -163,6 +163,15 @@ public class UIController : MonoBehaviour
     }
 
     /// <summary>
+    /// Unloads the currently active scene
+    /// </summary>
+    public void UnloadActiveScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.UnloadScene(currentScene);
+    }
+
+    /// <summary>
     /// Button Click Method.
     /// Generates a route
     /// </summary>

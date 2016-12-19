@@ -157,8 +157,7 @@ public class GameManager : MonoBehaviour
 
         UIController.Instance.ActivateProfileButton();
 
-        Scene thisScene = SceneManager.GetActiveScene();
-        SceneManager.UnloadScene(thisScene);
+        UIController.Instance.UnloadActiveScene();
         UIController.Instance.RefMainScene.SetActive(true);
     }
 

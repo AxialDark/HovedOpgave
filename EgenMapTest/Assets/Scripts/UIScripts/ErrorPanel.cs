@@ -78,9 +78,8 @@ public class ErrorPanel : MonoBehaviour {
     /// </summary>
     public void OnOkClick()
     {
-
-
-
+        //TODO: Handle error whatever it may be
+        HandleError();
         ResetErrorText();
         error = ErrorType.NONE;
         HideError();
@@ -94,5 +93,27 @@ public class ErrorPanel : MonoBehaviour {
         errorPanelTexts[0].text = "Sorry... something went wrong";
         errorPanelTexts[1].text = "Error - ";
         errorPanelTexts[2].text = "Error";
+    }
+
+    private void HandleError()
+    {
+        switch (error)
+        {
+            case ErrorType.COULD_NOT_FIND_ROUTE:
+                UIController.Instance.pnlRouteButtons.gameObject.SetActive(true);
+                break;
+            case ErrorType.COULD_NOT_LOAD_MAP: 
+                UIController.Instance.UnloadActiveScene();
+                UIController.Instance.LoadScene("Main"); //reload main scene
+                break;
+            case ErrorType.COULD_NOT_LOAD_ROUTE:
+                UIController.Instance.pnlRouteButtons.gameObject.SetActive(true);
+                break;
+            case ErrorType.GPS_STATE_NOT_RUNNING:
+
+                break;
+            case ErrorType.NONE:
+                break;
+        }
     }
 }
