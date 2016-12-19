@@ -11,7 +11,8 @@ public class DebugMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
+        if (User.Instance.RouteIsActive)
+            Move();
     }
 
 

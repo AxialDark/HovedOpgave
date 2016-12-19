@@ -40,12 +40,15 @@ public class UIController : MonoBehaviour
     private Text EndStatsText;
     [SerializeField]
     private Button profileButton;
+    [SerializeField]
+    private Image routeAcceptPanel;
+    [SerializeField]
+    private Text routeStatsText;
 
     public Button btnDebugStartRoute;
     public Button btnDebugEndRoute;
     public GameObject DebugPhoneMovement;
 
-    
     /// <summary>
     /// Unity Singleton
     /// </summary>
@@ -89,12 +92,10 @@ public class UIController : MonoBehaviour
     /// </summary>
     public GameLocation HitLocation { get; private set; }
 
-
     private void Start()
     {
         pnlError.Initialize();
     }
-
 
     /// <summary>
     /// Unity method called every time game object is enabled
@@ -198,6 +199,14 @@ public class UIController : MonoBehaviour
     }
 
     /// <summary>
+    /// Method for the decline route button, returns to de map menu.
+    /// </summary>
+    public void ClickDeclineRoute()
+    {
+        RouteManager.Instance.EndRouteNotCompleted();
+    }
+
+    /// <summary>
     /// Button Click Method.
     /// Confirms a selected challenge and start the process of generating the attached route
     /// </summary>
@@ -274,5 +283,25 @@ public class UIController : MonoBehaviour
         {
             map.ChangeColorTheme((MapColorPalet)_val);
         }
+    }
+
+    /// <summary>
+    /// Activates the Route acceptance check panel
+    /// </summary>
+    /// <param name="_routeLengthInMeters">Length of the route in meters</param>
+    public void ActivateRouteAcceptPanel(string _routeLengthInMeters)
+    {
+        routeAcceptPanel.gameObject.SetActive(true);
+        routeStatsText.text = "Route length: " + _routeLengthInMeters + " meters.";
+    }
+
+    /// <summary>
+    /// Button method for accepting the route
+    /// </summary>
+    public void AcceptRoute()
+    {
+        User.Instance.RouteIsActive = true;
+
+        PointManager.Instance.StartRouteTimer();
     }
 }
