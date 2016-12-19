@@ -107,6 +107,11 @@ public class User : MonoBehaviour
     {
         CancelInvoke();
 
+        if (!Input.location.isEnabledByUser)
+        {
+            ErrorPanel.Instance.ShowError("GPS disabled bu user", "You no longer have a GPS connection", ErrorType.GPS_STATE_NOT_RUNNING);
+        }
+
         if (Input.location.status == LocationServiceStatus.Running)
         {
             LocationInfo info = Input.location.lastData; //Collects GPS data from device

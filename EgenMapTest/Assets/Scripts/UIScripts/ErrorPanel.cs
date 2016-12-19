@@ -10,7 +10,10 @@ public enum ErrorType {
     COULD_NOT_FIND_ROUTE,
     COULD_NOT_LOAD_MAP,
     COULD_NOT_LOAD_ROUTE,
-    GPS_STATE_NOT_RUNNING }
+    GPS_STATE_NOT_RUNNING,
+    GPS_TIMED_OUT,
+    GPS_INITIALIZATION_FAILED,
+    GPS_INACTIVE}
 
 /// <summary>
 /// Class handling the error window show to the user when using the application

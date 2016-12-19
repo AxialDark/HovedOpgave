@@ -47,8 +47,12 @@ public class WorldMap : MonoBehaviour
     private IEnumerator Init()
     {        
         if (!Input.location.isEnabledByUser) // First, check if user has location service enabled
+        {
+            ErrorPanel.Instance.ShowError("GPS Inactive", "Your GPS/Location service is inactive\nClick \"OK\" to go to \"Settings\" and activate GPS/Location, then try again", ErrorType.GPS_INACTIVE);
+
             yield break;
-                
+        }
+
         Input.location.Start(5, 5); // Start service before querying location
 
         // Wait until service initializes
@@ -63,6 +67,7 @@ public class WorldMap : MonoBehaviour
         if (maxWait < 1)
         {
             print("Timed out");
+            ErrorPanel.Instance.ShowError("GPS timed out", "GPS timed out when trying to initialize\nPlease try again", ErrorType.GPS_TIMED_OUT);
             yield break;
         }
 
@@ -70,6 +75,7 @@ public class WorldMap : MonoBehaviour
         if (Input.location.status == LocationServiceStatus.Failed)
         {
             print("Unable to determine device location");
+            ErrorPanel.Instance.ShowError("GPS Initialization failed", "Failed to start GPS service\nPlease try again", ErrorType.GPS_INITIALIZATION_FAILED);
             yield break;
         }
         else
