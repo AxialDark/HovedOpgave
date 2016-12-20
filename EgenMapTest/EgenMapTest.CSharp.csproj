@@ -78,7 +78,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraMove.cs" />
     <Compile Include="Assets\DebugMovement.cs" />
     <Compile Include="Assets\DebugRouting.cs" />
     <Compile Include="Assets\GoogleVR\DemoScenes\ControllerDemo\ControllerDebugInfo.cs" />
@@ -157,8 +156,10 @@
     <Compile Include="Assets\Scripts\Routeting\GameType.cs" />
     <Compile Include="Assets\Scripts\Routeting\Route.cs" />
     <Compile Include="Assets\Scripts\Routeting\RouteManager.cs" />
+    <Compile Include="Assets\Scripts\UIScripts\CameraMove.cs" />
     <Compile Include="Assets\Scripts\UIScripts\Challenge.cs" />
     <Compile Include="Assets\Scripts\UIScripts\ErrorPanel.cs" />
+    <Compile Include="Assets\Scripts\UIScripts\GvrEx.cs" />
     <Compile Include="Assets\Scripts\UIScripts\MainScene.cs" />
     <Compile Include="Assets\Scripts\UIScripts\Panel_CreateUser.cs" />
     <Compile Include="Assets\Scripts\UIScripts\Toaster.cs" />

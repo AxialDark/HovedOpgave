@@ -28,6 +28,7 @@ public class UIController : MonoBehaviour
     private WorldMap map = null;
 
     private static UIController instance;
+    public Camera UICam;
     public Button btnStartGame;
     public Image pnlEndRoute;
     public Image pnlInGameMenu;
@@ -305,7 +306,7 @@ public class UIController : MonoBehaviour
     public void ActivateRouteAcceptPanel(string _routeLengthInMeters)
     {
         routeAcceptPanel.gameObject.SetActive(true);
-        routeStatsText.text = "Route length: " + _routeLengthInMeters + " meters.";
+        routeStatsText.text = "Route length: " + _routeLengthInMeters + " meters.\nClick /Accept/ to begin!";
     }
 
     /// <summary>

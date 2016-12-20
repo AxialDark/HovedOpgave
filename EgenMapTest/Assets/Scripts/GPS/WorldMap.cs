@@ -33,7 +33,7 @@ public class WorldMap : MonoBehaviour
         tileMan.Initialize(buildFac, roadFac, settings);
         new GameObject("DebugRouting").AddComponent<DebugRouting>().Initialize(settings);
 #endif
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
         StartCoroutine(Init());
 #endif
 
