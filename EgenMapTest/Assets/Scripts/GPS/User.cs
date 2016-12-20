@@ -60,15 +60,18 @@ public class User : MonoBehaviour
         Camera cam = GameObject.FindGameObjectWithTag("SecondCamera").GetComponent<Camera>();
 
         Vector2 vector = GM.LatLonToMeters(_initLatLong);
+        gameObject.name = "Player";
         gameObject.transform.SetParent(_parent);
         gameObject.transform.position = (vector - _centerInMerc).ToVector3xz();
-        gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0, 255);
+        //gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0, 255);
         gameObject.transform.localScale = new Vector3(20, 20, 20);
+
+        gameObject.GetComponent<Renderer>().material = Resources.Load<Material>("mat");
 
         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
         //debugText = GameObject.Find("ddPosText").GetComponent<Text>();
 #if !UNITY_EDITOR
-        StartCoroutine(OtherMovement());
+        //StartCoroutine(OtherMovement());
 #endif
 
         cam.transform.SetParent(gameObject.transform, true);
@@ -93,6 +96,8 @@ public class User : MonoBehaviour
             //debugText.text = "Current Position:\n" + transform.position + "\nNew Position:\n" + newPosition;
 
             Invoke("UpdatePosition", 2); //Updates the users position every indicated interval in seconds
+
+            Move();
         }
     }
 
@@ -171,6 +176,18 @@ public class User : MonoBehaviour
             }
 
             yield return null;
+        }
+    }
+
+    private void Move()
+    {
+        if (newPosition != null && gameObject.transform.position != newPosition)
+        {
+            transform.LookAt(newPosition);
+
+            transform.localRotation = Quaternion.Euler(transform.localEulerAngles + new Vector3(0, 90, 0));
+            //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Time.deltaTime * Vector3.Distance(gameObject.transform.position, newPosition));
+            transform.position = newPosition;
         }
     }
 
