@@ -28,6 +28,7 @@ public class UIController : MonoBehaviour
     private WorldMap map = null;
 
     private static UIController instance;
+    public Camera UICam;
     public Button btnStartGame;
     public Image pnlEndRoute;
     public Image pnlInGameMenu;
@@ -92,7 +93,11 @@ public class UIController : MonoBehaviour
     /// </summary>
     public GameLocation HitLocation { get; private set; }
 
-    private void Start()
+
+    /// <summary>
+    /// Unity method. Called first time script is in use. Called before the Start() method.
+    /// </summary>
+    private void Awake()
     {
         pnlError.Initialize();
     }
@@ -161,6 +166,15 @@ public class UIController : MonoBehaviour
             SceneManager.SetActiveScene(nextScene); //Activates the loaded scene
             print("Loaded next scene");
         }
+    }
+
+    /// <summary>
+    /// Unloads the currently active scene
+    /// </summary>
+    public void UnloadActiveScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.UnloadScene(currentScene);
     }
 
     /// <summary>
@@ -292,7 +306,7 @@ public class UIController : MonoBehaviour
     public void ActivateRouteAcceptPanel(string _routeLengthInMeters)
     {
         routeAcceptPanel.gameObject.SetActive(true);
-        routeStatsText.text = "Route length: " + _routeLengthInMeters + " meters.";
+        routeStatsText.text = "Route length: " + _routeLengthInMeters + " meters.\nClick /Accept/ to begin!";
     }
 
     /// <summary>

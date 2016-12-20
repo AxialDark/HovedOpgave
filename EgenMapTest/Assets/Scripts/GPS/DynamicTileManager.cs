@@ -14,8 +14,6 @@ public class DynamicTileManager : TileManager {
     [SerializeField]
     private Rect centerCollider;
     [SerializeField]
-    private Transform user;
-    [SerializeField]
     private int removeAfter;
 
     /// <summary>
@@ -31,7 +29,6 @@ public class DynamicTileManager : TileManager {
         removeAfter = Math.Max(removeAfter, range * 2 + 1);
         tileSize = tiles.Values.First().rect.size;
         centerCollider = new Rect(Vector2.zero - tileSize / 2, tileSize);
-        user = User.Instance.gameObject.transform;
 
         Observable.Interval(TimeSpan.FromSeconds(2)).Subscribe(x => { UpdateTiles(); }); //Runs UpdateTiles every 2 seconds
     }
@@ -42,7 +39,7 @@ public class DynamicTileManager : TileManager {
     /// </summary>
     private void UpdateTiles()
     {
-        if(!centerCollider.Contains(user.transform.position.ToVector2xz(), true))
+        if(!centerCollider.Contains(User.Instance.transform.position.ToVector2xz(), true))
         {
             Vector2 tileDif = GetMovementVector();
 
@@ -58,7 +55,7 @@ public class DynamicTileManager : TileManager {
     /// <returns>Direction vector</returns>
     private Vector2 GetMovementVector()
     {
-        Vector2 dif = user.transform.position.ToVector2xz();
+        Vector2 dif = User.Instance.transform.position.ToVector2xz();
         Vector2 tileDif = Vector2.zero;
         if (dif.x < Math.Min(centerCollider.xMin, centerCollider.xMax))
             tileDif.x = -1;

@@ -10,7 +10,6 @@ public enum ErrorType {
     COULD_NOT_FIND_ROUTE,
     COULD_NOT_LOAD_MAP,
     COULD_NOT_LOAD_ROUTE,
-    GPS_STATE_NOT_RUNNING,
     GPS_TIMED_OUT,
     GPS_INITIALIZATION_FAILED,
     GPS_INACTIVE}
@@ -81,9 +80,8 @@ public class ErrorPanel : MonoBehaviour {
     /// </summary>
     public void OnOkClick()
     {
-
-
-
+        //TODO: Handle error whatever it may be
+        HandleError();
         ResetErrorText();
         error = ErrorType.NONE;
         HideError();
@@ -97,5 +95,37 @@ public class ErrorPanel : MonoBehaviour {
         errorPanelTexts[0].text = "Sorry... something went wrong";
         errorPanelTexts[1].text = "Error - ";
         errorPanelTexts[2].text = "Error";
+    }
+
+    private void HandleError()
+    {
+        switch (error)
+        {
+            case ErrorType.COULD_NOT_FIND_ROUTE:
+                UIController.Instance.pnlRouteButtons.gameObject.SetActive(true);
+                break;
+            case ErrorType.COULD_NOT_LOAD_MAP: 
+                UIController.Instance.UnloadActiveScene();
+                UIController.Instance.LoadScene("Main"); //reload main scene
+                break;
+            case ErrorType.COULD_NOT_LOAD_ROUTE:
+                UIController.Instance.pnlRouteButtons.gameObject.SetActive(true);
+                break;
+            case ErrorType.GPS_INACTIVE:
+                //Do nothing
+                UIController.Instance.gameObject.GetComponent<InitGPS>().ReinitLocationService();
+                break;
+            case ErrorType.GPS_INITIALIZATION_FAILED:
+                //TODO: To restarts to GSP, call whatever method is made so the GPS inits before map is loaded.
+                UIController.Instance.gameObject.GetComponent<InitGPS>().ReinitLocationService();
+                break;
+            case ErrorType.GPS_TIMED_OUT:
+                //TODO: To restarts to GSP, call whatever method is made so the GPS inits before map is loaded.
+                UIController.Instance.gameObject.GetComponent<InitGPS>().ReinitLocationService();
+                break;
+            case ErrorType.NONE:
+                //do nothing
+                break;
+        }
     }
 }
