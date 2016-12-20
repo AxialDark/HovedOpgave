@@ -38,6 +38,7 @@ public class LoginManager : MonoBehaviour
                 print("Login succesfull");
                 toaster.ShowToast("Login succesfull");
                 startMenuPanel.gameObject.SetActive(false);
+                UIController.Instance.UICam.gameObject.SetActive(false);
                 UIController.Instance.LoadScene("Main");
             }
             else
@@ -52,6 +53,7 @@ public class LoginManager : MonoBehaviour
             print("Debug Login");
             toaster.ShowToast("Debug Login");
             startMenuPanel.gameObject.SetActive(false);
+            UIController.Instance.UICam.gameObject.SetActive(false);
             UIController.Instance.LoadScene("Main");
         }
         #endregion
