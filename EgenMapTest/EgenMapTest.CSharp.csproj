@@ -136,6 +136,7 @@
     <Compile Include="Assets\Scripts\GPS\Building.cs" />
     <Compile Include="Assets\Scripts\GPS\BuildingFactory.cs" />
     <Compile Include="Assets\Scripts\GPS\DynamicTileManager.cs" />
+    <Compile Include="Assets\Scripts\GPS\InitGPS.cs" />
     <Compile Include="Assets\Scripts\GPS\RoadFactory.cs" />
     <Compile Include="Assets\Scripts\GPS\RoadPolygon.cs" />
     <Compile Include="Assets\Scripts\GPS\Tile.cs" />

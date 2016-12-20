@@ -109,7 +109,7 @@ public class User : MonoBehaviour
 
         if (!Input.location.isEnabledByUser)
         {
-            ErrorPanel.Instance.ShowError("GPS disabled bu user", "You no longer have a GPS connection", ErrorType.GPS_STATE_NOT_RUNNING);
+            ErrorPanel.Instance.ShowError("GPS disabled by user", "You no longer have a GPS connection. Please reactivate it to proceed.", ErrorType.GPS_INACTIVE);
         }
 
         if (Input.location.status == LocationServiceStatus.Running)
@@ -127,7 +127,7 @@ public class User : MonoBehaviour
         }
         else
         {
-            ErrorPanel.Instance.ShowError("GPS connection lost.", "You no longer have a GPS connection", ErrorType.GPS_STATE_NOT_RUNNING);
+            ErrorPanel.Instance.ShowError("GPS connection lost.", "You no longer have a GPS connection", ErrorType.GPS_INACTIVE);
         }
 
     }

@@ -41,46 +41,14 @@ public class WorldMap : MonoBehaviour
     }
 
     /// <summary>
-    /// Coroutines used on devices with GPS to initialize the map
+    /// Initialize the World Map based on location data.
     /// </summary>
     /// <returns></returns>
     private IEnumerator Init()
-    {        
-        if (!Input.location.isEnabledByUser) // First, check if user has location service enabled
-        {
-            ErrorPanel.Instance.ShowError("GPS Inactive", "Your GPS/Location service is inactive\nClick \"OK\" to go to \"Settings\" and activate GPS/Location, then try again", ErrorType.GPS_INACTIVE);
+    {
+        if (Input.location.status != LocationServiceStatus.Running) yield return null; //Make sure the GPS is up and running before we start the map generation
 
-            yield break;
-        }
-
-        Input.location.Start(5, 5); // Start service before querying location
-
-        // Wait until service initializes
-        int maxWait = 20;
-        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
-        {
-            yield return new WaitForSeconds(1);
-            maxWait--;
-        }
-
-        // Service didn't initialize in 20 seconds
-        if (maxWait < 1)
-        {
-            print("Timed out");
-            ErrorPanel.Instance.ShowError("GPS timed out", "GPS timed out when trying to initialize\nPlease try again", ErrorType.GPS_TIMED_OUT);
-            yield break;
-        }
-
-        // Connection has failed
-        if (Input.location.status == LocationServiceStatus.Failed)
-        {
-            print("Unable to determine device location");
-            ErrorPanel.Instance.ShowError("GPS Initialization failed", "Failed to start GPS service\nPlease try again", ErrorType.GPS_INITIALIZATION_FAILED);
-            yield break;
-        }
-        else
-        {
-            // Access granted and location value could be retrieved
+          // Access granted and location value could be retrieved
             print("Location: " + Input.location.lastData.latitude 
                 + " " + Input.location.lastData.longitude + " " 
                 + Input.location.lastData.altitude + " " 
@@ -91,7 +59,6 @@ public class WorldMap : MonoBehaviour
             settings.latitude = locData.latitude;
             settings.longtitude = locData.longitude;
             tileMan.Initialize(buildFac, roadFac, settings);
-        }
     }
 
     /// <summary>

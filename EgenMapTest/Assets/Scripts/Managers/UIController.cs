@@ -90,11 +90,13 @@ public class UIController : MonoBehaviour
     public GameLocation HitLocation { get; private set; }
 
 
-    private void Start()
+    /// <summary>
+    /// Unity method. Called first time script is in use. Called before the Start() method.
+    /// </summary>
+    private void Awake()
     {
         pnlError.Initialize();
     }
-
 
     /// <summary>
     /// Unity method called every time game object is enabled

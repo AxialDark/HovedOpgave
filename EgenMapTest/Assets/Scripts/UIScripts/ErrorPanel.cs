@@ -10,7 +10,6 @@ public enum ErrorType {
     COULD_NOT_FIND_ROUTE,
     COULD_NOT_LOAD_MAP,
     COULD_NOT_LOAD_ROUTE,
-    GPS_STATE_NOT_RUNNING,
     GPS_TIMED_OUT,
     GPS_INITIALIZATION_FAILED,
     GPS_INACTIVE}
@@ -112,10 +111,20 @@ public class ErrorPanel : MonoBehaviour {
             case ErrorType.COULD_NOT_LOAD_ROUTE:
                 UIController.Instance.pnlRouteButtons.gameObject.SetActive(true);
                 break;
-            case ErrorType.GPS_STATE_NOT_RUNNING:
-
+            case ErrorType.GPS_INACTIVE:
+                //Do nothing
+                UIController.Instance.gameObject.GetComponent<InitGPS>().ReinitLocationService();
+                break;
+            case ErrorType.GPS_INITIALIZATION_FAILED:
+                //TODO: To restarts to GSP, call whatever method is made so the GPS inits before map is loaded.
+                UIController.Instance.gameObject.GetComponent<InitGPS>().ReinitLocationService();
+                break;
+            case ErrorType.GPS_TIMED_OUT:
+                //TODO: To restarts to GSP, call whatever method is made so the GPS inits before map is loaded.
+                UIController.Instance.gameObject.GetComponent<InitGPS>().ReinitLocationService();
                 break;
             case ErrorType.NONE:
+                //do nothing
                 break;
         }
     }
