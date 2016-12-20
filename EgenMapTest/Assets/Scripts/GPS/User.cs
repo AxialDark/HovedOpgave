@@ -185,9 +185,8 @@ public class User : MonoBehaviour
         {
             transform.LookAt(newPosition);
 
-            transform.localRotation = Quaternion.Euler(transform.localEulerAngles + new Vector3(0, 90, 0));
-            //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Time.deltaTime * Vector3.Distance(gameObject.transform.position, newPosition));
-            transform.position = newPosition;
+            transform.localRotation = Quaternion.Euler(new Vector3(0, transform.localEulerAngles.y + 90, 0));
+            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Time.deltaTime * Vector3.Distance(gameObject.transform.position, newPosition));
         }
     }
 
@@ -200,7 +199,13 @@ public class User : MonoBehaviour
     {
         if (_other.gameObject.GetComponent<GameLocation>())
         {
-            if (Application.platform == RuntimePlatform.Android) Handheld.Vibrate();
+            UIController.Instance.HitGameLocation(_other.gameObject.GetComponent<GameLocation>());
+
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                if (UIController.Instance.HitLocation != null && UIController.Instance.HitLocation.gameObject == _other.gameObject)
+                    Handheld.Vibrate();
+            }
         }
     }
 
@@ -213,11 +218,6 @@ public class User : MonoBehaviour
     {
         if (routeIsActive)
         {
-            if (_other.gameObject.GetComponent<GameLocation>())
-            {
-                UIController.Instance.HitGameLocation(_other.gameObject.GetComponent<GameLocation>());
-            }
-
             if (RouteManager.Instance.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Instance.Points[1]) //If list contains 2 or more points, update it when colliding
             {
                 RouteManager.Instance.UpdateRouteForUser();

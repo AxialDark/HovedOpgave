@@ -144,7 +144,7 @@ public class RouteManager : MonoBehaviour
                 point.transform.position = new Vector3(route.RouteInMercCoords[i - 1].x, 10, route.RouteInMercCoords[i - 1].y);
                 point.transform.localScale = new Vector3(7.5f, 7.5f, 7.5f);
                 point.GetComponent<Collider>().isTrigger = true;
-                point.GetComponent<SphereCollider>().radius = 1.50f;
+                point.GetComponent<SphereCollider>().radius = 1.75f;
                 points.Add(point);
 
                 pointCount++;
@@ -330,7 +330,7 @@ public class RouteManager : MonoBehaviour
             gameLocation.gameObject.transform.localScale = new Vector3(14, 14, 14);
             gameLocation.gameObject.GetComponent<Renderer>().material.color = Color.blue;
             gameLocation.gameObject.GetComponent<Collider>().isTrigger = true;
-            gameLocation.gameObject.GetComponent<SphereCollider>().radius = 1.55f;
+            gameLocation.gameObject.GetComponent<SphereCollider>().radius = 1.80f;
             gamelocations.Add(gameLocation);
 
 

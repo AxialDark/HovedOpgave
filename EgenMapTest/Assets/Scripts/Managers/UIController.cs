@@ -16,7 +16,7 @@ public class UIController : MonoBehaviour
     private ErrorPanel pnlError;
 
     /// <summary>
-    /// Shows the loading paneæ
+    /// Shows the loading panel
     /// </summary>
     /// <param name="_show">Show or hide</param>
     public void ShowLoading(bool _show)
