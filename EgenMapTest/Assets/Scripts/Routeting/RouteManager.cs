@@ -169,7 +169,7 @@ public class RouteManager : MonoBehaviour
         }
 
         //We got the points, now we make all the routes between the points.
-        for(int i = 1; i < points.Count; i++)
+        for (int i = 1; i < points.Count; i++)
         {
             float distance = Vector3.Distance(points[i - 1].transform.position, points[i].transform.position); //Calculates distance between current point and the next
 
@@ -224,7 +224,7 @@ public class RouteManager : MonoBehaviour
 
         routeInUse = true; //Route is now created and in use
 
-        PointManager.Instance.StartRouteTimer();
+        UIController.Instance.ActivateRouteAcceptPanel(route.Distance.ToString());
 
         UIController.Instance.ShowLoading(false);
     }
@@ -259,6 +259,35 @@ public class RouteManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Handles the closing of a route not completed
+    /// </summary>
+    public void EndRouteNotCompleted()
+    {
+        routeInUse = false;
+        
+        //Clears the routePlanes from the game
+        foreach (GameObject route in routePlanes)
+        {
+            Destroy(route);
+        }
+        //Clears points from the game
+        foreach (GameObject point in points)
+        {
+            Destroy(point);
+        }
+        //Clears game locations from the game
+        foreach (GameLocation loc in gamelocations)
+        {
+            Destroy(loc.gameObject);
+        }
+
+        //Clears the lists
+        points.Clear();
+        routePlanes.Clear();
+        gamelocations.Clear();
+    }
+
+    /// <summary>
     /// Updates route by highighting the next route
     /// </summary>
     public void UpdateRouteForUser()
@@ -273,7 +302,7 @@ public class RouteManager : MonoBehaviour
                 routePlanes.RemoveAt(0);
 
                 if (routePlanes.Count > 0)//Makes sure outofindex exceptions wont occur
-                {                    
+                {
                     routePlanes[0].GetComponent<Renderer>().material = Resources.Load<Material>("DebugRouteHighlight"); //Makes the next routePlane highlighted
                     routePlanes[0].transform.position += Vector3.up; //Makes sure the highlighted route is above other routes and visible.
                 }
@@ -589,6 +618,6 @@ public class RouteManager : MonoBehaviour
         {
             return _middelPoint + new Vector2(_direction.x * 0.5f, _direction.y * 0.5f) * distance;
         }
-        
+
     }
 }

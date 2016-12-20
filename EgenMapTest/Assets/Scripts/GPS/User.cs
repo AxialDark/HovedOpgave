@@ -10,11 +10,18 @@ public class User : MonoBehaviour
 {
     private Text debugText;
 
-
     private static User instance;
     private Vector2 centerInMerc;
     private Vector2 lastLatLong;
     private Vector3 newPosition;
+
+    private bool routeIsActive;
+
+    public bool RouteIsActive
+    {
+        get { return routeIsActive; }
+        set { routeIsActive = value; }
+    }
 
     /// <summary>
     /// Singleton in Unity
@@ -70,6 +77,8 @@ public class User : MonoBehaviour
         cam.transform.localPosition = camPos;
         centerInMerc = _centerInMerc;
         lastLatLong = _initLatLong;
+
+        routeIsActive = false;
     }
 
     /// <summary>
@@ -77,11 +86,14 @@ public class User : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (Application.platform == RuntimePlatform.WindowsEditor) return;
+        if (routeIsActive)
+        {
+            if (Application.platform == RuntimePlatform.WindowsEditor) return;
 
-        //debugText.text = "Current Position:\n" + transform.position + "\nNew Position:\n" + newPosition;
+            //debugText.text = "Current Position:\n" + transform.position + "\nNew Position:\n" + newPosition;
 
-        Invoke("UpdatePosition", 2); //Updates the users position every indicated interval in seconds
+            Invoke("UpdatePosition", 2); //Updates the users position every indicated interval in seconds
+        }
     }
 
     /// <summary>
@@ -182,16 +194,18 @@ public class User : MonoBehaviour
     /// <param name="other">The detected trigger collider</param>
     private void OnTriggerStay(Collider _other)
     {
-        if (_other.gameObject.GetComponent<GameLocation>())
+        if (routeIsActive)
         {
-            UIController.Instance.HitGameLocation(_other.gameObject.GetComponent<GameLocation>());
-        }
+            if (_other.gameObject.GetComponent<GameLocation>())
+            {
+                UIController.Instance.HitGameLocation(_other.gameObject.GetComponent<GameLocation>());
+            }
 
-        if (RouteManager.Instance.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Instance.Points[1]) //If list contains 2 or more points, update it when colliding
-        {
-            RouteManager.Instance.UpdateRouteForUser();
+            if (RouteManager.Instance.Points.Count - 1 > 0 && _other.gameObject == RouteManager.Instance.Points[1]) //If list contains 2 or more points, update it when colliding
+            {
+                RouteManager.Instance.UpdateRouteForUser();
+            }
         }
-
     }
 
     /// <summary>
@@ -206,9 +220,6 @@ public class User : MonoBehaviour
             UIController.Instance.btnStartGame.gameObject.SetActive(false);
         }
     }
-
-
-
 
     /// <summary>
     /// Centralizes the User avatar
