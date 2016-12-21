@@ -108,7 +108,7 @@ public class UIController : MonoBehaviour
     void OnEnable()
     {
 #if UNITY_ANDROID
-        btnDebugEndRoute.gameObject.SetActive(true);
+        //btnDebugEndRoute.gameObject.SetActive(true);
         //DebugPhoneMovement.gameObject.SetActive(true);
 #endif
     }
