@@ -14,16 +14,10 @@ public class UIController : MonoBehaviour
     public bool show = false; //ONLY FOR DEBUG
     [SerializeField]
     private ErrorPanel pnlError;
-
-    /// <summary>
-    /// Shows the loading panel
-    /// </summary>
-    /// <param name="_show">Show or hide</param>
-    public void ShowLoading(bool _show)
-    {
-        show = _show; //ONLY FOR DEBUG
-        pnlLoading.SetActive(_show);
-    }
+    [SerializeField]
+    private InputField fldName;
+    [SerializeField]
+    private InputField fldPW;
 
     private WorldMap map = null;
 
@@ -100,6 +94,12 @@ public class UIController : MonoBehaviour
     private void Awake()
     {
         pnlError.Initialize();
+
+        fldName.keyboardType = TouchScreenKeyboardType.EmailAddress;
+        fldPW.keyboardType = TouchScreenKeyboardType.EmailAddress;
+        fldName.inputType = InputField.InputType.Standard;
+        fldPW.inputType = InputField.InputType.Password;
+        fldName.onEndEdit.AddListener(delegate { Next(); });
     }
 
     /// <summary>
@@ -114,11 +114,26 @@ public class UIController : MonoBehaviour
     }
 
     /// <summary>
+    /// Shows the loading panel
+    /// </summary>
+    /// <param name="_show">Show or hide</param>
+    public void ShowLoading(bool _show)
+    {
+        show = _show; //ONLY FOR DEBUG
+        pnlLoading.SetActive(_show);
+    }
+
+    /// <summary>
     /// Unity method, runs once every frame
     /// </summary>
     private void Update()
     {
         timerText.text = PointManager.Instance.TimeToTimer();
+    }
+
+    private void Next()
+    {
+        fldPW.ActivateInputField();
     }
 
     /// <summary>
