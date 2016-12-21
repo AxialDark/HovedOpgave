@@ -138,12 +138,12 @@ public class Route
 
         APIDataExtractor extract = new APIDataExtractor(_text); //Instances an extractor and gives it the API data
 
-        //if (!ignoreRetry && (extract.Data.DistanceOfRoute > 1000 * (int)length * 1.2f || extract.Data.DistanceOfRoute < 1000 * (int)length * 0.8f))
-        //{
-        //    //It is too long or to short try again
-        //    RouteManager.Instance.RecalculateViaPoints(startPosition, length);
-        //    return;
-        //}
+        if (!ignoreRetry && (extract.Data.DistanceOfRoute > 1000 * (int)length * 1.2f || extract.Data.DistanceOfRoute < 1000 * (int)length * 0.8f))
+        {
+            //It is too long or to short try again
+            RouteManager.Instance.RecalculateViaPoints(startPosition, length);
+            return;
+        }
 
         routeLatLongs = new List<Vector2>(extract.Data.RouteLatLongs);//Instances new routeLatLongs list with data from extractor with no reference.
 
