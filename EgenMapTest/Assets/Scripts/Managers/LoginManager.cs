@@ -48,6 +48,7 @@ public class LoginManager : MonoBehaviour
             }
         }
         #region DEBUG
+#if UNITY_EDITOR
         else // only for debugging
         {
             print("Debug Login");
@@ -56,7 +57,8 @@ public class LoginManager : MonoBehaviour
             UIController.Instance.UICam.gameObject.SetActive(false);
             UIController.Instance.LoadScene("Main");
         }
-        #endregion
+#endif
+#endregion
     }
 
     /// <summary>
