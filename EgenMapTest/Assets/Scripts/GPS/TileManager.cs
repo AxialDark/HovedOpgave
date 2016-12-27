@@ -10,8 +10,8 @@ using System;
 /// Manages all tiles.
 /// </summary>
 public class TileManager : MonoBehaviour
-{ 
-        private readonly string mapzenURL = "https://tile.mapzen.com/mapzen/vector/v1/{0}/{1}/{2}/{3}.{4}?api_key={5}"; //Changed from tut
+{
+    private readonly string mapzenURL = "https://tile.mapzen.com/mapzen/vector/v1/{0}/{1}/{2}/{3}.{4}?api_key={5}"; //Changed from tut
     private readonly string mapzenKey = "mapzen-ncia6gL";
     private readonly string mapzenLayer = "buildings,roads";
     private readonly string mapzenFormat = "json";
@@ -90,7 +90,7 @@ public class TileManager : MonoBehaviour
     {
         Rect rect = GM.TileBounds(_tileTMS, zoom); //The new Tile bounds
         Tile tile = new GameObject("Tile " + _tileTMS.x + "-" + _tileTMS.y)
-            .AddComponent<Tile>().Initialize(buildFac ,roadFac, //Creates the tile with the settings
+            .AddComponent<Tile>().Initialize(buildFac, roadFac, //Creates the tile with the settings
             new Tile.Settings()
             {
                 Zoom = zoom,

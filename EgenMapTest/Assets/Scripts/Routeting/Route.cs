@@ -16,7 +16,8 @@ using System.Linq;
 /// TODO: Error Handle when a via point is ignored.
 /// </summary>
 public class Route
-{    private readonly string distanceFormat = "M";
+{
+    private readonly string distanceFormat = "M";
     private readonly string apiUrl = "http://openls.geog.uni-heidelberg.de/route?api_key=ee0b8233adff52ce9fd6afc2a2859a28&start={0}&end={1}&via={2}&lang={3}&distunit={4}&routepref={5}&weighting={6}&avoidAreas=&useTMC=false&noMotorways=true&noTollways=false&noUnpavedroads=&noSteps=&noFerries=true&instructions=false";
     private readonly string transportType = "Pedestrian";
     private readonly string routingLanguage = "en";

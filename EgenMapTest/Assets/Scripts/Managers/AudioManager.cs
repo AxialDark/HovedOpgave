@@ -15,28 +15,15 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private Image buttonSprite;
 
-    /// <summary>
-    /// Mute button event method when button is clicked
-    /// </summary>
-    public void OnMuteClick()
-    {
-        isMuted = !isMuted;
-        buttonSprite.sprite = soundSprites[Convert.ToInt32(isMuted)];
+    [SerializeField]
+    private AudioSource effectPlayer;
 
-        MuteSound(isMuted);
-    }
+    [SerializeField]
+    private AudioClip[] effectClips;
 
-    /// <summary>
-    /// Mutes the sound
-    /// </summary>
-    /// <param name="_mute">Should it be muted</param>
-    private void MuteSound(bool _mute)
-    {
-        effectPlayer.mute = _mute;
-    }
+    private string currentEffect;
 
-
-
+    private bool outOfFocus;
 
     #region Singleton
     private static AudioManager instance;
@@ -57,16 +44,6 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    //Fields
-    [SerializeField]
-    private AudioSource effectPlayer;
-
-    [SerializeField]
-    private AudioClip[] effectClips;
-
-    private string currentEffect;
-
-    private bool outOfFocus;
 
     /// <summary>
     /// Unity build in Awake method
@@ -90,11 +67,11 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// Plays an effect with delay
     /// </summary>
-    /// <param name="effectName">Name of the effect to play</param>
-    /// <param name="delay">Delay in seconds</param>
-    public void PlayEffect(string effectName, float delay = 0)
+    /// <param name="_effectName">Name of the effect to play</param>
+    /// <param name="_delay">Delay in seconds</param>
+    public void PlayEffect(string _effectName, float _delay = 0)
     {
-        switch (effectName)
+        switch (_effectName)
         {
             case "BallBounce":
                 effectPlayer.clip = effectClips[0];
@@ -108,20 +85,40 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Mute button event method when button is clicked
+    /// </summary>
+    public void OnMuteClick()
+    {
+        isMuted = !isMuted;
+        buttonSprite.sprite = soundSprites[Convert.ToInt32(isMuted)];
+
+        MuteSound(isMuted);
+    }
+
+    /// <summary>
+    /// Mutes the sound
+    /// </summary>
+    /// <param name="_mute">Should it be muted</param>
+    private void MuteSound(bool _mute)
+    {
+        effectPlayer.mute = _mute;
+    }
+
+    /// <summary>
     /// When application comes into focus
     /// </summary>
-    /// <param name="focusStatus">Is it in focus</param>
-    private void OnApplicationFocus(bool focusStatus)
+    /// <param name="_focusStatus">Is it in focus</param>
+    private void OnApplicationFocus(bool _focusStatus)
     {
-        outOfFocus = focusStatus;
+        outOfFocus = _focusStatus;
     }
 
     /// <summary>
     /// When application comes out of fokus
     /// </summary>
-    /// <param name="pauseStatus">Is application paused</param>
-    private void OnApplicationPause(bool pauseStatus)
+    /// <param name="_pauseStatus">Is application paused</param>
+    private void OnApplicationPause(bool _pauseStatus)
     {
-        outOfFocus = pauseStatus;
+        outOfFocus = _pauseStatus;
     }
 }

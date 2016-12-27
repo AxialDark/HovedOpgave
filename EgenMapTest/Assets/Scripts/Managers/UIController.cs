@@ -32,7 +32,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private Text timerText;
     [SerializeField]
-    private Text EndStatsText;
+    private Text endStatsText;
     [SerializeField]
     private Button profileButton;
     [SerializeField]
@@ -294,7 +294,7 @@ public class UIController : MonoBehaviour
     /// <param name="_endStatText">The text to change the endStatText with</param>
     public void ChangeEndStatsText(string _endStatText)
     {
-        EndStatsText.text = _endStatText;
+        endStatsText.text = _endStatText;
     }
 
     /// <summary>

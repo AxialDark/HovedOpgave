@@ -14,7 +14,14 @@ public class Ball : MonoBehaviour
 {
     #region Fields
     [SerializeField]
-    private BallUpSpeedTest test;
+    private float throwSpeed;
+    private float speed;
+    private float lastMouseX, lastMouseY;
+    private bool thrown, holding;
+    private Rigidbody rigidBody;
+    private Vector3 newPosition;
+    [SerializeField]
+    private BallUpSpeedTest test; //Debug
     private const float LIMIT = 400f;
     private Vector2 startHoldPos;
     private Vector2 lastCheckStillPos;
@@ -22,13 +29,6 @@ public class Ball : MonoBehaviour
     private float mouseStillTime = 0;
     private float delay = 0;
     private float holdTime = 0;
-    [SerializeField]
-    private float throwSpeed;
-    private float speed;
-    private float lastMouseX, lastMouseY;
-    private bool thrown, holding;
-    private Rigidbody rigidBody;
-    private Vector3 newPosition;
     #endregion
 
     /// <summary>

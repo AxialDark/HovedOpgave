@@ -11,11 +11,11 @@ public class WorldMap : MonoBehaviour
 {
     [SerializeField]
     private Settings settings;
-    public static MapColorPalet colorPalet;
 
     private RoadFactory roadFac;
     private BuildingFactory buildFac;
     private TileManager tileMan;
+    public static MapColorPalet colorPalet;
 
     /// <summary>
     /// Use this for initialization
