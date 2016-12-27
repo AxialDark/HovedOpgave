@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 
+/// <summary>
+/// Handles the Audio in the app
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
     [SerializeField]
@@ -38,6 +41,9 @@ public class AudioManager : MonoBehaviour
     #region Singleton
     private static AudioManager instance;
 
+    /// <summary>
+    /// Singleton instance of the AudioManager
+    /// </summary>
     public static AudioManager Instance
     {
         get
@@ -62,15 +68,21 @@ public class AudioManager : MonoBehaviour
 
     private bool outOfFocus;
 
-    // Use this for initialization
-    void Awake()
+    /// <summary>
+    /// Unity build in Awake method
+    /// Is run before Start()
+    /// </summary>
+    private void Awake()
     {
         buttonSprite.sprite = soundSprites[0];
         outOfFocus = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Unity build in Update method
+    /// Is run once pr. frame
+    /// </summary>
+    private void Update()
     {
 
     }
@@ -99,7 +111,7 @@ public class AudioManager : MonoBehaviour
     /// When application comes into focus
     /// </summary>
     /// <param name="focusStatus">Is it in focus</param>
-    void OnApplicationFocus(bool focusStatus)
+    private void OnApplicationFocus(bool focusStatus)
     {
         outOfFocus = focusStatus;
     }
@@ -108,7 +120,7 @@ public class AudioManager : MonoBehaviour
     /// When application comes out of fokus
     /// </summary>
     /// <param name="pauseStatus">Is application paused</param>
-    void OnApplicationPause(bool pauseStatus)
+    private void OnApplicationPause(bool pauseStatus)
     {
         outOfFocus = pauseStatus;
     }

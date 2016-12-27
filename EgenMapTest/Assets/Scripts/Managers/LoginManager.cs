@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Handles the Login and Create user
+/// </summary>
 public class LoginManager : MonoBehaviour
 {
     #region Serialized Fields

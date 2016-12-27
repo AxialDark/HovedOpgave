@@ -35,15 +35,8 @@ public class ErrorPanel : MonoBehaviour {
     }
 
     /// <summary>
-    /// Unity Start Method
+    /// Initializes the errorpanel
     /// </summary>
-    //private void Start()
-    //{
-    //    instance = this;
-    //    errorPanelTexts = GetComponentsInChildren<Text>();
-    //    gameObject.SetActive(false);
-    //}
-
     public void Initialize()
     {
         instance = this;
@@ -97,6 +90,10 @@ public class ErrorPanel : MonoBehaviour {
         errorPanelTexts[2].text = "Error";
     }
 
+    /// <summary>
+    /// What happens when you click "OK" button on error panel
+    /// Based on the error
+    /// </summary>
     private void HandleError()
     {
         switch (error)

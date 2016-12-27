@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+/// <summary>
+/// Contains necesary information for a Challenge
+/// </summary>
 public class Challenge : MonoBehaviour
 {
     /* CHALLENGE FORMAT

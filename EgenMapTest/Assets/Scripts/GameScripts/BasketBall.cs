@@ -6,7 +6,9 @@ using System.Collections;
 /// </summary>
 public class BasketBall : Ball
 {
-    // Use this for initialization
+    /// <summary>
+    /// Unity build in Start method
+    /// </summary>
     protected override void Start()
     {
         gameObject.GetComponent<Renderer>().material = Resources.Load<Material>("Materials/balldimpled");
@@ -14,7 +16,9 @@ public class BasketBall : Ball
         base.Start(); //Calls the superclass version of the Start() method.
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Unity build in Update method
+    /// </summary>
     protected override void Update()
     {
         base.Update();

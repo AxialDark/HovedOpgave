@@ -131,6 +131,9 @@ public class UIController : MonoBehaviour
         timerText.text = PointManager.Instance.TimeToTimer();
     }
 
+    /// <summary>
+    /// Activates the password Inputfield when username Inputfield is done typing
+    /// </summary>
     private void Next()
     {
         fldPW.ActivateInputField();

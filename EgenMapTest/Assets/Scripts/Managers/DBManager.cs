@@ -3,12 +3,18 @@ using System.Collections;
 using System.Data;
 using Mono.Data.Sqlite;
 
+/// <summary>
+/// Handles the call to our SQLite Database
+/// </summary>
 public class DBManager : MonoBehaviour
 {
 
     #region Singleton
     private static DBManager instance;
 
+    /// <summary>
+    /// Singleton instance of DBManager
+    /// </summary>
     public static DBManager Instance
     {
         get

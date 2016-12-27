@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 {
     #region Singleton
     private static GameManager instance;
+    /// <summary>
+    /// Singleton instance
+    /// </summary>
     public static GameManager Instance
     {
         get

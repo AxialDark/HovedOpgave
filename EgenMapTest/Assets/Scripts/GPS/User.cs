@@ -8,8 +8,6 @@ using UnityEngine.UI;
 /// </summary>
 public class User : MonoBehaviour
 {
-    private Text debugText;
-
     private static User instance;
     private Vector2 centerInMerc;
     private Vector2 lastLatLong;
@@ -17,6 +15,9 @@ public class User : MonoBehaviour
 
     private bool routeIsActive;
 
+    /// <summary>
+    /// Property that checks if a the route is active
+    /// </summary>
     public bool RouteIsActive
     {
         get { return routeIsActive; }
@@ -63,16 +64,11 @@ public class User : MonoBehaviour
         gameObject.name = "Player";
         gameObject.transform.SetParent(_parent);
         gameObject.transform.position = (vector - _centerInMerc).ToVector3xz();
-        //gameObject.GetComponent<MeshRenderer>().material.color = new Color(255, 0, 0, 255);
         gameObject.transform.localScale = new Vector3(20, 20, 20);
 
         gameObject.GetComponent<Renderer>().material = Resources.Load<Material>("mat");
 
         gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
-        //debugText = GameObject.Find("ddPosText").GetComponent<Text>();
-#if !UNITY_EDITOR
-        //StartCoroutine(OtherMovement());
-#endif
 
         cam.transform.SetParent(gameObject.transform, true);
         Vector3 camPos = Vector3.zero;
@@ -97,7 +93,7 @@ public class User : MonoBehaviour
 
             Invoke("UpdatePosition", 2); //Updates the users position every indicated interval in seconds
 
-            Move();
+            SmoothMove();
         }
     }
 
@@ -150,36 +146,9 @@ public class User : MonoBehaviour
     }
 
     /// <summary>
-    /// Makes the movement between last position and new position smooth
-    /// <param name="value">The time it should take to move to the new position</param>
+    /// Moves the User smoothly between current location and the new GPS location
     /// </summary>
-    private IEnumerator SmoothMovement(float _value)
-    {
-        float rate = 1.0f / _value;
-        float t = 0.0f;
-        while (t < 1.0)
-        {
-            t += Time.deltaTime * rate;
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Mathf.SmoothStep(0.0f, 1.0f, t));
-            yield return null;
-        }
-    }
-
-    private IEnumerator OtherMovement()
-    {
-        while (true)
-        {
-            if (newPosition != null && gameObject.transform.position != newPosition)
-            {
-                //gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, newPosition, Time.deltaTime * Vector3.Distance(gameObject.transform.position, newPosition));
-                transform.position = newPosition;
-            }
-
-            yield return null;
-        }
-    }
-
-    private void Move()
+    private void SmoothMove()
     {
         if (newPosition != null && gameObject.transform.position != newPosition)
         {

@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Diagnostics;
 
+/// <summary>
+/// Handles the points given for a route
+/// </summary>
 public class PointManager : MonoBehaviour
 {
     #region Singleton

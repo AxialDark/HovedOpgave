@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Initializes the GPS
+/// </summary>
 public class InitGPS : MonoBehaviour {
 
-	// Use this for initialization
+	/// <summary>
+    /// Unity Start Method
+    /// </summary>
 	void Start () {
 #if !UNITY_EDITOR
         StartCoroutine(Init());
