@@ -181,10 +181,20 @@ public class Ball : MonoBehaviour
         Vector3 direction = new Vector3(x, 0f, 1f);
         direction = Camera.main.transform.TransformDirection(direction);
 
-        //Debug
-        SpeedTest(direction);
-        //rigidBody.AddForce((direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+        //Throw
+        float diffFromLimit = (speed > LIMIT) ? speed - LIMIT : -1;
+        float upSpeed;
 
+        if (diffFromLimit == -1)
+            upSpeed = speed;
+        else
+        {
+            upSpeed = (((diffFromLimit / 10f) / 100f) + 1) * LIMIT;
+        }
+        print("Speed: " + speed + "\n" + "Up Speed: " + upSpeed);
+
+        rigidBody.AddForce((direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+        
         holding = false;
         thrown = true;
     }
