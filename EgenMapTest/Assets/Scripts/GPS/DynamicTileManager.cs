@@ -50,27 +50,6 @@ public class DynamicTileManager : TileManager {
     }
 
     /// <summary>
-    /// Finds which way the player left the middle Tile
-    /// </summary>
-    /// <returns>Direction vector</returns>
-    private Vector2 GetMovementVector()
-    {
-        Vector2 dif = User.Instance.transform.position.ToVector2xz();
-        Vector2 tileDif = Vector2.zero;
-        if (dif.x < Math.Min(centerCollider.xMin, centerCollider.xMax))
-            tileDif.x = -1;
-        else if (dif.x > Math.Max(centerCollider.xMin, centerCollider.xMax))
-            tileDif.x = 1;
-
-        if (dif.y < Math.Min(centerCollider.yMin, centerCollider.yMax))
-            tileDif.y = 1;
-        else if (dif.y > Math.Max(centerCollider.yMin, centerCollider.yMax))
-            tileDif.y = -1;
-
-        return tileDif;
-    }
-
-    /// <summary>
     /// Moves the whole map so the player always is on the middle Tile
     /// </summary>
     /// <param name="_tileDif">The direction the player left central Tile</param>
@@ -125,4 +104,24 @@ public class DynamicTileManager : TileManager {
         }
     }
 
+    /// <summary>
+    /// Finds which way the player left the middle Tile
+    /// </summary>
+    /// <returns>Direction vector</returns>
+    private Vector2 GetMovementVector()
+    {
+        Vector2 dif = User.Instance.transform.position.ToVector2xz();
+        Vector2 tileDif = Vector2.zero;
+        if (dif.x < Math.Min(centerCollider.xMin, centerCollider.xMax))
+            tileDif.x = -1;
+        else if (dif.x > Math.Max(centerCollider.xMin, centerCollider.xMax))
+            tileDif.x = 1;
+
+        if (dif.y < Math.Min(centerCollider.yMin, centerCollider.yMax))
+            tileDif.y = 1;
+        else if (dif.y > Math.Max(centerCollider.yMin, centerCollider.yMax))
+            tileDif.y = -1;
+
+        return tileDif;
+    }
 }

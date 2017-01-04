@@ -14,7 +14,14 @@ public class Ball : MonoBehaviour
 {
     #region Fields
     [SerializeField]
-    private BallUpSpeedTest test;
+    private float throwSpeed;
+    private float speed;
+    private float lastMouseX, lastMouseY;
+    private bool thrown, holding;
+    private Rigidbody rigidBody;
+    private Vector3 newPosition;
+    [SerializeField]
+    private BallUpSpeedTest test; //Debug
     private const float LIMIT = 400f;
     private Vector2 startHoldPos;
     private Vector2 lastCheckStillPos;
@@ -22,13 +29,6 @@ public class Ball : MonoBehaviour
     private float mouseStillTime = 0;
     private float delay = 0;
     private float holdTime = 0;
-    [SerializeField]
-    private float throwSpeed;
-    private float speed;
-    private float lastMouseX, lastMouseY;
-    private bool thrown, holding;
-    private Rigidbody rigidBody;
-    private Vector3 newPosition;
     #endregion
 
     /// <summary>
@@ -181,10 +181,20 @@ public class Ball : MonoBehaviour
         Vector3 direction = new Vector3(x, 0f, 1f);
         direction = Camera.main.transform.TransformDirection(direction);
 
-        //Debug
-        SpeedTest(direction);
-        //rigidBody.AddForce((direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+        //Throw
+        float diffFromLimit = (speed > LIMIT) ? speed - LIMIT : -1;
+        float upSpeed;
 
+        if (diffFromLimit == -1)
+            upSpeed = speed;
+        else
+        {
+            upSpeed = (((diffFromLimit / 10f) / 100f) + 1) * LIMIT;
+        }
+        print("Speed: " + speed + "\n" + "Up Speed: " + upSpeed);
+
+        rigidBody.AddForce((direction * speed / 2f) + (Vector3.up * upSpeed)); // Adds force in a direction to the ball.
+        
         holding = false;
         thrown = true;
     }

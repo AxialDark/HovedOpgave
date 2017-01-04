@@ -14,10 +14,10 @@ public class Tile : MonoBehaviour
 
     [SerializeField]
     public Rect rect;
-    public Renderer myRend;
     private RoadFactory roadFac;
     private BuildingFactory buildFac;
     private Settings settings;
+    public Renderer myRend;
 
     /// <summary>
     /// Initialize the Tile by setting all the key field variables
