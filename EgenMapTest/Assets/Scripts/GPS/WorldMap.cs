@@ -69,7 +69,8 @@ public class WorldMap : MonoBehaviour
     /// <param name="_viaPoints">An optional list of via points. Works as "checkpoints" between start and end points in a route</param>
     public void BeginRouteGeneration(RouteLength _routeLength, List<Vector2> _viaPoints = null)
     {
-        RouteManager.Instance.GetComponent<RouteManager>().InitiateRouteGeneration(new Vector2(settings.latitude, settings.longtitude), _viaPoints, settings, _routeLength);
+        RouteManager.Instance.GetComponent<RouteManager>().InitiateRouteGeneration(
+            new Vector2(settings.latitude, settings.longtitude), _viaPoints, settings, _routeLength);
     }
 
     /// <summary>
@@ -84,9 +85,10 @@ public class WorldMap : MonoBehaviour
 
         Vector2 startPoint = _routePoints[0]; //Extracts the start point of route
 
-        tempViaPoints.RemoveAt(0); //Removes the start point making it a list of via points
+        tempViaPoints.RemoveAt(0); //Removes the start point making it a list of only via points
 
-        RouteManager.Instance.GetComponent<RouteManager>().InitiateRouteGeneration(startPoint, tempViaPoints, settings, _routeLength, true);
+        RouteManager.Instance.GetComponent<RouteManager>().InitiateRouteGeneration(
+            startPoint, tempViaPoints, settings, _routeLength, true);
     }
 
     /// <summary>

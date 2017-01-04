@@ -23,7 +23,9 @@ public class InitGPS : MonoBehaviour {
     {
         if (!Input.location.isEnabledByUser) // First, check if user has location service enabled
         {
-            ErrorPanel.Instance.ShowError("GPS Inactive", "Your GPS/Location Service is inactive\nPlease activite your GPS/Locations Service and try again", ErrorType.GPS_INACTIVE);
+            ErrorPanel.Instance.ShowError("GPS Inactive", 
+                "Your GPS/Location Service is inactive\nPlease activite your GPS/Locations Service and try again", 
+                ErrorType.GPS_INACTIVE);
             yield break;
         }
 
@@ -41,7 +43,9 @@ public class InitGPS : MonoBehaviour {
         if (maxWait < 1)
         {
             print("Timed out");
-            ErrorPanel.Instance.ShowError("GPS timed out", "GPS timed out when trying to initialize\nClick /OK/ to try again.", ErrorType.GPS_TIMED_OUT);
+            ErrorPanel.Instance.ShowError("GPS timed out", 
+                "GPS timed out when trying to initialize\nClick /OK/ to try again.", 
+                ErrorType.GPS_TIMED_OUT);
             yield break;
         }
 
@@ -49,7 +53,9 @@ public class InitGPS : MonoBehaviour {
         if (Input.location.status == LocationServiceStatus.Failed)
         {
             print("Unable to determine device location");
-            ErrorPanel.Instance.ShowError("GPS Initialization failed", "Failed to start GPS service\nClick /OK/ to try again.", ErrorType.GPS_INITIALIZATION_FAILED);
+            ErrorPanel.Instance.ShowError("GPS Initialization failed", 
+                "Failed to start GPS service\nClick /OK/ to try again.", 
+                ErrorType.GPS_INITIALIZATION_FAILED);
             yield break;
         }
         else

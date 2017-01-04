@@ -16,7 +16,8 @@ using System.Linq;
 /// TODO: Error Handle when a via point is ignored.
 /// </summary>
 public class Route
-{    private readonly string distanceFormat = "M";
+{
+    private readonly string distanceFormat = "M";
     private readonly string apiUrl = "http://openls.geog.uni-heidelberg.de/route?api_key=ee0b8233adff52ce9fd6afc2a2859a28&start={0}&end={1}&via={2}&lang={3}&distunit={4}&routepref={5}&weighting={6}&avoidAreas=&useTMC=false&noMotorways=true&noTollways=false&noUnpavedroads=&noSteps=&noFerries=true&instructions=false";
     private readonly string transportType = "Pedestrian";
     private readonly string routingLanguage = "en";
@@ -104,10 +105,8 @@ public class Route
         //string containing all the data we need from the API
         string url = string.Format(apiUrl, startEnd, startEnd, viaFormatedString, routingLanguage, distanceFormat, transportType, routeWeight);
         ObservableWWW.Get(url) //Third party code, meant for making task threaded
-            .Subscribe(
-            ConvertAPIData, FailToGetRouteAPIData);//succes
-                                                   //exp => Debug.Log("Error fetching -> " + url)); //Error
-
+            .Subscribe(ConvertAPIData, //Success
+            FailToGetRouteAPIData); //Failure
     }
 
     /// <summary>
@@ -129,7 +128,7 @@ public class Route
     {
         if (_text.Contains("Error")) //If response contains errors
         {
-            Debug.Log("Shit happende");
+            Debug.Log("Error received");
 
             if (!ignoreRetry)
                 RouteManager.Instance.RecalculateViaPoints(startPosition, length);

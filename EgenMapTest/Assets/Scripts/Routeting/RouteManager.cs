@@ -101,12 +101,10 @@ public class RouteManager : MonoBehaviour
 
             print("Initiating Generation");
             if (mapParent == null)
-            {
                 mapParent = GameObject.Find("Map").transform;
-            }
 
             if (_via == null)
-                _via = RandomRouting(_routeLength, new Vector2(_settings.latitude, _settings.longtitude)); //Creates a random route
+                _via = RandomRouting(_routeLength, _myLatLong); //Creates a random route
 
             route = new Route().Initialize(_myLatLong, _via, _settings.detailLevel, _routeLength, _ignoreRetry); //Make the route
 
@@ -175,7 +173,6 @@ public class RouteManager : MonoBehaviour
             point.GetComponent<Collider>().isTrigger = true;
             point.GetComponent<SphereCollider>().radius = 1.75f;
             points.Add(point);
-
             _pointCount++;
         }
 
@@ -195,6 +192,7 @@ public class RouteManager : MonoBehaviour
             point2.GetComponent<Collider>().isTrigger = true;
             point2.GetComponent<SphereCollider>().radius = 1.75f;
             points.Add(point2);
+            _pointCount++;
         }
     }
 
@@ -232,7 +230,7 @@ public class RouteManager : MonoBehaviour
         int numberOfLocations = Mathf.FloorToInt((route.Distance / 1000) * 0.5f); //Calculates the numbers of locations needed
         numberOfLocations = (numberOfLocations == 0) ? 1 : numberOfLocations; //If the number of locations equals 0, set it to 1. Otherwise do nothing.
         print("Number of game locations: " + numberOfLocations);
-        int indexIncrements = points.Count/*route.RouteInMercCoords.Count*/ / (numberOfLocations + 1); //Calculates the increment needed for the location to be spread out fairly evenly
+        int indexIncrements = points.Count / (numberOfLocations + 1); //Calculates the increment needed for the location to be spread out evenly
 
         //Creates all game locations
         for (int i = 1; i <= numberOfLocations; i++)
@@ -246,7 +244,6 @@ public class RouteManager : MonoBehaviour
             gameLocation.gameObject.GetComponent<Collider>().isTrigger = true;
             gameLocation.gameObject.GetComponent<SphereCollider>().radius = 1.80f;
             gamelocations.Add(gameLocation);
-
 
             //Adds the routing point to the GameLocation
             gameLocation.RoutePoint = points[(i - 1) + (indexIncrements * i)];
@@ -452,15 +449,13 @@ public class RouteManager : MonoBehaviour
     {
         List<Vector2> starPointVia = new List<Vector2>(); //Temp list for via points
 
-        float bigRnd = (float)_length * 3f * 0.0009f; //The large length
-        float smallRnd = (float)_length * 1f * 0.0011f; //The small length
+        float bigRnd = (float)_length * 3f * 0.0010f; //The large length
+        float smallRnd = (float)_length * 1f * 0.0010f; //The small length
 
         Vector2 dir = Vector2.zero; //Standard direction
 
         if (directions.Count <= 0) // If tried in all directions
-        {
             return null; // Can't be done
-        }
 
         int randomIndex = Random.Range(0, directions.Count);
         dir = directions[randomIndex];
